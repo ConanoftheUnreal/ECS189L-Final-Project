@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
         if (isDashing && curDuration < dashDuration)
         {
             Debug.Log("Dashing");
-            rb.velocity = new Vector2(horizontal, vertical).normalized * (speed * 1.5f);
+            rb.velocity = new Vector2(horizontal, vertical).normalized * (speed * 2f);
             curDuration += Time.deltaTime;
         }
         else
