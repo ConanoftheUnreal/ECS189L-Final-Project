@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -10,8 +11,14 @@ public class PlayerMovement : MonoBehaviour
     private bool isDashing = false;
     private float dashDuration = 0.25f;
     private float curDuration;
+    private string facedDirection = "Down";
 
     [SerializeField] private Rigidbody2D rb;
+
+    public string GetFacedDirection()
+    {
+        return this.facedDirection;
+    }
 
     // Update is called once per frame
     void Update()
@@ -27,6 +34,29 @@ public class PlayerMovement : MonoBehaviour
         {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
+
+            if (horizontal == -1 && vertical == 0)
+            {
+                //Debug.Log("Facing Left");
+                facedDirection = "Left";
+            }
+            if (horizontal == 1 && vertical == 0)
+            {
+                //Debug.Log("Facing Right");
+                facedDirection = "Right";
+            }
+            if (horizontal == 0 && vertical == 1)
+            {
+                //Debug.Log("Facing Up");
+                facedDirection = "Up";
+            }
+            if (horizontal == 0 && vertical == -1)
+            {
+                //Debug.Log("Facing Down");
+                facedDirection = "Down";
+            }
+
+            Debug.Log(facedDirection);
         }
     }
 
