@@ -5,29 +5,23 @@ using System.Collections.Generic;
 public class RoomGenerator
 {
 
-    private int _maxObstacles;
-    private int _maxObstacleLength;
+    private int _maxColumns;
+    private int _maxColumnLength;
 
-    private const int MIN_OBSTACLES = 1;
+    private const int MIN_NUM_COLUMNS = 1;
     private const int MIN_COLUMN_HEIGHT = 3;
+    private const int MAX_COLUMN_GENERATION_TRIES = 10;
 
     private Dictionary<string, Tile> _tiles = new Dictionary<string, Tile>();
     private Dictionary<string, Tile> _nameToTile = new Dictionary<string, Tile>();
     private Dictionary<Tile, string> _tileToName = new Dictionary<Tile, string>();
     private Dictionary<string, Tilemap> _tileMaps;
 
-    private enum ObstacleType
+    public RoomGenerator(int maxColumns, int maxColumnLength)
     {
 
-        COLUMN
-
-    }
-
-    public RoomGenerator(int maxObstacles, int maxObstacleLength)
-    {
-
-        _maxObstacles = maxObstacles;
-        _maxObstacleLength = maxObstacleLength;
+        _maxColumns = maxColumns;
+        _maxColumnLength = maxColumnLength;
 
         Tile[] allTiles = Resources.LoadAll<Tile>("Tiles/Dungeon_Tiles");
         foreach (Tile tile in allTiles)
@@ -99,50 +93,63 @@ public class RoomGenerator
         PlaceRectangleHollow("Collision", "Black", width + 2, height + 4, new Vector2Int(0, 0));
         PlaceRectangleFilled("Collision", "Black", width, 2, new Vector2Int(1, height + 1));
 
-        ObstacleType[] obstacles = new ObstacleType[Random.Range(MIN_OBSTACLES, _maxObstacles + 1)];
-        for (int i = 0; i < obstacles.Length; i ++)
-        {
-            obstacles[i] = (ObstacleType)(Random.Range(0, System.Enum.GetNames(typeof(ObstacleType)).Length));
-        }
+        int numColumns = Random.Range(MIN_NUM_COLUMNS, _maxColumns + 1);
 
-        foreach (ObstacleType obstacle in obstacles)
+        for (int i = 0; i < numColumns; i++)
         {
 
-            switch(obstacle)
+            int columnWidth;
+            int columnHeight;
+            int x;
+            int y;
+            int numTries = 0;
+
+            do
             {
 
-                case ObstacleType.COLUMN:
+                numTries++;
 
-                    int columnWidth;
-                    int columnHeight;
-                    int x;
-                    int y;
+                if (numTries <= MAX_COLUMN_GENERATION_TRIES)
+                {
 
-                    do
+                    GameObject collLayerCopy = Object.Instantiate(collisionLayer, new Vector3(0, 0, 0), Quaternion.identity);
+                    collLayerCopy.SetActive(false);
+                    Tilemap collTileMapCopy = collLayerCopy.GetComponent<Tilemap>();
+
+                    columnWidth = Random.Range(1, _maxColumnLength + 1);
+                    columnHeight = Mathf.Max(Random.Range(1, _maxColumnLength + 1), MIN_COLUMN_HEIGHT);
+                    x = Random.Range(1, width + 1);
+                    y = Random.Range(1, height + 1);
+
+                    if (x + columnWidth > _tileMaps["Collision"].size.x)
+                    {
+                        columnWidth -= (x + columnWidth - _tileMaps["Collision"].size.x);
+                    }
+                    if (y + columnHeight > _tileMaps["Collision"].size.y)
+                    {
+                        columnHeight -= (y + columnHeight - _tileMaps["Collision"].size.y);
+                    }
+
+                    PlaceRectangleFilled(collTileMapCopy, "Black", columnWidth, columnHeight, new Vector2Int(x, y));
+
+                    if (IsValidRoom(collTileMapCopy))
                     {
 
-                        columnWidth = Random.Range(1, _maxObstacleLength + 1);
-                        columnHeight = Mathf.Max(Random.Range(1, _maxObstacleLength + 1), MIN_COLUMN_HEIGHT);
-                        x = Random.Range(1, width + 1);
-                        y = Random.Range(1, height + 1);
+                        PlaceRectangleFilled("Collision", "Black", columnWidth, columnHeight, new Vector2Int(x, y));
+                        Object.Destroy(collLayerCopy);
+                        break;
 
-                        if (x + columnWidth > _tileMaps["Collision"].size.x)
-                        {
-                            columnWidth -= (x + columnWidth - _tileMaps["Collision"].size.x);
-                        }
-                        if (y + columnHeight > _tileMaps["Collision"].size.y)
-                        {
-                            columnHeight -= (y + columnHeight - _tileMaps["Collision"].size.y);
-                        }
+                    }
 
-                    } while ((x == 2) || (x + columnWidth == _tileMaps["Collision"].size.x - 2) ||
-                            (y == 2) || (y + columnHeight == _tileMaps["Collision"].size.y - 2));
+                    Object.Destroy(collLayerCopy);
 
-                    PlaceRectangleFilled("Collision", "Black", columnWidth, columnHeight, new Vector2Int(x, y));
-
+                }
+                else
+                {
                     break;
+                }
 
-            }
+            } while (true);
 
         }
 
@@ -338,6 +345,70 @@ public class RoomGenerator
 
     }
 
+    private bool IsValidRoom(Tilemap tileMap)
+    {
+
+        for (int x = 0; x < tileMap.size.x; x++)
+        {
+
+            for (int y = 0; y < tileMap.size.y; y++)
+            {
+
+                Tile currentTile = tileMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                if (currentTile == null)
+                {
+
+                    Tile tileBelow = tileMap.GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
+                    Tile tileAbove = tileMap.GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
+                    Tile tileToLeft = tileMap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
+                    Tile tileToRight = tileMap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
+
+                    if (((tileBelow != null) && (tileAbove != null)) || ((tileToLeft != null) && (tileToRight != null)))
+                    {
+                        return false;
+                    }
+
+                }
+                else if (currentTile != null)
+                {
+
+                    Tile tileTopLeft = tileMap.GetTile(new Vector3Int(x - 1, y + 1, 0)) as Tile;
+                    Tile tileTopRight = tileMap.GetTile(new Vector3Int(x + 1, y + 1, 0)) as Tile;
+                    Tile tileBottomLeft = tileMap.GetTile(new Vector3Int(x - 1, y - 1, 0)) as Tile;
+                    Tile tileBottomRight = tileMap.GetTile(new Vector3Int(x + 1, y + 1, 0)) as Tile;
+                    Tile tileBelow = tileMap.GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
+                    Tile tileAbove = tileMap.GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
+                    Tile tileToLeft = tileMap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
+                    Tile tileToRight = tileMap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
+
+                    if ((tileAbove == null) && (tileToLeft == null) && (tileTopLeft != null))
+                    {
+                        return false;
+                    }
+                    else if ((tileAbove == null) && (tileToRight == null) && (tileTopRight != null))
+                    {
+                        return false;
+                    }
+                    else if ((tileBelow == null) && (tileToRight == null) && (tileBottomRight != null))
+                    {
+                        return false;
+                    }
+                    else if ((tileBelow == null) && (tileToLeft == null) && (tileBottomLeft != null))
+                    {
+                        return false;
+                    }
+
+                }
+
+            }
+
+        }
+
+        return true;
+
+    }
+
     private void PairNameAndTile(string name, Tile tile)
     {
 
@@ -348,12 +419,17 @@ public class RoomGenerator
 
     private void PlaceRectangleFilled(string tileMapName, string tileName, int width, int height, Vector2Int location)
     {
+        PlaceRectangleFilled(_tileMaps[tileMapName], tileName, width, height, location);
+    }
+
+    private void PlaceRectangleFilled(Tilemap tileMap, string tileName, int width, int height, Vector2Int location)
+    {
 
         for (int i = location.x; i < location.x + width; i++)
         {
             for (int j = location.y; j < location.y + height; j++)
             {       
-                _tileMaps[tileMapName].SetTile(new Vector3Int(i, j, 0), _nameToTile[tileName]);
+                tileMap.SetTile(new Vector3Int(i, j, 0), _nameToTile[tileName]);
             }
         }
 
