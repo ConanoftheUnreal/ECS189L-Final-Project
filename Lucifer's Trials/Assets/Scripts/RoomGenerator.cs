@@ -114,6 +114,7 @@ public class RoomGenerator
 
                     GameObject collLayerCopy = Object.Instantiate(collisionLayer, new Vector3(0, 0, 0), Quaternion.identity);
                     collLayerCopy.SetActive(false);
+                    collLayerCopy.transform.SetParent(room.transform);
                     Tilemap collTileMapCopy = collLayerCopy.GetComponent<Tilemap>();
 
                     columnWidth = Random.Range(1, _maxColumnLength + 1);
@@ -259,6 +260,8 @@ public class RoomGenerator
 
                     }
 
+                    currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
+
                     if ((tileToLeft != null) && (currentTile == null))
                     {
 
@@ -273,6 +276,8 @@ public class RoomGenerator
                         }    
 
                     }
+
+                    currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
 
                     if ((tileToRight != null)  && (currentTile == null))
                     {
@@ -303,7 +308,7 @@ public class RoomGenerator
 
                 Tile currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
 
-                if (currentTile == null)
+                if (currentTile == null || _tileToName[currentTile] != "Black")
                 {
 
                     Tile tileBelow = _tileMaps["Collision"].GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
@@ -313,7 +318,7 @@ public class RoomGenerator
                     if ((tileBelow != null) && (tileToRight != null))
                     {
 
-                        if ((_tileToName[tileBelow] == "Black") && (_tileToName[tileToRight] == "Black"))
+                        if ((_tileToName[tileBelow] == "Black"))
                         {
                             _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BlackBorder_BottomRight"]);
                         }
@@ -323,7 +328,7 @@ public class RoomGenerator
                     if ((tileBelow != null) && (tileToLeft != null))
                     {
 
-                        if ((_tileToName[tileBelow] == "Black") && (_tileToName[tileToLeft] == "Black"))
+                        if ((_tileToName[tileBelow] == "Black"))
                         {
                             _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BlackBorder_BottomLeft"]);
                         }
@@ -356,15 +361,48 @@ public class RoomGenerator
 
                 Tile currentTile = tileMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
 
+                Tile tileTopLeft = tileMap.GetTile(new Vector3Int(x - 1, y + 1, 0)) as Tile;
+                Tile tileTopRight = tileMap.GetTile(new Vector3Int(x + 1, y + 1, 0)) as Tile;
+                Tile tileBottomLeft = tileMap.GetTile(new Vector3Int(x - 1, y - 1, 0)) as Tile;
+                Tile tileBottomRight = tileMap.GetTile(new Vector3Int(x + 1, y - 1, 0)) as Tile;
+                Tile tileBelow = tileMap.GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
+                Tile tileAbove = tileMap.GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
+                Tile tileToLeft = tileMap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
+                Tile tileToRight = tileMap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
+
                 if (currentTile == null)
                 {
 
-                    Tile tileBelow = tileMap.GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
-                    Tile tileAbove = tileMap.GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
-                    Tile tileToLeft = tileMap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
-                    Tile tileToRight = tileMap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
-
                     if (((tileBelow != null) && (tileAbove != null)) || ((tileToLeft != null) && (tileToRight != null)))
+                    {
+                        return false;
+                    }
+                    else if ((tileAbove == null) && (tileBelow == null) && (tileToLeft == null) && (tileToRight == null))
+                    {
+                        
+                        if ((tileBottomLeft != null) && (tileTopRight != null))
+                        {
+                            return false;
+                        }
+                        else if ((tileBottomRight != null) && (tileTopLeft != null))
+                        {
+                            return false;
+                        }
+
+                    }
+                    else if ((tileToRight == null) && (tileAbove == null) && (tileBelow != null) && (tileTopRight != null))
+                    {
+                        return false;
+                    }
+                    else if ((tileToRight == null) && (tileBelow == null) && (tileAbove != null) && (tileBottomRight != null))
+                    {
+                        return false;
+                    }
+                    else if ((tileAbove == null) && (tileToRight == null) && (tileToLeft != null) && (tileTopRight != null))
+                    {
+                        return false;
+                    }
+                    else if ((tileAbove == null) && (tileToLeft == null) && (tileToRight != null) && (tileTopLeft != null))
                     {
                         return false;
                     }
@@ -372,15 +410,6 @@ public class RoomGenerator
                 }
                 else if (currentTile != null)
                 {
-
-                    Tile tileTopLeft = tileMap.GetTile(new Vector3Int(x - 1, y + 1, 0)) as Tile;
-                    Tile tileTopRight = tileMap.GetTile(new Vector3Int(x + 1, y + 1, 0)) as Tile;
-                    Tile tileBottomLeft = tileMap.GetTile(new Vector3Int(x - 1, y - 1, 0)) as Tile;
-                    Tile tileBottomRight = tileMap.GetTile(new Vector3Int(x + 1, y + 1, 0)) as Tile;
-                    Tile tileBelow = tileMap.GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
-                    Tile tileAbove = tileMap.GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
-                    Tile tileToLeft = tileMap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
-                    Tile tileToRight = tileMap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
 
                     if ((tileAbove == null) && (tileToLeft == null) && (tileTopLeft != null))
                     {

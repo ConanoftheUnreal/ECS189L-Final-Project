@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
     {
 
         _camera = this.gameObject.GetComponent<Camera>();
-        _roomGenerator = new RoomGenerator(4, 4);
+        _roomGenerator = new RoomGenerator(5, 5);
 
     }
 
