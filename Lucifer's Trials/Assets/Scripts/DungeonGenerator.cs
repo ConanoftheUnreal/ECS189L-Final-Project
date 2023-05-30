@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 
-public class RoomGenerator
+public class DungeonGenerator : IRoomGenerator
 {
 
     private int _maxColumns;
@@ -17,7 +17,7 @@ public class RoomGenerator
     private Dictionary<Tile, string> _tileToName = new Dictionary<Tile, string>();
     private Dictionary<string, Tilemap> _tileMaps;
 
-    public RoomGenerator(int maxColumns, int maxColumnLength)
+    public DungeonGenerator(int maxColumns, int maxColumnLength)
     {
 
         _maxColumns = maxColumns;

@@ -5,13 +5,13 @@ public class CameraController : MonoBehaviour
 {
 
     private Camera _camera;
-    private RoomGenerator _roomGenerator;
+    private DungeonGenerator _roomGenerator;
 
     public void Start()
     {
 
         _camera = this.gameObject.GetComponent<Camera>();
-        _roomGenerator = new RoomGenerator(5, 5);
+        _roomGenerator = new DungeonGenerator(5, 5);
 
     }
 
