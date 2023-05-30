@@ -10,9 +10,11 @@ public class PlayerMovement : MonoBehaviour
     private float vertical;
     private bool isDashing = false;
     private float dashDuration = 0.25f;
+    private float dashCooldown = 0.6f;
+    private float sinceDash = 1.5f;
     private float curDuration;
     private string facedDirection = "Down";
-    Vector2 moveInput = Vector2.zero;
+    private bool statelock = false;
     Animator animator;
     SpriteRenderer spriteRenderer;
 
@@ -24,20 +26,24 @@ public class PlayerMovement : MonoBehaviour
     {
         set
         {
-            currentState = value;
-
-            // set which animation the sprite uses
-            switch(currentState)
+            if (!statelock)
             {
-                case PlayerStates.IDLE:
-                    animator.Play("Idle");
-                    break;
-                case PlayerStates.WALK:
-                    animator.Play("Walk");
-                    break;
-                // case PlayerStates.ATTACK:
-                //     animator.Play("Attack");
-                //     break;
+                currentState = value;
+
+                // set which animation the sprite uses
+                switch(currentState)
+                {
+                    case PlayerStates.IDLE:
+                        animator.Play("Idle");
+                        break;
+                    case PlayerStates.WALK:
+                        animator.Play("Walk");
+                        break;
+                    case PlayerStates.ATTACK:
+                        animator.Play("Attack1");
+                        statelock = true;
+                        break;
+                }
             }
         }
     }
@@ -53,14 +59,28 @@ public class PlayerMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    void attackFinished()
+    {
+        statelock = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
 
-        // determine sprite direction
-        if ((horizontal != 0) || (vertical != 0))
+        sinceDash += Time.deltaTime;
+
+        // attack input
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            CurrentState = PlayerStates.ATTACK;
+            animator.speed = speed;
+            rb.velocity = Vector2.zero;
+        }
+        // player movement
+        else if ( ((horizontal != 0) || (vertical != 0)) && (!statelock) )
         {
             CurrentState = PlayerStates.WALK;
             animator.speed = speed / 2;
@@ -73,11 +93,12 @@ public class PlayerMovement : MonoBehaviour
             animator.speed = 1;
         }
 
-        if (Input.GetKeyDown("space") && rb.velocity != Vector2.zero)
+        if (Input.GetKeyDown("space") && (rb.velocity != Vector2.zero) && (sinceDash >= dashCooldown))
         {
-            Debug.Log("Space Pressed");
+            // Debug.Log("Space Pressed");
             isDashing = true;
             curDuration = 0.0f;
+            sinceDash = 0.0f;
         }
 
         if (!isDashing)
@@ -103,22 +124,25 @@ public class PlayerMovement : MonoBehaviour
                 facedDirection = "Down";
             }
 
-            Debug.Log(facedDirection);
+            // Debug.Log(facedDirection);
         }
     }
 
     void FixedUpdate()
     {
-        if (isDashing && curDuration < dashDuration)
+        if (!statelock)
         {
-            Debug.Log("Dashing");
-            rb.velocity = new Vector2(horizontal, vertical).normalized * (speed * 2f);
-            curDuration += Time.deltaTime;
-        }
-        else
-        {
-            isDashing = false;
-            rb.velocity = new Vector2(horizontal, vertical).normalized * speed;
+            if (isDashing && (curDuration < dashDuration))
+            {
+                // Debug.Log("Dashing");
+                rb.velocity = new Vector2(horizontal, vertical).normalized * (speed * 2f);
+                curDuration += Time.deltaTime;
+            }
+            else
+            {
+                isDashing = false;
+                rb.velocity = new Vector2(horizontal, vertical).normalized * speed;
+            }
         }
     }
 }
