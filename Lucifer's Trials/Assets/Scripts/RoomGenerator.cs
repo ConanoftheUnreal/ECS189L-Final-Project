@@ -200,6 +200,8 @@ public class RoomGenerator
 
                     Tile tileToRight = _tileMaps["Collision"].GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
                     Tile tileToLeft = _tileMaps["Collision"].GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
+                    Tile tileBottomLeft = _tileMaps["Collision"].GetTile(new Vector3Int(x - 1, y - 1, 0)) as Tile;
+                    Tile tileBottomRight = _tileMaps["Collision"].GetTile(new Vector3Int(x + 1, y - 1, 0)) as Tile;
 
                     if (tileToRight != null)
                     {
@@ -227,6 +229,15 @@ public class RoomGenerator
                             _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _nameToTile["TopWall_Left"]);
                         }
 
+                    }
+
+                    if ((tileToLeft == null) && (tileBottomLeft != null) && _tileToName[currentTile] == "TopWall_Mid")
+                    {
+                        _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _nameToTile["TopWall_Left"]);
+                    }
+                    else if ((tileToRight == null) && (tileBottomRight != null) && _tileToName[currentTile] == "TopWall_Mid")
+                    {
+                        _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _nameToTile["TopWall_Right"]);
                     }
 
                 }
@@ -341,7 +352,7 @@ public class RoomGenerator
 
             }
 
-        } 
+        }  
 
         // Place Collision Tilemap at the bottom left of the Ground Tilemap so that it goes around it 
         _tileMaps["Collision"].transform.position = new Vector3(groundPos.x - 1, groundPos.y - 1, groundPos.z);
