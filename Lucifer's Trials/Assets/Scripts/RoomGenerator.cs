@@ -49,6 +49,8 @@ public class RoomGenerator
         PairNameAndTile("WallBorder_Right", _tiles["Dungeon_Tileset_93"]);
         PairNameAndTile("WallBorder_Left", _tiles["Dungeon_Tileset_91"]);
 
+        PairNameAndTile("Carpet_Center", _tiles["Dungeon_Tileset_95"]);
+
     }
 
     public GameObject Generate(int width, int height, Vector2 location)
@@ -112,7 +114,7 @@ public class RoomGenerator
                 if (numTries <= MAX_COLUMN_GENERATION_TRIES)
                 {
 
-                    GameObject collLayerCopy = Object.Instantiate(collisionLayer, new Vector3(0, 0, 0), Quaternion.identity);
+                    GameObject collLayerCopy = Object.Instantiate(collisionLayer, collisionLayer.transform.position, Quaternion.identity);
                     collLayerCopy.SetActive(false);
                     collLayerCopy.transform.SetParent(room.transform);
                     Tilemap collTileMapCopy = collLayerCopy.GetComponent<Tilemap>();
@@ -133,7 +135,7 @@ public class RoomGenerator
 
                     PlaceRectangleFilled(collTileMapCopy, "Black", columnWidth, columnHeight, new Vector2Int(x, y));
 
-                    if (IsValidRoom(collTileMapCopy))
+                    if (IsValidColumn(collTileMapCopy, columnWidth, columnHeight, new Vector2Int(x, y)))
                     {
 
                         PlaceRectangleFilled("Collision", "Black", columnWidth, columnHeight, new Vector2Int(x, y));
@@ -350,82 +352,125 @@ public class RoomGenerator
 
     }
 
-    private bool IsValidRoom(Tilemap tileMap)
+    private bool IsValidColumn(Tilemap tileMap, int width, int height, Vector2Int location)
     {
 
-        for (int x = 0; x < tileMap.size.x; x++)
+        int startX = Mathf.Max(location.x - 1, 0);
+        int endX = Mathf.Min(location.x + width, tileMap.size.x - 1);
+        int startY = Mathf.Max(location.y - 1, 0);
+        int endY = Mathf.Min(location.y + height, tileMap.size.y - 1);
+
+        for (int x = startX; x <= endX; x++)
         {
 
-            for (int y = 0; y < tileMap.size.y; y++)
+            for (int y = startY; y <= endY; y++)
             {
 
-                Tile currentTile = tileMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
-
-                Tile tileTopLeft = tileMap.GetTile(new Vector3Int(x - 1, y + 1, 0)) as Tile;
-                Tile tileTopRight = tileMap.GetTile(new Vector3Int(x + 1, y + 1, 0)) as Tile;
-                Tile tileBottomLeft = tileMap.GetTile(new Vector3Int(x - 1, y - 1, 0)) as Tile;
-                Tile tileBottomRight = tileMap.GetTile(new Vector3Int(x + 1, y - 1, 0)) as Tile;
-                Tile tileBelow = tileMap.GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
-                Tile tileAbove = tileMap.GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
-                Tile tileToLeft = tileMap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
-                Tile tileToRight = tileMap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
-
-                if (currentTile == null)
+                if (x == startX || x == endX || y == startY || y == endY)
                 {
 
-                    if (((tileBelow != null) && (tileAbove != null)) || ((tileToLeft != null) && (tileToRight != null)))
+                    Tile currentTile = tileMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                    Tile tileTopLeft = tileMap.GetTile(new Vector3Int(x - 1, y + 1, 0)) as Tile;
+                    Tile tileTopRight = tileMap.GetTile(new Vector3Int(x + 1, y + 1, 0)) as Tile;
+                    Tile tileBottomLeft = tileMap.GetTile(new Vector3Int(x - 1, y - 1, 0)) as Tile;
+                    Tile tileBottomRight = tileMap.GetTile(new Vector3Int(x + 1, y - 1, 0)) as Tile;
+                    Tile tileBelow = tileMap.GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
+                    Tile tileAbove = tileMap.GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
+                    Tile tileToLeft = tileMap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
+                    Tile tileToRight = tileMap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
+
+                    if (currentTile == null)
                     {
-                        return false;
-                    }
-                    else if ((tileAbove == null) && (tileBelow == null) && (tileToLeft == null) && (tileToRight == null))
-                    {
-                        
-                        if ((tileBottomLeft != null) && (tileTopRight != null))
+
+                        if (((tileBelow != null) && (tileAbove != null)) || ((tileToLeft != null) && (tileToRight != null)))
                         {
                             return false;
                         }
-                        else if ((tileBottomRight != null) && (tileTopLeft != null))
+                        else if ((tileAbove == null) && (tileBelow == null) && (tileToLeft == null) && (tileToRight == null))
+                        {
+                            
+                            if ((tileBottomLeft != null) && (tileTopRight != null))
+                            {
+                                return false;
+                            }
+                            else if ((tileBottomRight != null) && (tileTopLeft != null))
+                            {
+                                return false;
+                            }
+
+                        }
+                        else if ((tileToRight == null) && (tileAbove == null) && (tileBelow != null) && (tileTopRight != null))
+                        {
+                            return false;
+                        }
+                        else if ((tileToRight == null) && (tileBelow == null) && (tileAbove != null) && (tileBottomRight != null))
+                        {
+                            return false;
+                        }
+                        else if ((tileAbove == null) && (tileToRight == null) && (tileToLeft != null) && (tileTopRight != null))
+                        {
+                            return false;
+                        }
+                        else if ((tileAbove == null) && (tileToLeft == null) && (tileToRight != null) && (tileTopLeft != null))
                         {
                             return false;
                         }
 
                     }
-                    else if ((tileToRight == null) && (tileAbove == null) && (tileBelow != null) && (tileTopRight != null))
+                    else if (currentTile != null)
                     {
-                        return false;
-                    }
-                    else if ((tileToRight == null) && (tileBelow == null) && (tileAbove != null) && (tileBottomRight != null))
-                    {
-                        return false;
-                    }
-                    else if ((tileAbove == null) && (tileToRight == null) && (tileToLeft != null) && (tileTopRight != null))
-                    {
-                        return false;
-                    }
-                    else if ((tileAbove == null) && (tileToLeft == null) && (tileToRight != null) && (tileTopLeft != null))
-                    {
-                        return false;
+
+                        if ((tileAbove == null) && (tileToLeft == null) && (tileTopLeft != null))
+                        {
+                            return false;
+                        }
+                        else if ((tileAbove == null) && (tileToRight == null) && (tileTopRight != null))
+                        {
+                            return false;
+                        }
+                        else if ((tileBelow == null) && (tileToRight == null) && (tileBottomRight != null))
+                        {
+                            return false;
+                        }
+                        else if ((tileBelow == null) && (tileToLeft == null) && (tileBottomLeft != null))
+                        {
+                            return false;
+                        }
+
                     }
 
-                }
-                else if (currentTile != null)
-                {
+                    if (currentTile == null)
+                    {
 
-                    if ((tileAbove == null) && (tileToLeft == null) && (tileTopLeft != null))
-                    {
-                        return false;
-                    }
-                    else if ((tileAbove == null) && (tileToRight == null) && (tileTopRight != null))
-                    {
-                        return false;
-                    }
-                    else if ((tileBelow == null) && (tileToRight == null) && (tileBottomRight != null))
-                    {
-                        return false;
-                    }
-                    else if ((tileBelow == null) && (tileToLeft == null) && (tileBottomLeft != null))
-                    {
-                        return false;
+                        Vector3 objectPosition = tileMap.gameObject.transform.position;
+                        GameObject objectCopy = Object.Instantiate(tileMap.gameObject, objectPosition, Quaternion.identity);
+                        objectCopy.SetActive(false);
+                        objectCopy.transform.SetParent(tileMap.gameObject.transform.parent);
+                        Tilemap tileMapCopy = objectCopy.GetComponent<Tilemap>();
+
+                        tileMapCopy.FloodFill(new Vector3Int(x, y, 0), _nameToTile["Black"]);
+
+                        for (int i = 0; i < tileMapCopy.size.x; i++)
+                        {
+
+                            for (int j = 0; j < tileMapCopy.size.y; j++)
+                            {
+
+                                if (tileMapCopy.GetTile(new Vector3Int(i, j, 0)) == null)
+                                {
+
+                                    Object.Destroy(objectCopy);
+                                    return false;
+                                
+                                }
+
+                            }
+
+                        }
+
+                        Object.Destroy(objectCopy);
+
                     }
 
                 }
@@ -466,13 +511,16 @@ public class RoomGenerator
 
     private void PlaceRectangleHollow(string tileMapName, string tileName, int width, int height, Vector2Int location)
     {
+        PlaceRectangleHollow(_tileMaps[tileMapName], tileName, width, height, location);
+    }
 
-        Tilemap tileMap = _tileMaps[tileMapName];
+    private void PlaceRectangleHollow(Tilemap tileMap, string tileName, int width, int height, Vector2Int location)
+    {
 
-        PlaceRectangleFilled(tileMapName, tileName, width, 1, location);
-        PlaceRectangleFilled(tileMapName, tileName, 1, height, location);
-        PlaceRectangleFilled(tileMapName, tileName, width, 1, new Vector2Int(location.x, location.y + tileMap.size.y - 1));
-        PlaceRectangleFilled(tileMapName, tileName, 1, height, new Vector2Int(location.x + tileMap.size.x - 1, location.y));
+        PlaceRectangleFilled(tileMap, tileName, width, 1, location);
+        PlaceRectangleFilled(tileMap, tileName, 1, height, location);
+        PlaceRectangleFilled(tileMap, tileName, width, 1, new Vector2Int(location.x, location.y + height - 1));
+        PlaceRectangleFilled(tileMap, tileName, 1, height, new Vector2Int(location.x + width - 1, location.y));
 
     }
 
