@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2034110724, guid: b26ce4b80a42c6441af375612ff69ca2, type: 3}
+  m_Name: Fan1XZ
+  m_EditorClassIdentifier: 
+  PlanarSensor:
+    receptors:
+    - structure:
+        Position: {x: 0, y: 0, z: 0}
+        Direction: {x: 0, y: 0, z: 1}
+        Magnitude: 1
+        Sensitivity: 90
+      id: 0
+      neighbourIDs: ffffffffffffffff
+    planarOrientation: 1
+    rotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
+    inverseRotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
