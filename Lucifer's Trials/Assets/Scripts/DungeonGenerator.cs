@@ -417,6 +417,29 @@ public class DungeonGenerator : IRoomGenerator
         colliderRigidBody.bodyType = RigidbodyType2D.Static;
         collisionTilemapCollider.usedByComposite = true;
 
+        // Create game objects at every collision tile to help with enemy AI
+        for (int x = 0; x < _tileMaps["Collision"].size.x; x++)
+        {
+
+            for (int y = 0; y < _tileMaps["Collision"].size.y; y++)
+            {
+
+                Tile currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                if (currentTile != null)
+                {
+
+                    GameObject wallObject = new GameObject("Wall");
+                    wallObject.transform.SetParent(collisionLayer.transform);
+                    wallObject.transform.position = _tileMaps["Collision"].CellToWorld(new Vector3Int(x, y, 0));
+                    wallObject.transform.localScale = new Vector3(1, 1, 0);
+
+                }
+
+            }
+
+        }
+
         return room;
 
     }
