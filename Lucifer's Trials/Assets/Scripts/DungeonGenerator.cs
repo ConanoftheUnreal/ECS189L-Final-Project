@@ -431,8 +431,7 @@ public class DungeonGenerator : IRoomGenerator
 
                     GameObject wallObject = new GameObject("Wall");
                     wallObject.transform.SetParent(collisionLayer.transform);
-                    wallObject.transform.position = _tileMaps["Collision"].CellToWorld(new Vector3Int(x, y, 0));
-                    wallObject.transform.localScale = new Vector3(1, 1, 0);
+                    wallObject.transform.position = _tileMaps["Collision"].CellToWorld(new Vector3Int(x, y, 0)) + new Vector3(0.5f, 0.5f, 0);
                     wallObject.layer = LayerMask.NameToLayer("Wall");
 
                 }
