@@ -150,3 +150,6 @@ $RECYCLE.BIN/
 
 #VSCode
 .vscode
+
+#Mono crash logs
+mono_crash*
