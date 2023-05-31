@@ -410,6 +410,13 @@ public class DungeonGenerator : IRoomGenerator
         // And line up the Borders layer with the Collision layer since they are the same size
         _tileMaps["Borders"].transform.position = new Vector3(groundPos.x - 1, groundPos.y - 1, groundPos.z);
 
+        // Add collider to Collision layer
+        TilemapCollider2D collisionTilemapCollider = collisionLayer.AddComponent<TilemapCollider2D>();
+        collisionLayer.AddComponent<CompositeCollider2D>();
+        Rigidbody2D colliderRigidBody = collisionLayer.GetComponent<Rigidbody2D>();
+        colliderRigidBody.bodyType = RigidbodyType2D.Static;
+        collisionTilemapCollider.usedByComposite = true;
+
         return room;
 
     }
