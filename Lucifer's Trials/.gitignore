@@ -153,3 +153,6 @@ $RECYCLE.BIN/
 
 #Mono crash logs
 mono_crash*
+
+#VS
+.vsconfig
