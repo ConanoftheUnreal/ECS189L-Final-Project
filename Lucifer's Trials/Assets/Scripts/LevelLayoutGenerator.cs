@@ -67,15 +67,15 @@ public class LevelLayoutGenerator
 
     }
 
-    private void ExpandNode(LevelLayoutNode LevelLayoutNode, int numChildren)
+    private void ExpandNode(LevelLayoutNode node, int numChildren)
     {
         
         for (int i = 0; i < numChildren; i++)
         {
-            AddChild(LevelLayoutNode);
+            AddChild(node);
         }
 
-        foreach (LevelLayoutNode child in LevelLayoutNode.children)
+        foreach (LevelLayoutNode child in node.children)
         {
             ExpandNode(child, Random.Range(0, _maxChildren + 1));
         }
