@@ -48,7 +48,6 @@ public class LevelLayoutGenerator
         _numRooms++;
 
         LevelLayoutNode currentNode = root;
-
         int currentDepth = 1;
 
         // Make the path to the boss
