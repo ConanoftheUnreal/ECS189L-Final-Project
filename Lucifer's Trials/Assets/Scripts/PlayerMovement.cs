@@ -103,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
                 facedDirection = "Down";
             }
 
-            Debug.Log(facedDirection);
+            //Debug.Log(facedDirection);
         }
     }
 

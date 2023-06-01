@@ -18,9 +18,11 @@ public class Health : MonoBehaviour
         Debug.Log("Collision");
         if (col.tag == "Player")
         {
+            Debug.Log(this.gameObject);
             Destroy(this.gameObject);
             // Increase player's health
             col.GetComponent<PlayerController>().IncreaseHealth(1);
+            col.GetComponent<PlayerController>().IncreaseSP(1);
         }
     }
 
