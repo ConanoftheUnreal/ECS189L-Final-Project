@@ -35,7 +35,7 @@ public class ManualRoomGeneration : MonoBehaviour
         {
 
             Destroy(GameObject.Find("Root"));
-            GameObject root = _levelLayerGenerator.Generate();
+            LevelLayoutNode root = _levelLayerGenerator.Generate();
 
         }
 
