@@ -46,6 +46,12 @@ public class PlayerController : MonoBehaviour
         Debug.Log(this.health);
     }
 
+    public void DecreaseHealth(int amount)
+    {
+        this.health -= amount;
+        Debug.Log(this.health);
+    }
+
     public int GetHealth()
     {
         return this.health;
