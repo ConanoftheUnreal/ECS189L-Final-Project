@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private int health;
+    private int SP;
     private float projectileCooldown;
     private bool projectileReloading;
     private float projectileDuration;
@@ -56,7 +57,15 @@ public class PlayerController : MonoBehaviour
     {
         return this.health;
     }
-
+     public void IncreaseSP(int amount)
+    {
+        this.SP += amount;
+        Debug.Log(this.SP);
+    }
+    public int GetSP()
+    {
+        return this.SP;
+    }
     // Update is called once per frame
     void Update()
     {
