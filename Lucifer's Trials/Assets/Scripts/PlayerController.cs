@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Lucifer;
+
 public class PlayerController : MonoBehaviour
 {
     private int health;
@@ -9,8 +11,6 @@ public class PlayerController : MonoBehaviour
     private float projectileCooldown;
     private bool projectileReloading;
     private float projectileDuration;
-    private enum PlayerType { WARRIOR, SORCERESS }
-    [SerializeField] private PlayerType playerType = PlayerType.WARRIOR;
     [SerializeField] GameObject playerProjectile;
 
     // Start is called before the first frame update
@@ -20,25 +20,6 @@ public class PlayerController : MonoBehaviour
         this.projectileCooldown = 0.5f;
         this.projectileReloading = false;
         this.projectileDuration = 0.0f;
-
-        // set player sprite/animations
-        var animator = gameObject.GetComponent<Animator>();
-        switch(playerType)
-        {
-            case PlayerType.WARRIOR:
-                // set Animation Controller
-                animator.runtimeAnimatorController
-                = Resources.Load<RuntimeAnimatorController>("Sprites/PlayerSprites/Animations/Warrior_Animations/AC_Warrior");
-                break;
-            case PlayerType.SORCERESS:
-                // set Animation Controller
-                animator.runtimeAnimatorController
-                = Resources.Load<RuntimeAnimatorController>("Sprites/PlayerSprites/Animations/Sorceress_Animations/AC_Sorceress");
-                break;
-            default:
-                Debug.Log("Error: player type is undefined.");
-                break;
-        }
     }
 
     public void IncreaseHealth(int amount)
