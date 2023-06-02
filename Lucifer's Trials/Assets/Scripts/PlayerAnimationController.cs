@@ -53,6 +53,11 @@ public class PlayerAnimationController : MonoBehaviour
         return this.statelock;
     }
 
+    public PlayerType GetPlayerType()
+    {
+        return this.playerType;
+    }
+
     void Start()
     {
         // set player sprite/animations

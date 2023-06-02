@@ -20,32 +20,45 @@ public class PlayerAttackController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && !this.projectileReloading)
+        PlayerType playerClass = this.GetComponent<PlayerAnimationController>().GetPlayerType();
+
+        switch (playerClass)
         {
-            this.projectileReloading = !this.projectileReloading;
+            case PlayerType.WARRIOR:
+                break;
 
-            if (this.gameObject.GetComponent<PlayerMovement>().GetFacedDirection() == "Down")
-            {
-                var projectile = (GameObject)Instantiate(playerProjectile, transform.position, Quaternion.Euler(0, 0, 180));
-                projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -1) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
-            }
-            if (this.gameObject.GetComponent<PlayerMovement>().GetFacedDirection() == "Left")
-            {
-                var projectile = (GameObject)Instantiate(playerProjectile, transform.position, Quaternion.Euler(0, 0, 90));
-                projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
-            }
-            if (this.gameObject.GetComponent<PlayerMovement>().GetFacedDirection() == "Up")
-            {
-                var projectile = (GameObject)Instantiate(playerProjectile, transform.position, Quaternion.Euler(0, 0, 0));
-                projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 1) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
-            }
-            if (this.gameObject.GetComponent<PlayerMovement>().GetFacedDirection() == "Right")
-            {
-                var projectile = (GameObject)Instantiate(playerProjectile, transform.position, Quaternion.Euler(0, 0, 270));
-                projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
-            }
+            case PlayerType.SORCERESS:
+                if (Input.GetButtonDown("Fire1") && !this.projectileReloading)
+                {
+                    this.projectileReloading = !this.projectileReloading;
+
+                    if (this.gameObject.GetComponent<PlayerMovement>().GetFacedDirection() == "Down")
+                    {
+                        var projectile = (GameObject)Instantiate(playerProjectile, transform.position, Quaternion.Euler(0, 0, 180));
+                        projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -1) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
+                    }
+                    if (this.gameObject.GetComponent<PlayerMovement>().GetFacedDirection() == "Left")
+                    {
+                        var projectile = (GameObject)Instantiate(playerProjectile, transform.position, Quaternion.Euler(0, 0, 90));
+                        projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
+                    }
+                    if (this.gameObject.GetComponent<PlayerMovement>().GetFacedDirection() == "Up")
+                    {
+                        var projectile = (GameObject)Instantiate(playerProjectile, transform.position, Quaternion.Euler(0, 0, 0));
+                        projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 1) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
+                    }
+                    if (this.gameObject.GetComponent<PlayerMovement>().GetFacedDirection() == "Right")
+                    {
+                        var projectile = (GameObject)Instantiate(playerProjectile, transform.position, Quaternion.Euler(0, 0, 270));
+                        projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
+                    }
+                }
+                break;
+
+            default:
+                Debug.Log("Error: No player class assigned to the player.");
+                break;
         }
-
 
         if (this.projectileReloading)
         {
