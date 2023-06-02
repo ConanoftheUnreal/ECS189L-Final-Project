@@ -1,37 +1,37 @@
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-// public class Health : MonoBehaviour
-// {
-//     private float duration = 10.0f;
-//     private float curDuration;
+public class SP : MonoBehaviour
+{
+    private float duration = 10.0f;
+    private float curDuration;
 
-//     // Start is called before the first frame update
-//     void Start()
-//     {
-//         curDuration = 0.0f;
-//     }
+    // Start is called before the first frame update
+    void Start()
+    {
+        curDuration = 0.0f;
+    }
 
-//     void OnTriggerEnter2D(Collider2D col)
-//     {
-//         Debug.Log("Collision");
-//         if (col.tag == "Player")
-//         {
-//             Destroy(this.gameObject);
-//             // Increase player's SP
-//             col.GetComponent<PlayerController>().IncreaseSP(1);
-//         }
-//     }
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        Debug.Log("Collision");
+        if (col.tag == "Player")
+        {
+            Destroy(this.gameObject);
+            // Increase player's SP
+            col.GetComponent<PlayerController>().IncreaseSP(1);
+        }
+    }
 
-//     // Update is called once per frame
-//     void Update()
-//     {
-//         Debug.Log("ASD");
-//         if (curDuration > duration)
-//         {
-//             Destroy(this.gameObject);
-//         }
-//         curDuration += Time.deltaTime;
-//     }
-// }
+    // Update is called once per frame
+    void Update()
+    {
+        Debug.Log("ASD");
+        if (curDuration > duration)
+        {
+            Destroy(this.gameObject);
+        }
+        curDuration += Time.deltaTime;
+    }
+}

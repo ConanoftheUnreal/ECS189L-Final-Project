@@ -22,7 +22,6 @@ public class Health : MonoBehaviour
             Destroy(this.gameObject);
             // Increase player's health
             col.GetComponent<PlayerController>().IncreaseHealth(1);
-            col.GetComponent<PlayerController>().IncreaseSP(1);
         }
     }
 
