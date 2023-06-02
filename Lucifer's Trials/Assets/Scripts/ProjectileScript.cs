@@ -9,9 +9,17 @@ public class ProjectileScript : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         Debug.Log("Collision");
+        // All projectiles that hit a wall should be destroyed.
         if (col.tag == "Wall")
         {
             Destroy(this.gameObject);
+        }
+
+        // Enemy projectiles that hit the player get destroyed
+        if (this.tag == "EnemyProjectile" && col.tag == "PlayerHurtbox")
+        {
+            Destroy(this.gameObject);
+            col.transform.parent.GetComponent<PlayerController>().DecreaseHealth(1);
         }
     }
 
