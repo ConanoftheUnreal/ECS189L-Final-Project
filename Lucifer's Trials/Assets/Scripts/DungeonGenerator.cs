@@ -9,9 +9,14 @@ public class DungeonGenerator : IRoomGenerator
     private int _maxColumns;
     private int _maxColumnLength;
 
+    // The number of exits in the room. The entrance counts as an exit.
+    private int _numExits;
+
     private const int MIN_NUM_COLUMNS = 1;
     private const int MIN_COLUMN_HEIGHT = 3;
     private const int MAX_COLUMN_GENERATION_TRIES = 10;
+
+    private const int WALL_LAYER = 3;
 
     // _tiles maps the file name of a tile asset to the actual tile object
     private Dictionary<string, Tile> _tiles = new Dictionary<string, Tile>();
@@ -60,10 +65,12 @@ public class DungeonGenerator : IRoomGenerator
 
     }
 
-    public GameObject Generate(int width, int height, Vector2 location)
+    public GameObject Generate(int width, int height, int numExits, Vector2 location)
     {
 
+        // Reset tilemaps and number of exits because they a unique per-room
         _tileMaps = new Dictionary<string, Tilemap>();
+        _numExits = numExits;
 
         // Create the gameobject for the room
         GameObject room = new GameObject("Room");
@@ -93,6 +100,12 @@ public class DungeonGenerator : IRoomGenerator
         TilemapRenderer bordersRenderer = bordersLayer.AddComponent<TilemapRenderer>();
         bordersRenderer.sortingOrder = 1;
         _tileMaps.Add("Borders", bordersLayer.GetComponent<Tilemap>());
+
+        GameObject exitsLayer = new GameObject("Exits");
+        exitsLayer.transform.SetParent(room.transform);
+        TilemapRenderer exitsRenderer = exitsLayer.AddComponent<TilemapRenderer>();
+        exitsRenderer.sortingOrder = 2;
+        _tileMaps.Add("Exits", exitsLayer.GetComponent<Tilemap>());
 
         // Place Ground tiles
         PlaceRectangleFilled("Ground", "Ground", width, height + 2, new Vector2Int(0, 0));
@@ -409,6 +422,36 @@ public class DungeonGenerator : IRoomGenerator
         _tileMaps["Collision"].transform.position = new Vector3(groundPos.x - 1, groundPos.y - 1, groundPos.z);
         // And line up the Borders layer with the Collision layer since they are the same size
         _tileMaps["Borders"].transform.position = new Vector3(groundPos.x - 1, groundPos.y - 1, groundPos.z);
+        //Line up Exits tilemap with the other two, and make it 50% transparent for debugging purposes.
+        PlaceRectangleHollow("Exits", "Black", width + 2, height + 4, new Vector2Int(0, 0));
+        _tileMaps["Exits"].transform.position = new Vector3(groundPos.x - 1, groundPos.y - 1, groundPos.z);
+        Color tempColor = _tileMaps["Exits"].color;
+        tempColor.a = 0.5f;
+        _tileMaps["Exits"].color = tempColor;
+
+        // Get all possible exit paths in this room
+        List<Rectangle> possibleExitRects = FindPossibleExitPaths(_tileMaps["Collision"]);
+        List<Rectangle> exitRects = new List<Rectangle>();
+        // Grab _numExits number of them at random
+        for (int i = 0; i < _numExits; i++)
+        {
+
+            Rectangle randomExit = possibleExitRects[Random.Range(0, possibleExitRects.Count)];
+            exitRects.Add(randomExit);
+            possibleExitRects.Remove(randomExit);
+
+        }
+
+        // And draw them to the Exits tilemap
+        foreach (Rectangle rect in exitRects)
+        {
+
+            int pathWidth = rect.topRight.x - rect.bottomLeft.x + 1;
+            int pathHeight = rect.topRight.y - rect.bottomLeft.y + 1;
+            // Just use "Carpet_Center" is a placeholder tile to show where the paths are
+            PlaceRectangleFilled("Exits", "Carpet_Center", pathWidth, pathHeight, rect.bottomLeft);
+
+        }
 
         // Add collider to Collision layer
         TilemapCollider2D collisionTilemapCollider = collisionLayer.AddComponent<TilemapCollider2D>();
@@ -433,7 +476,7 @@ public class DungeonGenerator : IRoomGenerator
                     wallObject.transform.SetParent(collisionLayer.transform);
                     Vector3 offset = new Vector3(0.5f, 0.5f, 0);
                     wallObject.transform.position = _tileMaps["Collision"].CellToWorld(new Vector3Int(x, y, 0)) + offset;
-                    wallObject.layer = LayerMask.NameToLayer("Wall");
+                    wallObject.layer = WALL_LAYER;
 
                 }
 
@@ -442,6 +485,225 @@ public class DungeonGenerator : IRoomGenerator
         }
 
         return room;
+
+    }
+
+    // Get a list of Rectangles that represent the possible exit paths from the given collision tilemap
+    private List<Rectangle> FindPossibleExitPaths(Tilemap tileMap)
+    {
+
+        List<Rectangle> exitRects = new List<Rectangle>();
+
+        // Make copy of the tilemap
+        Vector3 objectPosition = tileMap.gameObject.transform.position;
+        GameObject objectCopy = Object.Instantiate(tileMap.gameObject, objectPosition, Quaternion.identity);
+        objectCopy.SetActive(false);
+        objectCopy.transform.SetParent(tileMap.gameObject.transform.parent);
+        Tilemap tileMapCopy = objectCopy.GetComponent<Tilemap>();
+        objectCopy.GetComponent<TilemapRenderer>().sortingOrder = 4;
+
+        for (int x = 0; x < tileMapCopy.size.x; x++)
+        {
+
+            for (int y = 0; y < tileMapCopy.size.y; y++)
+            {
+
+                // If we are at a point on the left or right edges of the room
+                if (((x == 0) || (x == tileMapCopy.size.x - 1)) && (y >= 1) && (y < tileMapCopy.size.y - 2))
+                {
+
+                    Rectangle currentRect = new Rectangle();
+
+                    /*
+                        Pick the current point and the point on top of the current point. These two points make up the
+                        start of our exit path.
+                    */
+                    Vector3Int lowerPoint = new Vector3Int(x, y, 0);
+                    Vector3Int upperPoint = new Vector3Int(x, y + 1, 0);
+
+                    // currentRect will store the Rectangle that we will actually return representing this path
+                    currentRect.bottomLeft = new Vector2Int(lowerPoint.x, lowerPoint.y);
+                    currentRect.topRight = new Vector2Int(upperPoint.x, upperPoint.y);
+
+                    // Also look at the tiles above and below our path
+                    Tile belowTile = tileMapCopy.GetTile(lowerPoint - new Vector3Int(0, 1, 0)) as Tile;
+                    Tile aboveTile = tileMapCopy.GetTile(upperPoint + new Vector3Int(0, 1, 0)) as Tile;
+
+                    // We don't want to create paths next to paths that already exist
+                    if ((_tileToName[belowTile] == "Carpet_Center") || _tileToName[aboveTile] == "Carpet_Center")
+                    {
+                        continue;
+                    }
+
+                    // Get the actual tiles at our two points
+                    Tile lowerTile = tileMapCopy.GetTile(lowerPoint) as Tile;
+                    Tile upperTile = tileMapCopy.GetTile(upperPoint) as Tile;
+
+                    // A flag for checking if the path would create a column that is too short and doesn't look right
+                    bool createsShortColumn = false;
+
+                    // Extend the path from the edge of the room towards the center, until it breaks out into the room
+                    while ((lowerTile != null) && (upperTile != null))
+                    {
+                        
+                        belowTile = tileMapCopy.GetTile(lowerPoint - new Vector3Int(0, 1, 0)) as Tile;
+
+                        // Once we hit a tile that is not Black, we know we have broken into the room
+                        if ((_tileToName[lowerTile] != "Black") || (_tileToName[upperTile] != "Black"))
+                        {
+                            break;
+                        }
+                        
+                        // If the tile below our path is not Black, that is a sign that the path would create a short column
+                        if ((belowTile != null) && (_tileToName[belowTile] != "Black"))
+                        {
+                            createsShortColumn = true;
+                        }
+
+                        // Extend the path towards the room by one tile
+                        if (x == 0)
+                        {
+
+                            lowerPoint += new Vector3Int(1, 0, 0);
+                            upperPoint += new Vector3Int(1, 0, 0);
+                        
+                        }
+                        else if (x == tileMapCopy.size.x - 1)
+                        {
+
+                            lowerPoint -= new Vector3Int(1, 0, 0);
+                            upperPoint -= new Vector3Int(1, 0, 0);
+
+                        }
+                        lowerTile = tileMapCopy.GetTile(lowerPoint) as Tile;
+                        upperTile = tileMapCopy.GetTile(upperPoint) as Tile;
+
+                    }
+
+                    // Disregard the path if it is not valid, like if the path would come out on a non-flat part of wall
+                    if ((lowerTile != upperTile) || (lowerPoint.x > tileMapCopy.size.x - 1) || (lowerPoint.x < 0))
+                    {
+                        continue;
+                    }
+                    else if (createsShortColumn)
+                    {
+                        continue;
+                    }
+
+                    // Otherwise, the path is valid. So update the corners of our rect
+
+                    // So update our Rectangle
+                    if (upperPoint.x > currentRect.topRight.x)
+                    {
+                        currentRect.topRight = new Vector2Int(upperPoint.x, upperPoint.y);
+                    }
+                    else if (lowerPoint.x < currentRect.bottomLeft.x)
+                    {
+                        currentRect.bottomLeft = new Vector2Int(lowerPoint.x, lowerPoint.y);
+                    }
+
+                    // Add it to our list of Rectangles
+                    exitRects.Add(currentRect);
+
+                    // And update our local tilemap
+                    lowerPoint = new Vector3Int(x, y, 0);
+                    upperPoint = new Vector3Int(x, y + 1, 0);
+                    tileMapCopy.SetTile(lowerPoint, _nameToTile["Carpet_Center"]);
+                    tileMapCopy.SetTile(upperPoint, _nameToTile["Carpet_Center"]);
+
+                }
+                // If we are at a point on the top or bottom of the room
+                else if (((y == 0) || (y == tileMapCopy.size.y - 1)) && (x >= 1) && (x < tileMapCopy.size.x - 2))
+                {
+
+                    Rectangle currentRect = new Rectangle();
+
+                    // Pick the current point and the point to the right of it to mark our current path
+                    Vector3Int leftPoint = new Vector3Int(x, y, 0);
+                    Vector3Int rightPoint = new Vector3Int(x + 1, y, 0);
+
+                    // Initialize our rectangle
+                    currentRect.bottomLeft = new Vector2Int(leftPoint.x, leftPoint.y);
+                    currentRect.topRight = new Vector2Int(rightPoint.x, rightPoint.y);
+
+                    // Check the tiles to the left and right of our path
+                    Tile tileToleft = tileMapCopy.GetTile(leftPoint - new Vector3Int(1, 0, 0)) as Tile;
+                    Tile tileToRight = tileMapCopy.GetTile(rightPoint + new Vector3Int(1, 0, 0)) as Tile;
+
+                    // We don't want to create paths right next to paths that already exist
+                    if ((_tileToName[tileToleft] == "Carpet_Center") || _tileToName[tileToRight] == "Carpet_Center")
+                    {
+                        continue;
+                    }
+
+                    // Get the actual tiles at our two points
+                    Tile leftTile = tileMapCopy.GetTile(leftPoint) as Tile;
+                    Tile rightTile = tileMapCopy.GetTile(rightPoint) as Tile;
+
+                    // Extend the path until it reaches into the room
+                    while ((leftTile != null) && (rightTile != null))
+                    {
+
+                        // Extend it in the right direction depending on what side we are starting at
+                        if (y == 0)
+                        {
+
+                            leftPoint += new Vector3Int(0, 1, 0);
+                            rightPoint += new Vector3Int(0, 1, 0);
+                        
+                        }
+                        else if (y == tileMapCopy.size.y - 1)
+                        {
+
+                            leftPoint -= new Vector3Int(0, 1, 0);
+                            rightPoint -= new Vector3Int(0, 1, 0);
+
+                        }
+
+                        leftTile = tileMapCopy.GetTile(leftPoint) as Tile;
+                        rightTile = tileMapCopy.GetTile(rightPoint) as Tile;
+
+                    }
+
+                    // Disregard that path if it is not valid.
+                    if (((leftTile == null) && (rightTile != null)) || ((rightTile == null) && (leftTile != null)))
+                    {
+                        continue;
+                    }
+                    else if ((leftPoint.y > tileMapCopy.size.y - 1) || (leftPoint.y < 0))
+                    {
+                        continue;
+                    }
+
+                    // If it is valid, updapte our rectangle
+                    if (rightPoint.y > currentRect.topRight.y)
+                    {
+                        currentRect.topRight = new Vector2Int(rightPoint.x, rightPoint.y);
+                    }
+                    else if (leftPoint.y < currentRect.bottomLeft.y)
+                    {
+                        currentRect.bottomLeft = new Vector2Int(leftPoint.x, leftPoint.y);
+                    }
+
+                    // And add the rectangle to our list
+                    exitRects.Add(currentRect);
+
+                    // And update the local tilemap
+                    leftPoint = new Vector3Int(x, y, 0);
+                    rightPoint = new Vector3Int(x + 1, y, 0);
+                    tileMapCopy.SetTile(leftPoint, _nameToTile["Carpet_Center"]);
+                    tileMapCopy.SetTile(rightPoint, _nameToTile["Carpet_Center"]);
+
+                }
+                
+            }
+
+        }
+
+        // Destory the copy we made
+        Object.Destroy(objectCopy);
+
+        return exitRects;
 
     }
 
@@ -461,7 +723,7 @@ public class DungeonGenerator : IRoomGenerator
             for (int y = startY; y <= endY; y++)
             {
 
-                if (x == startX || x == endX || y == startY || y == endY)
+                if ((x == startX) || (x == endX) || (y == startY) || (y == endY))
                 {
 
                     Tile currentTile = tileMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
@@ -580,6 +842,12 @@ public class DungeonGenerator : IRoomGenerator
 
         }
 
+        // The room must have enough possible exists in order to be valid
+        if (FindPossibleExitPaths(tileMap).Count < _numExits)
+        {
+            return false;
+        }
+
         return true;
 
     }
@@ -626,6 +894,15 @@ public class DungeonGenerator : IRoomGenerator
     private void PlaceRectangleHollow(string tileMapName, string tileName, int width, int height, Vector2Int location)
     {
         PlaceRectangleHollow(_tileMaps[tileMapName], tileName, width, height, location);
+    }
+
+    // Class mainly used for defining exit paths
+    private class Rectangle
+    {
+
+        public Vector2Int bottomLeft;
+        public Vector2Int topRight;
+
     }
 
 }
