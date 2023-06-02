@@ -31,7 +31,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 1.0166667
+        time: 1
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -43,7 +43,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: PlayerHurtboxUpDown
+    path: PlayerHurtbox
     classID: 1
     script: {fileID: 0}
     flags: 16
@@ -75,7 +75,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 1843160068
+      path: 4102903798
       attribute: 2086281974
       script: {fileID: 0}
       typeID: 1
@@ -134,7 +134,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 1.0166667
+        time: 1
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -146,7 +146,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: PlayerHurtboxUpDown
+    path: PlayerHurtbox
     classID: 1
     script: {fileID: 0}
     flags: 16
