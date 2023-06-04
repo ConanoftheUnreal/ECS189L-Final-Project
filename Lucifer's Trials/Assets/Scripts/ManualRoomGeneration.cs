@@ -8,6 +8,7 @@ public class ManualRoomGeneration : MonoBehaviour
 
     private DungeonGenerator _roomGenerator;
     private LevelLayoutGenerator _levelLayerGenerator;
+    private Room _currentRoom;
 
     public void Start()
     {
@@ -24,18 +25,17 @@ public class ManualRoomGeneration : MonoBehaviour
         {
 
             Destroy(GameObject.Find("Room"));
-            GameObject room = _roomGenerator.Generate(16, 9, Random.Range(1, 4 + 1), new Vector2(0, 0));
+            _currentRoom = _roomGenerator.Generate(16, 9, Random.Range(1, 4 + 1), new Vector2(0, 0));
             
             CameraController cc = _camera.gameObject.GetComponent<CameraController>();
-            cc.SnapToTilemap(room.transform.Find("Collision").GetComponent<Tilemap>());
+            cc.SnapToTilemap(_currentRoom.roomObject.transform.Find("Collision").GetComponent<Tilemap>());
 
         }
 
         if (Input.GetButtonDown("Fire2"))
         {
 
-            Destroy(GameObject.Find("Root"));
-            LevelLayoutNode root = _levelLayerGenerator.Generate();
+            _currentRoom.OpenExits();
 
         }
 

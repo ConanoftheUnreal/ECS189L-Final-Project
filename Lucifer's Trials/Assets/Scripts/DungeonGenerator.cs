@@ -72,7 +72,7 @@ public class DungeonGenerator : IRoomGenerator
 
     }
 
-    public GameObject Generate(int width, int height, int numExits, Vector2 location)
+    public Room Generate(int width, int height, int numExits, Vector2 location)
     {
 
         // Reset tilemaps and number of exits because they a unique per-room
@@ -124,7 +124,7 @@ public class DungeonGenerator : IRoomGenerator
         _tileMaps.Add("Decorations", decorationsLayer.GetComponent<Tilemap>());
 
         // Place Ground tiles
-        PlaceRectangleFilled("Ground", "Ground", width, height + 2, new Vector2Int(0, 0));
+        PlaceRectangleFilled("Ground", "Ground", width + 2, height + 4, new Vector2Int(0, 0));
         
         // Get position and size of ground area
         Vector3 groundPos = _tileMaps["Ground"].transform.position;
@@ -434,36 +434,29 @@ public class DungeonGenerator : IRoomGenerator
 
         }  
 
-        // Place Collision Tilemap at the bottom left of the Ground Tilemap so that it goes around it 
-        _tileMaps["Collision"].transform.position = new Vector3(groundPos.x - 1, groundPos.y - 1, groundPos.z);
-        // And line up the Borders layer with the Collision layer since they are the same size
-        _tileMaps["Borders"].transform.position = new Vector3(groundPos.x - 1, groundPos.y - 1, groundPos.z);
         //Line up Exits tilemap with the other two, and make it 50% transparent for debugging purposes.
         PlaceRectangleHollow("Exits", "Black", width + 2, height + 4, new Vector2Int(0, 0));
-        _tileMaps["Exits"].transform.position = new Vector3(groundPos.x - 1, groundPos.y - 1, groundPos.z);
         Color tempColor = _tileMaps["Exits"].color;
         tempColor.a = 0.5f;
         _tileMaps["Exits"].color = tempColor;
 
         //Line up Decorations tilemap with the others
         PlaceRectangleHollow("Decorations", "Black", width + 2, height + 4, new Vector2Int(0, 0));
-        _tileMaps["Decorations"].transform.position = new Vector3(groundPos.x - 1, groundPos.y - 1, groundPos.z);
-
         // Get all possible exit paths in this room
-        List<Rectangle> possibleExitRects = FindPossibleExitPaths(_tileMaps["Collision"]);
-        List<Rectangle> exitRects = new List<Rectangle>();
+        List<ExitPathRectangle> possibleExitRects = FindPossibleExitPaths(_tileMaps["Collision"]);
+        List<ExitPathRectangle> exitRects = new List<ExitPathRectangle>();
         // Grab _numExits number of them at random
         for (int i = 0; i < _numExits; i++)
         {
 
-            Rectangle randomExit = possibleExitRects[Random.Range(0, possibleExitRects.Count)];
+            ExitPathRectangle randomExit = possibleExitRects[Random.Range(0, possibleExitRects.Count)];
             exitRects.Add(randomExit);
             possibleExitRects.Remove(randomExit);
 
         }
 
         // And draw them to the Exits tilemap
-        foreach (Rectangle rect in exitRects)
+        foreach (ExitPathRectangle rect in exitRects)
         {
 
             int pathWidth = rect.topRight.x - rect.bottomLeft.x + 1;
@@ -560,15 +553,15 @@ public class DungeonGenerator : IRoomGenerator
 
         }
 
-        return room;
+        return new Room(room, exitRects);
 
     }
 
     // Get a list of Rectangles that represent the possible exit paths from the given collision tilemap
-    private List<Rectangle> FindPossibleExitPaths(Tilemap tileMap)
+    private List<ExitPathRectangle> FindPossibleExitPaths(Tilemap tileMap)
     {
 
-        List<Rectangle> exitRects = new List<Rectangle>();
+        List<ExitPathRectangle> exitRects = new List<ExitPathRectangle>();
 
         // Make copy of the tilemap
         Vector3 objectPosition = tileMap.gameObject.transform.position;
@@ -588,7 +581,7 @@ public class DungeonGenerator : IRoomGenerator
                 if (((x == 0) || (x == tileMapCopy.size.x - 1)) && (y >= 1) && (y < tileMapCopy.size.y - 2))
                 {
 
-                    Rectangle currentRect = new Rectangle();
+                    ExitPathRectangle currentRect = new ExitPathRectangle();
 
                     /*
                         Pick the current point and the point on top of the current point. These two points make up the
@@ -678,6 +671,15 @@ public class DungeonGenerator : IRoomGenerator
                         currentRect.bottomLeft = new Vector2Int(lowerPoint.x, lowerPoint.y);
                     }
 
+                    if (x == 0)
+                    {
+                        currentRect.direction = ExitDirection.LEFT;
+                    }
+                    else if (x == tileMapCopy.size.x - 1)
+                    {
+                        currentRect.direction = ExitDirection.RIGHT;
+                    }
+
                     // Add it to our list of Rectangles
                     exitRects.Add(currentRect);
 
@@ -692,7 +694,7 @@ public class DungeonGenerator : IRoomGenerator
                 else if (((y == 0) || (y == tileMapCopy.size.y - 1)) && (x >= 1) && (x < tileMapCopy.size.x - 2))
                 {
 
-                    Rectangle currentRect = new Rectangle();
+                    ExitPathRectangle currentRect = new ExitPathRectangle();
 
                     // Pick the current point and the point to the right of it to mark our current path
                     Vector3Int leftPoint = new Vector3Int(x, y, 0);
@@ -759,6 +761,15 @@ public class DungeonGenerator : IRoomGenerator
                     else if (leftPoint.y < currentRect.bottomLeft.y)
                     {
                         currentRect.bottomLeft = new Vector2Int(leftPoint.x, leftPoint.y);
+                    }
+
+                    if (y == 0)
+                    {
+                        currentRect.direction = ExitDirection.DOWN;
+                    }
+                    else if (y == tileMapCopy.size.y - 1)
+                    {
+                        currentRect.direction = ExitDirection.UP;
                     }
 
                     // And add the rectangle to our list
@@ -970,15 +981,6 @@ public class DungeonGenerator : IRoomGenerator
     private void PlaceRectangleHollow(string tileMapName, string tileName, int width, int height, Vector2Int location)
     {
         PlaceRectangleHollow(_tileMaps[tileMapName], tileName, width, height, location);
-    }
-
-    // Class mainly used for defining exit paths
-    private class Rectangle
-    {
-
-        public Vector2Int bottomLeft;
-        public Vector2Int topRight;
-
     }
 
 }
