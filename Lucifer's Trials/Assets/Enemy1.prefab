@@ -27,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6255146741169642879}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.58, y: 0.05, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 1}
+  m_LocalPosition: {x: 0.02, y: 0.09, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 533363248508302282}
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6255146741169642879}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -2048606044, guid: b26ce4b80a42c6441af375612ff69ca2, type: 3}
   m_Name: 
@@ -202,7 +202,7 @@ MonoBehaviour:
       Unlimited: 0
       Epsilons:
       - 0
-      - 0.35
+      - 0.25
   selfObject: {fileID: 6255146741169642879}
   indicatorGizmo:
     Enabled: 1
@@ -332,7 +332,8 @@ MonoBehaviour:
     tab3: 0
     tab4: 0
   advancedInspector: 0
-  FilteredEnvironments: []
+  FilteredEnvironments:
+  - Player
   GameObjects: []
   velocityGizmo:
     Enabled: 0
@@ -355,7 +356,7 @@ MonoBehaviour:
   radiusSteeringFoldout: 1
   Seek:
     TargetObjective: 0
-    MagnitudeMultiplier: 1
+    MagnitudeMultiplier: 2
     SensitivityOffset: 0
     ValueWriting: 0
     LayerBlending: 0
