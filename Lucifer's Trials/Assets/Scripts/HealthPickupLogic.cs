@@ -1,36 +1,48 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+    [SerializeField] int healthGain = 1;
+    [SerializeField] bool despawnable = true;
     private float duration = 10.0f;
     private float curDuration;
+    Func<bool> PlayerAtMaxHealth;
 
     // Start is called before the first frame update
     void Start()
     {
         curDuration = 0.0f;
+
+        var player = GameObject.Find("Player");
+        PlayerAtMaxHealth = GameObject.Find("Player").GetComponent<PlayerController>().AtMaxHealth;
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        //Debug.Log("Collision");
         if (col.tag == "Player")
         {
-            Destroy(this.gameObject);
-            // Increase player's health
-            col.GetComponent<PlayerController>().IncreaseHealth(1);
+            if (!PlayerAtMaxHealth())
+            {
+                Destroy(this.gameObject);
+                // Increase player's health
+                col.GetComponent<PlayerController>().IncreaseHealth(healthGain);
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (curDuration > duration)
+        if (despawnable)
         {
-            Destroy(this.gameObject);
+            if (curDuration > duration)
+            {
+                Destroy(this.gameObject);
+            }
+            curDuration += Time.deltaTime;
         }
-        curDuration += Time.deltaTime;
     }
 }

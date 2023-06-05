@@ -42,6 +42,10 @@ public class PlayerAnimationController : MonoBehaviour
                         this.animator.Play("Hurt");
                         this.statelock = true;
                         break;
+                    case PlayerStates.DEATH:
+                        this.animator.Play("Death");
+                        this.statelock = true;
+                        break;
                     default:
                         Debug.Log("Error: player state is undefined.");
                         break;
@@ -61,6 +65,11 @@ public class PlayerAnimationController : MonoBehaviour
         this.playerHurt = false;
     }
 
+    public void PlayerDefeated()
+    {
+        this.animator.enabled = false;
+    }
+
     public bool GetStateLock()
     {
         return this.statelock;
@@ -77,10 +86,21 @@ public class PlayerAnimationController : MonoBehaviour
         var collisionPt = obj.GetComponent<Collider2D>().ClosestPoint(this.gameObject.transform.position);
         var knockbackDirection = ((Vector2)this.gameObject.transform.position - collisionPt).normalized;
         
-        // queue player hurt
-        this.playerHurt = true;
-        this.CurrentState = PlayerStates.HURT;
-        this.animator.speed = 1;
+        // determine player death
+        if (this.gameObject.GetComponent<PlayerController>().GetHealth() == 0)
+        {
+            // queue player death
+            this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            this.CurrentState = PlayerStates.DEATH;
+            this.animator.speed = 1;
+        }
+        else
+        {
+            // queue player hurt
+            this.playerHurt = true;
+            this.CurrentState = PlayerStates.HURT;
+            this.animator.speed = 1;
+        }
 
         // determine knockback handling
         Action<Vector2> Knockback = this.gameObject.GetComponent<PlayerMovement>().Knockback;
@@ -90,17 +110,18 @@ public class PlayerAnimationController : MonoBehaviour
                 // determine knockback by vector btw both objects
                 this.animator.SetFloat("MoveX", -knockbackDirection.x);
                 this.animator.SetFloat("MoveY", -knockbackDirection.y);
-                Knockback(knockbackDirection);
+                if (this.playerHurt) Knockback(knockbackDirection);
                 break;
             case DamageTypes.RANGED:
                 // determine knockback by direction of missile
                 var objVec = obj.GetComponent<Rigidbody2D>().velocity.normalized;
                 this.animator.SetFloat("MoveX", -objVec.x);
                 this.animator.SetFloat("MoveY", -objVec.y);
-                Knockback(objVec);
+                if (this.playerHurt) Knockback(objVec);
                 break;
             case DamageTypes.AOE:
-                // unimplmented; maybe we don't want knockback for AOE
+                // no knockback for AOE
+                // this.statelock = false (not sure if we want player locked during AOE damage)
                 break;
             default:
                 Debug.Log("Error: damage type is undefined.");
