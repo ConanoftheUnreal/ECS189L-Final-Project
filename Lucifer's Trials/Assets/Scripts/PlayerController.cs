@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         this.health = 10;
+        FindObjectOfType<SoundManager>().PlayMusicTrack("game theme");
     }
 
     public void IncreaseHealth(int amount)
