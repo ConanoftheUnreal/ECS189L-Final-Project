@@ -15,7 +15,7 @@ public class Health : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("Collision");
+        //Debug.Log("Collision");
         if (col.tag == "Player")
         {
             Destroy(this.gameObject);

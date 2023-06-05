@@ -8,6 +8,7 @@ using Lucifer;
 public class PlayerMovement : MonoBehaviour
 {
     private float speed = 4.0f;
+    private float knockbackForce = 3.0f;
     private float horizontal;
     private float vertical;
     private bool isDashing = false;
@@ -21,6 +22,12 @@ public class PlayerMovement : MonoBehaviour
     public string GetFacedDirection()
     {
         return this.facedDirection;
+    }
+
+    public void Knockback(Vector2 direction)
+    {
+        var rbPlayer = this.GetComponent<Rigidbody2D>();
+        rbPlayer.velocity = direction * (new Vector2(knockbackForce, knockbackForce));
     }
 
     // Update is called once per frame
@@ -70,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
 
             // Debug.Log(facedDirection);
         }
+        
     }
 
     void FixedUpdate()

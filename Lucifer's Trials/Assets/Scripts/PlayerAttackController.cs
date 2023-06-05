@@ -10,15 +10,58 @@ public class PlayerAttackController : MonoBehaviour
     private bool projectileReloading;
     private float projectileDuration;
     [SerializeField] GameObject playerProjectile;
+    GameObject attackSprite;
+    private enum Sprite { DOWN, LEFT, RIGHT, UP }
 
-    void Start()
+    public void ActivateAttackSprite()
+    {
+        var animator = this.gameObject.GetComponent<Animator>();
+        float x = animator.GetFloat("MoveX");
+        float y = animator.GetFloat("MoveY");
+
+        // right or left
+        if (x != 0)
+        {
+            if (x > 0)
+            {
+                attackSprite = this.gameObject.transform.GetChild((int)Sprite.RIGHT).gameObject;
+                attackSprite.SetActive(true);
+            }
+            else
+            {
+                attackSprite = this.gameObject.transform.GetChild((int)Sprite.LEFT).gameObject;
+                attackSprite.SetActive(true);
+            }
+        }
+        // up or down
+        else
+        {
+            if (y > 0)
+            {
+                attackSprite = this.gameObject.transform.GetChild((int)Sprite.UP).gameObject;
+                attackSprite.SetActive(true);
+            }
+            else
+            {
+                attackSprite = this.gameObject.transform.GetChild((int)Sprite.DOWN).gameObject;
+                attackSprite.SetActive(true);
+            }
+        }
+    }
+
+    public void DeactivateAttackSprite()
+    {
+        attackSprite.SetActive(false);
+    }
+
+    private void Start()
     {
         this.projectileCooldown = 0.5f;
         this.projectileReloading = false;
         this.projectileDuration = 0.0f;
     }
 
-    void Update()
+    private void Update()
     {
         PlayerType playerClass = this.GetComponent<PlayerAnimationController>().GetPlayerType();
 
@@ -70,4 +113,5 @@ public class PlayerAttackController : MonoBehaviour
             }
         }
     }
+
 }
