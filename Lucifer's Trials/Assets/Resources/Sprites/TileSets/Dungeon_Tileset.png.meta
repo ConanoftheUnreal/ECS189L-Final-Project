@@ -2494,6 +2494,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Dungeon_Tileset_112
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46c991c8846ebfbf2819345ba6b6c00c
+      internalID: -877804996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -2521,6 +2542,7 @@ TextureImporter:
       Dungeon_Tileset_11: -1533261645
       Dungeon_Tileset_110: -79746869
       Dungeon_Tileset_111: -885338133
+      Dungeon_Tileset_112: -877804996
       Dungeon_Tileset_12: -1223477581
       Dungeon_Tileset_13: -1975659412
       Dungeon_Tileset_14: -266818612

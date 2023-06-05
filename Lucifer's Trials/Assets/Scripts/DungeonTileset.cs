@@ -60,6 +60,7 @@ public sealed class DungeonTileset : ITileset
         instance.PairNameAndTile("TopWall_Right", instance.GetTileByFilename("Dungeon_Tileset_3"));
 
         instance.PairNameAndTile("BlackBorder_Top", instance.GetTileByFilename("Dungeon_Tileset_43"));
+        instance.PairNameAndTile("BlackBorder_Bottom", instance.GetTileByFilename("Dungeon_Tileset_112"));
         instance.PairNameAndTile("BlackBorder_Right", instance.GetTileByFilename("Dungeon_Tileset_26"));
         instance.PairNameAndTile("BlackBorder_Left", instance.GetTileByFilename("Dungeon_Tileset_27"));
         instance.PairNameAndTile("BlackBorder_BottomLeft", instance.GetTileByFilename("Dungeon_Tileset_42"));

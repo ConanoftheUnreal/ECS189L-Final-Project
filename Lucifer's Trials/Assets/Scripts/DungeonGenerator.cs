@@ -182,97 +182,7 @@ public class DungeonGenerator : IRoomGenerator
 
         }
 
-        // Iterate through the Collision layer and place brick walls where appropriate
-        for (int x = 0; x < _tileMaps["Collision"].size.x; x++)
-        {
-
-            for (int y = 0; y < _tileMaps["Collision"].size.y; y++)
-            {
-
-                Tile currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
-
-                if (currentTile != null)
-                {
-
-                    Tile tileInFront = _tileMaps["Collision"].GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
-
-                    if ((_tileset.GetNameOfTile(currentTile) == "Black") && (tileInFront == null) && (y != 0))
-                    {
-                        _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BottomWall_Mid"));
-                    }
-                    else if (tileInFront != null)
-                    {
-                        if ((_tileset.GetNameOfTile(currentTile) == "Black") && (_tileset.GetNameOfTile(tileInFront) == "BottomWall_Mid"))
-                        {
-                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("TopWall_Mid"));
-                        }
-                    }
-
-                }
-
-            }
-
-        }
-
-        // Iterate through the Collision layer and replace edges of brick walls with the appropriate "edge of wall" tiles
-        for (int x = 0; x < _tileMaps["Collision"].size.x; x++)
-        {
-
-            for (int y = 0; y < _tileMaps["Collision"].size.y; y++)
-            {
-
-                Tile currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
-
-                if (currentTile != null)
-                {
-
-                    Tile tileToRight = _tileMaps["Collision"].GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
-                    Tile tileToLeft = _tileMaps["Collision"].GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
-                    Tile tileBottomLeft = _tileMaps["Collision"].GetTile(new Vector3Int(x - 1, y - 1, 0)) as Tile;
-                    Tile tileBottomRight = _tileMaps["Collision"].GetTile(new Vector3Int(x + 1, y - 1, 0)) as Tile;
-
-                    if (tileToRight != null)
-                    {
-
-                        if ((_tileset.GetNameOfTile(currentTile) == "BottomWall_Mid") && (_tileset.GetNameOfTile(tileToRight) == "Black"))
-                        {
-                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BottomWall_Right"));
-                        }
-                        else if ((_tileset.GetNameOfTile(currentTile) == "TopWall_Mid") && (_tileset.GetNameOfTile(tileToRight) == "Black"))
-                        {
-                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("TopWall_Right"));
-                        }
-
-                    }
-
-                    if (tileToLeft != null)
-                    {
-
-                        if ((_tileset.GetNameOfTile(currentTile) == "BottomWall_Mid") && (_tileset.GetNameOfTile(tileToLeft) == "Black"))
-                        {
-                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BottomWall_Left"));
-                        }
-                        else if ((_tileset.GetNameOfTile(currentTile) == "TopWall_Mid") && (_tileset.GetNameOfTile(tileToLeft) == "Black"))
-                        {
-                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("TopWall_Left"));
-                        }
-
-                    }
-
-                    if ((tileToLeft == null) && (tileBottomLeft != null) && _tileset.GetNameOfTile(currentTile) == "TopWall_Mid")
-                    {
-                        _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("TopWall_Left"));
-                    }
-                    else if ((tileToRight == null) && (tileBottomRight != null) && _tileset.GetNameOfTile(currentTile) == "TopWall_Mid")
-                    {
-                        _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("TopWall_Right"));
-                    }
-
-                }
-
-            }
-
-        }
+        PlaceWalls(_tileMaps["Collision"]);
 
         /*  
             Place a black border around the edges of the Borders layer so that it is the same size as the Collision layer.
@@ -280,119 +190,7 @@ public class DungeonGenerator : IRoomGenerator
         */
         PlaceRectangleHollow("Borders", "Black", width + 2, height + 4, new Vector2Int(0, 0));
 
-        // Iterate through the Collision layer and place the correct border tiles in the Borders layer where appropriate
-        for (int x = 0; x < _tileMaps["Collision"].size.x; x++)
-        {
-
-            for (int y = 0; y < _tileMaps["Collision"].size.y; y++)
-            {
-
-                Tile currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
-
-                if (currentTile == null)
-                {
-
-                    Tile tileInFront = _tileMaps["Collision"].GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
-                    Tile tileToLeft = _tileMaps["Collision"].GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
-                    Tile tileToRight = _tileMaps["Collision"].GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
-
-                    if (tileInFront != null)
-                    {
-
-                        if (_tileset.GetNameOfTile(tileInFront) == "Black")
-                        {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BlackBorder_Top"));
-                        }     
-
-                    }
-
-                    currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
-
-                    if ((tileToLeft != null) && (currentTile == null))
-                    {
-
-                        if (_tileset.GetNameOfTile(tileToLeft) == "Black")
-                        {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BlackBorder_Right"));
-                        }
-                        else if ((_tileset.GetNameOfTile(tileToLeft) == "BottomWall_Mid") || (_tileset.GetNameOfTile(tileToLeft) == "TopWall_Mid"))
-                        {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("WallBorder_Right"));
-                        }    
-                        else if ((_tileset.GetNameOfTile(tileToLeft) == "BottomWall_Left") || (_tileset.GetNameOfTile(tileToLeft) == "TopWall_Left"))
-                        {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("WallBorder_Right"));
-                        }
-
-                    }
-
-                    currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
-
-                    if ((tileToRight != null)  && (currentTile == null))
-                    {
-
-                        if (_tileset.GetNameOfTile(tileToRight) == "Black")
-                        {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BlackBorder_Left"));
-                        }
-                        else if ((_tileset.GetNameOfTile(tileToRight) == "BottomWall_Mid") || (_tileset.GetNameOfTile(tileToRight) == "TopWall_Mid"))
-                        {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("WallBorder_Left"));
-                        }     
-                        else if ((_tileset.GetNameOfTile(tileToRight) == "BottomWall_Right") || (_tileset.GetNameOfTile(tileToRight) == "TopWall_Right"))
-                        {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("WallBorder_Left"));
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }        
-
-        // Iterate through the Collision layer and replace certain border tiles in the Borders layer with "corner" borders
-        for (int x = 0; x < _tileMaps["Collision"].size.x; x++)
-        {
-
-            for (int y = 0; y < _tileMaps["Collision"].size.y; y++)
-            {
-
-                Tile currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
-
-                if (currentTile == null || _tileset.GetNameOfTile(currentTile) != "Black")
-                {
-
-                    Tile tileBelow = _tileMaps["Collision"].GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
-                    Tile tileToLeft = _tileMaps["Collision"].GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
-                    Tile tileToRight = _tileMaps["Collision"].GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
-
-                    if ((tileBelow != null) && (tileToRight != null))
-                    {
-
-                        if ((_tileset.GetNameOfTile(tileBelow) == "Black"))
-                        {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BlackBorder_BottomRight"));
-                        }
-
-                    }
-
-                    if ((tileBelow != null) && (tileToLeft != null))
-                    {
-
-                        if ((_tileset.GetNameOfTile(tileBelow) == "Black"))
-                        {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BlackBorder_BottomLeft"));
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }  
+        PlaceBorders(_tileMaps["Borders"], _tileMaps["Collision"]);
 
         //Line up Exits tilemap with the other two, and make it 50% transparent for debugging purposes.
         PlaceRectangleHollow("Exits", "Black", width + 2, height + 4, new Vector2Int(0, 0));
@@ -896,6 +694,242 @@ public class DungeonGenerator : IRoomGenerator
         }
 
         return true;
+
+    }
+
+    public static void PlaceWalls(Tilemap collisionMap)
+    {
+
+        ITileset tileset = DungeonTileset.Instance;
+
+        // Iterate through the Collision layer and place brick walls where appropriate
+        for (int x = 0; x < collisionMap.size.x; x++)
+        {
+
+            for (int y = 0; y < collisionMap.size.y; y++)
+            {
+
+                Tile currentTile = collisionMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                if (currentTile != null)
+                {
+
+                    Tile tileInFront = collisionMap.GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
+
+                    if ((tileset.GetNameOfTile(currentTile) == "Black") && (tileInFront == null) && (y != 0))
+                    {
+                        collisionMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BottomWall_Mid"));
+                    }
+                    else if (tileInFront != null)
+                    {
+                        if ((tileset.GetNameOfTile(currentTile) == "Black") && (tileset.GetNameOfTile(tileInFront) == "BottomWall_Mid"))
+                        {
+                            collisionMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("TopWall_Mid"));
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+
+        // Iterate through the Collision layer and replace edges of brick walls with the appropriate "edge of wall" tiles
+        for (int x = 0; x < collisionMap.size.x; x++)
+        {
+
+            for (int y = 0; y < collisionMap.size.y; y++)
+            {
+
+                Tile currentTile = collisionMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                if (currentTile != null)
+                {
+
+                    Tile tileToRight = collisionMap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
+                    Tile tileToLeft = collisionMap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
+                    Tile tileBottomLeft = collisionMap.GetTile(new Vector3Int(x - 1, y - 1, 0)) as Tile;
+                    Tile tileBottomRight = collisionMap.GetTile(new Vector3Int(x + 1, y - 1, 0)) as Tile;
+
+                    if (tileToRight != null)
+                    {
+
+                        if ((tileset.GetNameOfTile(currentTile) == "BottomWall_Mid") && (tileset.GetNameOfTile(tileToRight) == "Black"))
+                        {
+                            collisionMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BottomWall_Right"));
+                        }
+                        else if ((tileset.GetNameOfTile(currentTile) == "TopWall_Mid") && (tileset.GetNameOfTile(tileToRight) == "Black"))
+                        {
+                            collisionMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("TopWall_Right"));
+                        }
+
+                    }
+
+                    if (tileToLeft != null)
+                    {
+
+                        if ((tileset.GetNameOfTile(currentTile) == "BottomWall_Mid") && (tileset.GetNameOfTile(tileToLeft) == "Black"))
+                        {
+                            collisionMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BottomWall_Left"));
+                        }
+                        else if ((tileset.GetNameOfTile(currentTile) == "TopWall_Mid") && (tileset.GetNameOfTile(tileToLeft) == "Black"))
+                        {
+                            collisionMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("TopWall_Left"));
+                        }
+
+                    }
+
+                    if ((tileToLeft == null) && (tileBottomLeft != null) && tileset.GetNameOfTile(currentTile) == "TopWall_Mid")
+                    {
+                        collisionMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("TopWall_Left"));
+                    }
+                    else if ((tileToRight == null) && (tileBottomRight != null) && tileset.GetNameOfTile(currentTile) == "TopWall_Mid")
+                    {
+                        collisionMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("TopWall_Right"));
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    public static void PlaceBorders(Tilemap bordersMap, Tilemap collisionMap)
+    {
+
+        ITileset tileset = DungeonTileset.Instance;
+
+        // Iterate through the Collision layer and place the correct border tiles in the Borders layer where appropriate
+        for (int x = 0; x < collisionMap.size.x; x++)
+        {
+
+            for (int y = 0; y < collisionMap.size.y; y++)
+            {
+
+                Tile currentTile = collisionMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                if (currentTile == null)
+                {
+
+                    Tile tileBelow = collisionMap.GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
+                    Tile tileAbove = collisionMap.GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
+                    Tile tileToLeft = collisionMap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
+                    Tile tileToRight = collisionMap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
+
+                    if ((tileBelow != null) && (tileset.GetNameOfTile(tileBelow) == "Black"))
+                    {
+                        bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BlackBorder_Top"));
+                    }
+                    else if ((tileAbove != null) && (tileset.GetNameOfTile(tileAbove) == "Black"))
+                    {
+                        bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BlackBorder_Bottom"));
+                    }
+
+                    currentTile = collisionMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                    if ((tileToLeft != null) && (currentTile == null))
+                    {
+
+                        if (tileset.GetNameOfTile(tileToLeft) == "Black")
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BlackBorder_Right"));
+                        }
+                        else if (tileset.GetNameOfTile(tileToLeft) == "BottomWall_Mid")
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("WallBorder_Right"));
+                        }
+                        else if (tileset.GetNameOfTile(tileToLeft) == "TopWall_Mid")
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("WallBorder_Right"));
+                        }
+                        else if (tileset.GetNameOfTile(tileToLeft) == "BottomWall_Left")
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("WallBorder_Right"));
+                        }
+                        else if (tileset.GetNameOfTile(tileToLeft) == "TopWall_Left")
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("WallBorder_Right"));
+                        }
+
+                    }
+
+                    currentTile = collisionMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                    if ((tileToRight != null)  && (currentTile == null))
+                    {
+
+                        if (tileset.GetNameOfTile(tileToRight) == "Black")
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BlackBorder_Left"));
+                        }
+                        else if (tileset.GetNameOfTile(tileToRight) == "BottomWall_Mid")
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("WallBorder_Left"));
+                        }
+                        else if (tileset.GetNameOfTile(tileToRight) == "TopWall_Mid")
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("WallBorder_Left"));
+                        }
+                        else if (tileset.GetNameOfTile(tileToRight) == "BottomWall_Right")
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("WallBorder_Left"));
+                        }
+                        else if (tileset.GetNameOfTile(tileToRight) == "TopWall_Right")
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("WallBorder_Left"));
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }        
+
+        // Iterate through the Collision layer and replace certain border tiles in the Borders layer with "corner" borders
+        for (int x = 0; x < collisionMap.size.x; x++)
+        {
+
+            for (int y = 0; y < collisionMap.size.y; y++)
+            {
+
+                Tile currentTile = collisionMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                if (currentTile == null || tileset.GetNameOfTile(currentTile) != "Black")
+                {
+
+                    Tile tileBelow = collisionMap.GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
+                    Tile tileToLeft = collisionMap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
+                    Tile tileToRight = collisionMap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
+
+                    if ((tileBelow != null) && (tileToRight != null))
+                    {
+
+                        if ((tileset.GetNameOfTile(tileBelow) == "Black"))
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BlackBorder_BottomRight"));
+                        }
+
+                    }
+
+                    if ((tileBelow != null) && (tileToLeft != null))
+                    {
+
+                        if ((tileset.GetNameOfTile(tileBelow) == "Black"))
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BlackBorder_BottomLeft"));
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }  
 
     }
 

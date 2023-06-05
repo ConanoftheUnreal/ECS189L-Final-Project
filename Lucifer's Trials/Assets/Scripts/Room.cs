@@ -45,6 +45,9 @@ public class Room
 
         }
 
+        bordersTilemap.ClearAllTiles();
+        DungeonGenerator.PlaceBorders(bordersTilemap, collisionTilemap);
+
     }
 
 }
