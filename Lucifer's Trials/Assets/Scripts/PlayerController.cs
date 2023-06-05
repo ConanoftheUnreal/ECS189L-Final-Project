@@ -18,13 +18,17 @@ public class PlayerController : MonoBehaviour
     public void IncreaseHealth(int amount)
     {
         this.health += amount;
-        Debug.Log(this.health);
+        //Debug.Log(this.health);
     }
 
     public void DecreaseHealth(int amount)
     {
         this.health -= amount;
-        Debug.Log(this.health);
+        if (this.health < 0)
+        {
+            this.health = 0;
+        }
+        //Debug.Log(this.health);
     }
 
     public int GetHealth()
@@ -34,7 +38,7 @@ public class PlayerController : MonoBehaviour
      public void IncreaseSP(int amount)
     {
         this.SP += amount;
-        Debug.Log(this.SP);
+        //Debug.Log(this.SP);
     }
     public int GetSP()
     {

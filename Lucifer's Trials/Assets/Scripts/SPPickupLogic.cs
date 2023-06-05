@@ -15,7 +15,7 @@ public class SP : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("Collision");
+        //Debug.Log("Collision");
         if (col.tag == "Player")
         {
             Destroy(this.gameObject);
@@ -27,7 +27,7 @@ public class SP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("ASD");
+        //Debug.Log("ASD");
         if (curDuration > duration)
         {
             Destroy(this.gameObject);
