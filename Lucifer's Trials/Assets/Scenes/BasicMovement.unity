@@ -518,6 +518,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70f317a733962634baa2dec3fbc2d450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SPGain: 1
+  despawnable: 1
 --- !u!1 &1173501347
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,7 +798,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1509896582
 MonoBehaviour:
@@ -1213,6 +1215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70f317a733962634baa2dec3fbc2d450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SPGain: 1
+  despawnable: 1
 --- !u!1 &2017180860
 GameObject:
   m_ObjectHideFlags: 0
