@@ -4,17 +4,19 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Collectible
+  - Projectile
   - Wall
   - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Enemy
+  - Wall
   - Water
   - UI
-  - Wall
-  - Player
+  - Enemy
+  - 
   - 
   - 
   - 
@@ -40,6 +42,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Not Player
+    uniqueID: 3070181637
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

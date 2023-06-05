@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 9042162443669824690}
   - component: {fileID: 4680247392455475734}
   - component: {fileID: 4848361120803632852}
-  m_Layer: 3
+  - component: {fileID: 5031416084301267529}
+  m_Layer: 6
   m_Name: Enemy1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6255146741169642879}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.82, y: -0.26, z: 0}
+  m_LocalPosition: {x: -4.58, y: 0.05, z: 0}
   m_LocalScale: {x: 0.5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 533363248508302282}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4680247392455475734
 SpriteRenderer:
@@ -93,7 +94,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6255146741169642879}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: -2048606044, guid: b26ce4b80a42c6441af375612ff69ca2, type: 3}
   m_Name: 
@@ -101,6 +102,35 @@ MonoBehaviour:
   Speed: 1
   ObjectiveAsSpeed: -1
   Context: {fileID: 2082584763012086336}
+--- !u!114 &5031416084301267529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6255146741169642879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c34b8940d1113f64795f257a64d455db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats:
+    useConstant: 0
+    maxHealth: 0
+    speed: 0
+    cooldown: 0
+    fov: 0
+    orbit: 0
+    attackRange: 0
+    damage: 0
+    baseStats: {fileID: 11400000, guid: 169a9b1c8806e5c4683542e09a97832d, type: 2}
+  _currentHealth: 0
+  _timeOnCooldown: 0
+  _cooldown: 0
+  _isAttacking: 0
+  _state: 0
+  _player: {fileID: 0}
+  _contextSteering: {fileID: 2082584763012086336}
 --- !u!1 &8326728327048400469
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,6 +143,7 @@ GameObject:
   - component: {fileID: 2082584763012086336}
   - component: {fileID: 7842259940732579388}
   - component: {fileID: 718191096964887717}
+  - component: {fileID: 8963056945302255383}
   - component: {fileID: 6857852179737360192}
   - component: {fileID: 8476447567055661864}
   - component: {fileID: 3974706761135209989}
@@ -120,8 +151,11 @@ GameObject:
   - component: {fileID: 7353407673115914323}
   - component: {fileID: 4504892982390766931}
   - component: {fileID: 5255002425287860655}
-  m_Layer: 3
-  m_Name: Enemy1AI
+  - component: {fileID: 34313080268199901}
+  - component: {fileID: 8226675323188307224}
+  - component: {fileID: 4934872836503882021}
+  m_Layer: 0
+  m_Name: ContextSteering
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -227,7 +261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Order: 0
-  Label: SeekInterest
+  Label: Avoid Wall
   initialized: 1
   tabState:
     tab0: 0
@@ -275,6 +309,67 @@ MonoBehaviour:
     InnerRadius: 0
     OuterRadius: 1
     RadiusMapping: 4
+    ForEachReceptor: 0
+--- !u!114 &8963056945302255383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8326728327048400469}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1062805814, guid: b26ce4b80a42c6441af375612ff69ca2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Order: 0
+  Label: Seek Player
+  initialized: 1
+  tabState:
+    tab0: 0
+    tab1: 0
+    tab2: 0
+    tab3: 0
+    tab4: 0
+  advancedInspector: 0
+  FilteredEnvironments: []
+  GameObjects: []
+  velocityGizmo:
+    Enabled: 0
+    Color: {r: 0.5, g: 0.5, b: 1, a: 1}
+    DirectionScale: 1
+    PointSize: 0.2
+  steeringFoldout: 1
+  innerRadiusGizmo:
+    Enabled: 0
+    Color: {r: 0.4629668, g: 0.021226406, b: 0.5, a: 1}
+  outerRadiusGizmo:
+    Enabled: 1
+    Color: {r: 1, g: 1, b: 1, a: 1}
+  innerCircleGizmo:
+    Enabled: 0
+    Color: {r: 0.4629668, g: 0.021226406, b: 0.5, a: 1}
+  outerCircleGizmo:
+    Enabled: 0
+    Color: {r: 1, g: 1, b: 1, a: 1}
+  radiusSteeringFoldout: 1
+  Seek:
+    TargetObjective: 0
+    MagnitudeMultiplier: 1
+    SensitivityOffset: 0
+    ValueWriting: 0
+    LayerBlending: 0
+    LayerNormalization: 0
+    ValueMapping: 2
+    UseSignificance: 1
+    UseSensorProjection: 1
+    VectorProjection: 0
+    PresetVelocity: 0
+    Prediction: 0
+    PredictionMagnitude: 0
+    InnerRadius: 0
+    OuterRadius: 10
+    RadiusMapping: 0
     ForEachReceptor: 0
 --- !u!114 &6857852179737360192
 MonoBehaviour:
@@ -465,7 +560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Order: 0
-  Label: 
+  Label: Avoid Enemies
   initialized: 1
   tabState:
     tab0: 0
@@ -638,3 +733,128 @@ MonoBehaviour:
     Size: 0.1
     Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   targetTag: Player
+--- !u!114 &34313080268199901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8326728327048400469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 805961412, guid: b26ce4b80a42c6441af375612ff69ca2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Order: 0
+  Label: NotInRange
+  initialized: 1
+  tabState:
+    tab0: 0
+    tab1: 0
+    tab2: 0
+    tab3: 0
+    tab4: 0
+  advancedInspector: 0
+  FilteredEnvironments: []
+  GameObjects: []
+  velocityGizmo:
+    Enabled: 0
+    Color: {r: 0.5, g: 0.5, b: 1, a: 1}
+    DirectionScale: 1
+    PointSize: 0.2
+  steeringFoldout: 1
+  Wander:
+    TargetObjective: 0
+    MagnitudeMultiplier: 0.3
+    SensitivityOffset: 45
+    ValueWriting: 0
+    LayerBlending: 0
+    LayerNormalization: 0
+    ValueMapping: 2
+    UseSignificance: 1
+    UseSensorProjection: 1
+    VectorProjection: 1
+    PresetVelocity: 0
+    Prediction: 0
+    PredictionMagnitude: 0
+    Up: {x: 0, y: 0, z: 1}
+    AngleDeviationMin: -35
+    AngleDeviationMax: 35
+    TimeDeviationMin: 0
+    TimeDeviationMax: 0.25
+    Steadiness: 0
+    planarMappingType: 1
+--- !u!114 &8226675323188307224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8326728327048400469}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae2fef0da0745d1408f45bee3626036c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4934872836503882021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8326728327048400469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1062805814, guid: b26ce4b80a42c6441af375612ff69ca2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Order: 0
+  Label: Flee Player
+  initialized: 1
+  tabState:
+    tab0: 0
+    tab1: 0
+    tab2: 0
+    tab3: 0
+    tab4: 0
+  advancedInspector: 0
+  FilteredEnvironments:
+  - Player
+  GameObjects: []
+  velocityGizmo:
+    Enabled: 0
+    Color: {r: 0.5, g: 0.5, b: 1, a: 1}
+    DirectionScale: 1
+    PointSize: 0.2
+  steeringFoldout: 1
+  innerRadiusGizmo:
+    Enabled: 0
+    Color: {r: 0.59607846, g: 1, b: 0.5686275, a: 1}
+  outerRadiusGizmo:
+    Enabled: 1
+    Color: {r: 0.2627451, g: 0.79607844, b: 0.24705882, a: 1}
+  innerCircleGizmo:
+    Enabled: 0
+    Color: {r: 0.59607846, g: 1, b: 0.5686275, a: 1}
+  outerCircleGizmo:
+    Enabled: 0
+    Color: {r: 0.2627451, g: 0.79607844, b: 0.24705882, a: 1}
+  radiusSteeringFoldout: 1
+  Seek:
+    TargetObjective: 1
+    MagnitudeMultiplier: 3
+    SensitivityOffset: 0
+    ValueWriting: 0
+    LayerBlending: 0
+    LayerNormalization: 0
+    ValueMapping: 2
+    UseSignificance: 1
+    UseSensorProjection: 1
+    VectorProjection: 0
+    PresetVelocity: 0
+    Prediction: 0
+    PredictionMagnitude: 0
+    InnerRadius: 0
+    OuterRadius: 0.75
+    RadiusMapping: 4
+    ForEachReceptor: 0
