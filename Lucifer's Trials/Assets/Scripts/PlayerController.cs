@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.health = 3;
+        this.health = 10;
     }
 
     public void IncreaseHealth(int amount)

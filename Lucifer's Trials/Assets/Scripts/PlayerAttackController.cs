@@ -11,8 +11,9 @@ public class PlayerAttackController : MonoBehaviour
     private float projectileDuration;
     [SerializeField] GameObject playerProjectile;
     GameObject attackSprite;
+    private enum Sprite { DOWN, LEFT, RIGHT, UP }
 
-    public void CreateAttackSprite()
+    public void ActivateAttackSprite()
     {
         var animator = this.gameObject.GetComponent<Animator>();
         float x = animator.GetFloat("MoveX");
@@ -23,11 +24,13 @@ public class PlayerAttackController : MonoBehaviour
         {
             if (x > 0)
             {
-                this.attackSprite = Resources.Load("Prefabs/AttackSprites/rightAttackSprite") as GameObject;
+                attackSprite = this.gameObject.transform.GetChild((int)Sprite.RIGHT).gameObject;
+                attackSprite.SetActive(true);
             }
             else
             {
-                this.attackSprite = Resources.Load("Prefabs/AttackSprites/leftAttackSprite") as GameObject;
+                attackSprite = this.gameObject.transform.GetChild((int)Sprite.LEFT).gameObject;
+                attackSprite.SetActive(true);
             }
         }
         // up or down
@@ -35,16 +38,20 @@ public class PlayerAttackController : MonoBehaviour
         {
             if (y > 0)
             {
-                this.attackSprite = Resources.Load("Prefabs/AttackSprites/upAttackSprite") as GameObject;
+                attackSprite = this.gameObject.transform.GetChild((int)Sprite.UP).gameObject;
+                attackSprite.SetActive(true);
             }
             else
             {
-                this.attackSprite = Resources.Load("Prefabs/AttackSprites/downAttackSprite") as GameObject;
+                attackSprite = this.gameObject.transform.GetChild((int)Sprite.DOWN).gameObject;
+                attackSprite.SetActive(true);
             }
         }
+    }
 
-        var sprite = (GameObject)Instantiate(this.attackSprite, this.gameObject.transform);
-        Destroy(sprite, 0.1f);
+    public void DeactivateAttackSprite()
+    {
+        attackSprite.SetActive(false);
     }
 
     private void Start()
@@ -61,10 +68,6 @@ public class PlayerAttackController : MonoBehaviour
         switch (playerClass)
         {
             case PlayerType.WARRIOR:
-                // if (Input.GetButtonDown("Fire1") && !this.gameObject.GetComponent<PlayerAnimationController>().GetStateLock())
-                // {
-                //     CreateAttackSprite();
-                // }
                 break;
 
             case PlayerType.SORCERESS:

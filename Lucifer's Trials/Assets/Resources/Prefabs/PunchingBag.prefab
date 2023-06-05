@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7947744074737142081
 SpriteRenderer:
@@ -168,6 +168,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1795593470686883402}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3acfbdb29018e46d5b8f38c04bd67a81, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f5602e8cd8dc4274a214f2cfc03ec46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
