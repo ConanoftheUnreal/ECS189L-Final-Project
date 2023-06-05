@@ -812,7 +812,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicMixerGroup: {fileID: -7802871821760928576, guid: a17ed0d956c34294798ca136957e8256, type: 2}
   sfxMixerGroup: {fileID: -5514887378846270790, guid: a17ed0d956c34294798ca136957e8256, type: 2}
-  musicTracks: []
+  musicTracks:
+  - clip: {fileID: 8300000, guid: fc11983f99ae7e24fb9c4fa5b1aeb099, type: 3}
+    audioSource: {fileID: 0}
+    title: game theme
+    volume: 1
+    pitch: 1
+    loop: 1
   sfxClips: []
 --- !u!1 &1565099617 stripped
 GameObject:
