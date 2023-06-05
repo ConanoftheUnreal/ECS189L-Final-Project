@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private int maxSP;
     private int health;
     private int SP;
+    private int wallet;
 
     // Start is called before the first frame update
     void Start()
@@ -77,5 +78,11 @@ public class PlayerController : MonoBehaviour
     public int GetSP()
     {
         return this.SP;
+    }
+
+    public void IncreaseWallet(int amount)
+    {
+        this.wallet += amount;
+        Debug.Log("Current Gold: " + this.wallet);
     }
 }
