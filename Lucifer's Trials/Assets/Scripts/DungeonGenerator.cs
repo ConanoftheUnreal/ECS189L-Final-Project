@@ -74,7 +74,7 @@ public class DungeonGenerator : IRoomGenerator
         TilemapRenderer exitsRenderer = exitsLayer.AddComponent<TilemapRenderer>();
         exitsRenderer.sortingOrder = 4;
         _tileMaps.Add("Exits", exitsLayer.GetComponent<Tilemap>());
-        //exitsLayer.SetActive(false);
+        exitsLayer.SetActive(false);
 
         // Create "Decorations" Layer
         GameObject decorationsLayer = new GameObject("Decorations");
