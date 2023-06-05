@@ -7,7 +7,9 @@ TagManager:
   - Collectible
   - Projectile
   - Wall
-  - Enemy
+  - EnemyProjectile
+  - PlayerHurtbox
+  - PlayerAttack
   layers:
   - Default
   - TransparentFX
