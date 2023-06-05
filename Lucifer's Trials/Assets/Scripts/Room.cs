@@ -19,6 +19,8 @@ public class Room
     public void OpenExits()
     {
 
+        ITileset tileset = DungeonTileset.Instance;
+
         Tilemap collisionTilemap = roomObject.transform.Find("Collision").GetComponent<Tilemap>();
         Tilemap bordersTilemap = roomObject.transform.Find("Borders").GetComponent<Tilemap>();
         Tilemap decorationsTilemap = roomObject.transform.Find("Decorations").GetComponent<Tilemap>();
@@ -46,6 +48,43 @@ public class Room
         }
 
         bordersTilemap.ClearAllTiles();
+
+        for (int x = 0; x < collisionTilemap.size.x; x++)
+        {
+
+            for (int y = 0; y < collisionTilemap.size.y; y++)
+            {
+
+                Tile currentTile = collisionTilemap.GetTile(new Vector3Int(x, y, 0)) as Tile;
+                Tile tileToRight = collisionTilemap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
+                Tile tileToLeft = collisionTilemap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
+                
+                if (currentTile != null)
+                {
+
+                    if ((tileset.GetNameOfTile(currentTile) == "BottomWall_Right") && tileToRight == null)
+                    {
+                        collisionTilemap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BottomWall_Mid"));
+                    }
+                    else if ((tileset.GetNameOfTile(currentTile) == "BottomWall_Left") && tileToLeft == null)
+                    {
+                        collisionTilemap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BottomWall_Mid"));
+                    }
+                    else if ((tileset.GetNameOfTile(currentTile) == "TopWall_Right") && tileToRight == null)
+                    {
+                        collisionTilemap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("TopWall_Mid"));
+                    }
+                    else if ((tileset.GetNameOfTile(currentTile) == "TopWall_Left") && tileToLeft == null)
+                    {
+                        collisionTilemap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("TopWall_Mid"));
+                    }
+
+                }
+
+            }
+
+        }
+
         DungeonGenerator.PlaceBorders(bordersTilemap, collisionTilemap);
 
     }

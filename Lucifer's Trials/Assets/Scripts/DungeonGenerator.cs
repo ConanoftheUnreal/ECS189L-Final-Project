@@ -74,7 +74,7 @@ public class DungeonGenerator : IRoomGenerator
         TilemapRenderer exitsRenderer = exitsLayer.AddComponent<TilemapRenderer>();
         exitsRenderer.sortingOrder = 4;
         _tileMaps.Add("Exits", exitsLayer.GetComponent<Tilemap>());
-        exitsLayer.SetActive(false);
+        //exitsLayer.SetActive(false);
 
         // Create "Decorations" Layer
         GameObject decorationsLayer = new GameObject("Decorations");
@@ -703,10 +703,10 @@ public class DungeonGenerator : IRoomGenerator
         ITileset tileset = DungeonTileset.Instance;
 
         // Iterate through the Collision layer and place brick walls where appropriate
-        for (int x = 0; x < collisionMap.size.x; x++)
+        for (int x = 1; x < collisionMap.size.x - 1; x++)
         {
 
-            for (int y = 0; y < collisionMap.size.y; y++)
+            for (int y = 1; y < collisionMap.size.y - 1; y++)
             {
 
                 Tile currentTile = collisionMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
@@ -735,10 +735,10 @@ public class DungeonGenerator : IRoomGenerator
         }
 
         // Iterate through the Collision layer and replace edges of brick walls with the appropriate "edge of wall" tiles
-        for (int x = 0; x < collisionMap.size.x; x++)
+        for (int x = 1; x < collisionMap.size.x - 1; x++)
         {
 
-            for (int y = 0; y < collisionMap.size.y; y++)
+            for (int y = 1; y < collisionMap.size.y - 1; y++)
             {
 
                 Tile currentTile = collisionMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
