@@ -18,57 +18,17 @@ public class DungeonGenerator : IRoomGenerator
 
     private const int WALL_LAYER = 3;
 
-    // _tiles maps the file name of a tile asset to the actual tile object
-    private Dictionary<string, Tile> _tiles = new Dictionary<string, Tile>();
-    // _nameToTile maps a descriptive name to a tile object
-    private Dictionary<string, Tile> _nameToTile = new Dictionary<string, Tile>();
-    // _tileToName maps a tile object to a descriptive name
-    private Dictionary<Tile, string> _tileToName = new Dictionary<Tile, string>();
     // _tileMaps maps a descriptive name to a tilemap
     private Dictionary<string, Tilemap> _tileMaps;
+
+    // The tileset that this generator uses is the DungeonTileset
+    private ITileset _tileset = DungeonTileset.Instance;
 
     public DungeonGenerator(int maxColumns, int maxColumnLength)
     {
 
         _maxColumns = maxColumns;
         _maxColumnLength = maxColumnLength;
-
-        // Load all of the Dungeon tiles from the Resources
-        Tile[] allTiles = Resources.LoadAll<Tile>("Tiles/Dungeon_Tiles");
-        foreach (Tile tile in allTiles)
-        {
-            _tiles.Add(tile.name, tile);
-        }
-
-        // Pair some descriptive names with tiles that are going to be used during generation
-        PairNameAndTile("Ground", _tiles["Dungeon_Tileset_71"]);
-        PairNameAndTile("Black", _tiles["Dungeon_Tileset_0"]);
-
-        PairNameAndTile("BottomWall_Mid", _tiles["Dungeon_Tileset_15"]);
-        PairNameAndTile("BottomWall_Left", _tiles["Dungeon_Tileset_14"]);
-        PairNameAndTile("BottomWall_Right", _tiles["Dungeon_Tileset_16"]);
-
-        PairNameAndTile("TopWall_Mid", _tiles["Dungeon_Tileset_2"]);
-        PairNameAndTile("TopWall_Left", _tiles["Dungeon_Tileset_1"]);
-        PairNameAndTile("TopWall_Right", _tiles["Dungeon_Tileset_3"]);
-
-        PairNameAndTile("BlackBorder_Top", _tiles["Dungeon_Tileset_43"]);
-        PairNameAndTile("BlackBorder_Right", _tiles["Dungeon_Tileset_26"]);
-        PairNameAndTile("BlackBorder_Left", _tiles["Dungeon_Tileset_27"]);
-        PairNameAndTile("BlackBorder_BottomLeft", _tiles["Dungeon_Tileset_42"]);
-        PairNameAndTile("BlackBorder_BottomRight", _tiles["Dungeon_Tileset_44"]);
-
-        PairNameAndTile("WallBorder_Right", _tiles["Dungeon_Tileset_93"]);
-        PairNameAndTile("WallBorder_Left", _tiles["Dungeon_Tileset_91"]);
-
-        PairNameAndTile("Carpet_Center", _tiles["Dungeon_Tileset_95"]);
-
-        PairNameAndTile("BigDoor_TopLeft", _tiles["Dungeon_Tileset_53"]);
-        PairNameAndTile("BigDoor_TopRight", _tiles["Dungeon_Tileset_54"]);
-        PairNameAndTile("BigDoor_MiddleLeft", _tiles["Dungeon_Tileset_69"]);
-        PairNameAndTile("BigDoor_MiddleRight", _tiles["Dungeon_Tileset_70"]);
-        PairNameAndTile("BigDoor_BottomLeft", _tiles["Dungeon_Tileset_85"]);
-        PairNameAndTile("BigDoor_BottomRight", _tiles["Dungeon_Tileset_86"]);
 
     }
 
@@ -236,15 +196,15 @@ public class DungeonGenerator : IRoomGenerator
 
                     Tile tileInFront = _tileMaps["Collision"].GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
 
-                    if ((_tileToName[currentTile] == "Black") && (tileInFront == null) && (y != 0))
+                    if ((_tileset.GetNameOfTile(currentTile) == "Black") && (tileInFront == null) && (y != 0))
                     {
-                        _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BottomWall_Mid"]);
+                        _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BottomWall_Mid"));
                     }
                     else if (tileInFront != null)
                     {
-                        if ((_tileToName[currentTile] == "Black") && (_tileToName[tileInFront] == "BottomWall_Mid"))
+                        if ((_tileset.GetNameOfTile(currentTile) == "Black") && (_tileset.GetNameOfTile(tileInFront) == "BottomWall_Mid"))
                         {
-                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _nameToTile["TopWall_Mid"]);
+                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("TopWall_Mid"));
                         }
                     }
 
@@ -274,13 +234,13 @@ public class DungeonGenerator : IRoomGenerator
                     if (tileToRight != null)
                     {
 
-                        if ((_tileToName[currentTile] == "BottomWall_Mid") && (_tileToName[tileToRight] == "Black"))
+                        if ((_tileset.GetNameOfTile(currentTile) == "BottomWall_Mid") && (_tileset.GetNameOfTile(tileToRight) == "Black"))
                         {
-                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BottomWall_Right"]);
+                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BottomWall_Right"));
                         }
-                        else if ((_tileToName[currentTile] == "TopWall_Mid") && (_tileToName[tileToRight] == "Black"))
+                        else if ((_tileset.GetNameOfTile(currentTile) == "TopWall_Mid") && (_tileset.GetNameOfTile(tileToRight) == "Black"))
                         {
-                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _nameToTile["TopWall_Right"]);
+                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("TopWall_Right"));
                         }
 
                     }
@@ -288,24 +248,24 @@ public class DungeonGenerator : IRoomGenerator
                     if (tileToLeft != null)
                     {
 
-                        if ((_tileToName[currentTile] == "BottomWall_Mid") && (_tileToName[tileToLeft] == "Black"))
+                        if ((_tileset.GetNameOfTile(currentTile) == "BottomWall_Mid") && (_tileset.GetNameOfTile(tileToLeft) == "Black"))
                         {
-                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BottomWall_Left"]);
+                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BottomWall_Left"));
                         }
-                        else if ((_tileToName[currentTile] == "TopWall_Mid") && (_tileToName[tileToLeft] == "Black"))
+                        else if ((_tileset.GetNameOfTile(currentTile) == "TopWall_Mid") && (_tileset.GetNameOfTile(tileToLeft) == "Black"))
                         {
-                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _nameToTile["TopWall_Left"]);
+                            _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("TopWall_Left"));
                         }
 
                     }
 
-                    if ((tileToLeft == null) && (tileBottomLeft != null) && _tileToName[currentTile] == "TopWall_Mid")
+                    if ((tileToLeft == null) && (tileBottomLeft != null) && _tileset.GetNameOfTile(currentTile) == "TopWall_Mid")
                     {
-                        _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _nameToTile["TopWall_Left"]);
+                        _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("TopWall_Left"));
                     }
-                    else if ((tileToRight == null) && (tileBottomRight != null) && _tileToName[currentTile] == "TopWall_Mid")
+                    else if ((tileToRight == null) && (tileBottomRight != null) && _tileset.GetNameOfTile(currentTile) == "TopWall_Mid")
                     {
-                        _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _nameToTile["TopWall_Right"]);
+                        _tileMaps["Collision"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("TopWall_Right"));
                     }
 
                 }
@@ -339,9 +299,9 @@ public class DungeonGenerator : IRoomGenerator
                     if (tileInFront != null)
                     {
 
-                        if (_tileToName[tileInFront] == "Black")
+                        if (_tileset.GetNameOfTile(tileInFront) == "Black")
                         {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BlackBorder_Top"]);
+                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BlackBorder_Top"));
                         }     
 
                     }
@@ -351,17 +311,17 @@ public class DungeonGenerator : IRoomGenerator
                     if ((tileToLeft != null) && (currentTile == null))
                     {
 
-                        if (_tileToName[tileToLeft] == "Black")
+                        if (_tileset.GetNameOfTile(tileToLeft) == "Black")
                         {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BlackBorder_Right"]);
+                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BlackBorder_Right"));
                         }
-                        else if ((_tileToName[tileToLeft] == "BottomWall_Mid") || (_tileToName[tileToLeft] == "TopWall_Mid"))
+                        else if ((_tileset.GetNameOfTile(tileToLeft) == "BottomWall_Mid") || (_tileset.GetNameOfTile(tileToLeft) == "TopWall_Mid"))
                         {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _nameToTile["WallBorder_Right"]);
+                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("WallBorder_Right"));
                         }    
-                        else if ((_tileToName[tileToLeft] == "BottomWall_Left") || (_tileToName[tileToLeft] == "TopWall_Left"))
+                        else if ((_tileset.GetNameOfTile(tileToLeft) == "BottomWall_Left") || (_tileset.GetNameOfTile(tileToLeft) == "TopWall_Left"))
                         {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _nameToTile["WallBorder_Right"]);
+                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("WallBorder_Right"));
                         }
 
                     }
@@ -371,17 +331,17 @@ public class DungeonGenerator : IRoomGenerator
                     if ((tileToRight != null)  && (currentTile == null))
                     {
 
-                        if (_tileToName[tileToRight] == "Black")
+                        if (_tileset.GetNameOfTile(tileToRight) == "Black")
                         {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BlackBorder_Left"]);
+                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BlackBorder_Left"));
                         }
-                        else if ((_tileToName[tileToRight] == "BottomWall_Mid") || (_tileToName[tileToRight] == "TopWall_Mid"))
+                        else if ((_tileset.GetNameOfTile(tileToRight) == "BottomWall_Mid") || (_tileset.GetNameOfTile(tileToRight) == "TopWall_Mid"))
                         {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _nameToTile["WallBorder_Left"]);
+                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("WallBorder_Left"));
                         }     
-                        else if ((_tileToName[tileToRight] == "BottomWall_Right") || (_tileToName[tileToRight] == "TopWall_Right"))
+                        else if ((_tileset.GetNameOfTile(tileToRight) == "BottomWall_Right") || (_tileset.GetNameOfTile(tileToRight) == "TopWall_Right"))
                         {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _nameToTile["WallBorder_Left"]);
+                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("WallBorder_Left"));
                         }
 
                     }
@@ -401,7 +361,7 @@ public class DungeonGenerator : IRoomGenerator
 
                 Tile currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
 
-                if (currentTile == null || _tileToName[currentTile] != "Black")
+                if (currentTile == null || _tileset.GetNameOfTile(currentTile) != "Black")
                 {
 
                     Tile tileBelow = _tileMaps["Collision"].GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
@@ -411,9 +371,9 @@ public class DungeonGenerator : IRoomGenerator
                     if ((tileBelow != null) && (tileToRight != null))
                     {
 
-                        if ((_tileToName[tileBelow] == "Black"))
+                        if ((_tileset.GetNameOfTile(tileBelow) == "Black"))
                         {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BlackBorder_BottomRight"]);
+                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BlackBorder_BottomRight"));
                         }
 
                     }
@@ -421,9 +381,9 @@ public class DungeonGenerator : IRoomGenerator
                     if ((tileBelow != null) && (tileToLeft != null))
                     {
 
-                        if ((_tileToName[tileBelow] == "Black"))
+                        if ((_tileset.GetNameOfTile(tileBelow) == "Black"))
                         {
-                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BlackBorder_BottomLeft"]);
+                            _tileMaps["Borders"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BlackBorder_BottomLeft"));
                         }
 
                     }
@@ -479,35 +439,35 @@ public class DungeonGenerator : IRoomGenerator
                         if (currentTile != null)
                         {
 
-                            if (_tileToName[currentTile] != "Black")
+                            if (_tileset.GetNameOfTile(currentTile) != "Black")
                             {
 
                                 Tile collisionTileAbove = _tileMaps["Collision"].GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
                                 Tile decorationsTileAbove = _tileMaps["Decorations"].GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
 
-                                if (x == rect.bottomLeft.x && _tileToName[collisionTileAbove] == "Black")
+                                if (x == rect.bottomLeft.x && _tileset.GetNameOfTile(collisionTileAbove) == "Black")
                                 {
-                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BigDoor_TopLeft"]);
+                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_TopLeft"));
                                 }
-                                else if (x == rect.topRight.x && _tileToName[collisionTileAbove] == "Black")
+                                else if (x == rect.topRight.x && _tileset.GetNameOfTile(collisionTileAbove) == "Black")
                                 {
-                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BigDoor_TopRight"]);
+                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_TopRight"));
                                 }
-                                else if (_tileToName[decorationsTileAbove] == "BigDoor_TopLeft")
+                                else if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_TopLeft")
                                 {
-                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BigDoor_MiddleLeft"]);
+                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_MiddleLeft"));
                                 }
-                                else if (_tileToName[decorationsTileAbove] == "BigDoor_TopRight")
+                                else if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_TopRight")
                                 {
-                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BigDoor_MiddleRight"]);
+                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_MiddleRight"));
                                 }
-                                else if (_tileToName[decorationsTileAbove] == "BigDoor_MiddleLeft")
+                                else if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_MiddleLeft")
                                 {
-                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BigDoor_BottomLeft"]);
+                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_BottomLeft"));
                                 }
-                                else if (_tileToName[decorationsTileAbove] == "BigDoor_MiddleRight")
+                                else if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_MiddleRight")
                                 {
-                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _nameToTile["BigDoor_BottomRight"]);
+                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_BottomRight"));
                                 }
 
                             }
@@ -599,7 +559,7 @@ public class DungeonGenerator : IRoomGenerator
                     Tile aboveTile = tileMapCopy.GetTile(upperPoint + new Vector3Int(0, 1, 0)) as Tile;
 
                     // We don't want to create paths next to paths that already exist
-                    if ((_tileToName[belowTile] == "Carpet_Center") || _tileToName[aboveTile] == "Carpet_Center")
+                    if ((_tileset.GetNameOfTile(belowTile) == "Carpet_Center") || _tileset.GetNameOfTile(aboveTile) == "Carpet_Center")
                     {
                         continue;
                     }
@@ -618,13 +578,13 @@ public class DungeonGenerator : IRoomGenerator
                         belowTile = tileMapCopy.GetTile(lowerPoint - new Vector3Int(0, 1, 0)) as Tile;
 
                         // Once we hit a tile that is not Black, we know we have broken into the room
-                        if ((_tileToName[lowerTile] != "Black") || (_tileToName[upperTile] != "Black"))
+                        if ((_tileset.GetNameOfTile(lowerTile) != "Black") || (_tileset.GetNameOfTile(upperTile) != "Black"))
                         {
                             break;
                         }
                         
                         // If the tile below our path is not Black, that is a sign that the path would create a short column
-                        if ((belowTile != null) && (_tileToName[belowTile] != "Black"))
+                        if ((belowTile != null) && (_tileset.GetNameOfTile(belowTile) != "Black"))
                         {
                             createsShortColumn = true;
                         }
@@ -686,8 +646,8 @@ public class DungeonGenerator : IRoomGenerator
                     // And update our local tilemap
                     lowerPoint = new Vector3Int(x, y, 0);
                     upperPoint = new Vector3Int(x, y + 1, 0);
-                    tileMapCopy.SetTile(lowerPoint, _nameToTile["Carpet_Center"]);
-                    tileMapCopy.SetTile(upperPoint, _nameToTile["Carpet_Center"]);
+                    tileMapCopy.SetTile(lowerPoint, _tileset.GetTileByName("Carpet_Center"));
+                    tileMapCopy.SetTile(upperPoint, _tileset.GetTileByName("Carpet_Center"));
 
                 }
                 // If we are at a point on the top or bottom of the room
@@ -709,7 +669,7 @@ public class DungeonGenerator : IRoomGenerator
                     Tile tileToRight = tileMapCopy.GetTile(rightPoint + new Vector3Int(1, 0, 0)) as Tile;
 
                     // We don't want to create paths right next to paths that already exist
-                    if ((_tileToName[tileToleft] == "Carpet_Center") || _tileToName[tileToRight] == "Carpet_Center")
+                    if ((_tileset.GetNameOfTile(tileToleft) == "Carpet_Center") || _tileset.GetNameOfTile(tileToRight) == "Carpet_Center")
                     {
                         continue;
                     }
@@ -778,8 +738,8 @@ public class DungeonGenerator : IRoomGenerator
                     // And update the local tilemap
                     leftPoint = new Vector3Int(x, y, 0);
                     rightPoint = new Vector3Int(x + 1, y, 0);
-                    tileMapCopy.SetTile(leftPoint, _nameToTile["Carpet_Center"]);
-                    tileMapCopy.SetTile(rightPoint, _nameToTile["Carpet_Center"]);
+                    tileMapCopy.SetTile(leftPoint, _tileset.GetTileByName("Carpet_Center"));
+                    tileMapCopy.SetTile(rightPoint, _tileset.GetTileByName("Carpet_Center"));
 
                 }
                 
@@ -897,7 +857,7 @@ public class DungeonGenerator : IRoomGenerator
                         Tilemap tileMapCopy = objectCopy.GetComponent<Tilemap>();
 
                         // And use the flood fill tool at the current tile to attempt to fill the room with black tiles
-                        tileMapCopy.FloodFill(new Vector3Int(x, y, 0), _nameToTile["Black"]);
+                        tileMapCopy.FloodFill(new Vector3Int(x, y, 0), _tileset.GetTileByName("Black"));
 
                         // And then check to make sure the entire room is now filled
                         for (int i = 0; i < tileMapCopy.size.x; i++)
@@ -939,15 +899,6 @@ public class DungeonGenerator : IRoomGenerator
 
     }
 
-    // Map a descriptive name to a tile object and vice versa
-    private void PairNameAndTile(string name, Tile tile)
-    {
-
-        _nameToTile.Add(name, tile);
-        _tileToName.Add(tile, name);
-
-    }
-
     // Draw a filled rectangle of the specified tile onto the specified tilemap
     private void PlaceRectangleFilled(Tilemap tileMap, string tileName, int width, int height, Vector2Int location)
     {
@@ -956,7 +907,7 @@ public class DungeonGenerator : IRoomGenerator
         {
             for (int j = location.y; j < location.y + height; j++)
             {       
-                tileMap.SetTile(new Vector3Int(i, j, 0), _nameToTile[tileName]);
+                tileMap.SetTile(new Vector3Int(i, j, 0), _tileset.GetTileByName(tileName));
             }
         }
 
