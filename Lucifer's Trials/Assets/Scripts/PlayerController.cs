@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FindObjectOfType<SoundManager>().PlayMusicTrack("game theme");
         this.health = 3;
     }
 
