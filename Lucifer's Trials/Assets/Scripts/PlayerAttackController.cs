@@ -10,21 +10,61 @@ public class PlayerAttackController : MonoBehaviour
     private bool projectileReloading;
     private float projectileDuration;
     [SerializeField] GameObject playerProjectile;
+    GameObject attackSprite;
 
-    void Start()
+    public void CreateAttackSprite()
+    {
+        var animator = this.gameObject.GetComponent<Animator>();
+        float x = animator.GetFloat("MoveX");
+        float y = animator.GetFloat("MoveY");
+
+        // right or left
+        if (x != 0)
+        {
+            if (x > 0)
+            {
+                this.attackSprite = Resources.Load("Prefabs/AttackSprites/rightAttackSprite") as GameObject;
+            }
+            else
+            {
+                this.attackSprite = Resources.Load("Prefabs/AttackSprites/leftAttackSprite") as GameObject;
+            }
+        }
+        // up or down
+        else
+        {
+            if (y > 0)
+            {
+                this.attackSprite = Resources.Load("Prefabs/AttackSprites/upAttackSprite") as GameObject;
+            }
+            else
+            {
+                this.attackSprite = Resources.Load("Prefabs/AttackSprites/downAttackSprite") as GameObject;
+            }
+        }
+
+        var sprite = (GameObject)Instantiate(this.attackSprite, this.gameObject.transform);
+        Destroy(sprite, 0.1f);
+    }
+
+    private void Start()
     {
         this.projectileCooldown = 0.5f;
         this.projectileReloading = false;
         this.projectileDuration = 0.0f;
     }
 
-    void Update()
+    private void Update()
     {
         PlayerType playerClass = this.GetComponent<PlayerAnimationController>().GetPlayerType();
 
         switch (playerClass)
         {
             case PlayerType.WARRIOR:
+                // if (Input.GetButtonDown("Fire1") && !this.gameObject.GetComponent<PlayerAnimationController>().GetStateLock())
+                // {
+                //     CreateAttackSprite();
+                // }
                 break;
 
             case PlayerType.SORCERESS:
@@ -70,4 +110,5 @@ public class PlayerAttackController : MonoBehaviour
             }
         }
     }
+
 }

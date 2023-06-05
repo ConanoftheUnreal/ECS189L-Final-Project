@@ -77,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
 
             // Debug.Log(facedDirection);
         }
+        
     }
 
     void FixedUpdate()

@@ -6,6 +6,9 @@ using Lucifer;
 
 public class Attackables : MonoBehaviour
 {
+    private bool knockedback = false;
+    private float knockbackDuration = 0.2f;
+    private float timePassed;
     private float knockbackForce = 3.0f;
 
     void OnTriggerEnter2D(Collider2D col)
@@ -28,18 +31,22 @@ public class Attackables : MonoBehaviour
             var knockbackDirection = (positionSelf - positionAttack).normalized;
 
             rb.velocity = knockbackForce * knockbackDirection;
+            knockedback = true;
+            timePassed = 0.0f;
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (knockedback)
+        {
+            if (timePassed >= knockbackDuration)
+            {
+                this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                knockedback = false;
+            }
+            timePassed += Time.deltaTime;
+        }
     }
 }
