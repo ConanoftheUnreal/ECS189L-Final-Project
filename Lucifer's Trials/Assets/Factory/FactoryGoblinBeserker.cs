@@ -7,6 +7,7 @@ public class FactoryGoblinBeserker : Factory
 {
     [SerializeField] private Polarith.AI.Move.AIMSteeringPerceiver perceiver;
     [SerializeField] private GoblinBeserker prefab;
+    [SerializeField] private GameObject enemies;
     private float time = 0f;
     // Start is called before the first frame update
     void Start()
@@ -51,13 +52,12 @@ public class FactoryGoblinBeserker : Factory
 
     private void Update()
     {
-        //Debug.Log(time);
         if (time > 5f)
         {
             GoblinBeserker tmp = (GoblinBeserker) GetEnemy(Vector3.zero);
-            //tmp.GetComponent<GameObject>().SetActive(true);
 
             GameObject t = tmp.gameObject;
+            t.transform.SetParent(enemies.transform, true);
             t.SetActive(true);
             time = 0;
         }
