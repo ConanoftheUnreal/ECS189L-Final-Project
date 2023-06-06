@@ -91,6 +91,7 @@ public class PlayerAnimationController : MonoBehaviour
         {
             // queue player death
             this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            this.statelock = false;
             this.CurrentState = PlayerStates.DEATH;
             this.animator.speed = 1;
         }
