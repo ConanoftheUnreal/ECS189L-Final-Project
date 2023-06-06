@@ -47,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown("space") && (this.rb.velocity != Vector2.zero) && (this.sinceDash >= this.dashCooldown))
         {
             // Debug.Log("Space Pressed");
+            FindObjectOfType<SoundManager>().PlaySoundEffect("dash");
             this.isDashing = true;
             this.curDuration = 0.0f;
             this.sinceDash = 0.0f;

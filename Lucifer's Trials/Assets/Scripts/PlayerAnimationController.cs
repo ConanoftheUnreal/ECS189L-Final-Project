@@ -78,6 +78,7 @@ public class PlayerAnimationController : MonoBehaviour
         var knockbackDirection = ((Vector2)this.gameObject.transform.position - collisionPt).normalized;
         
         // queue player hurt
+        FindObjectOfType<SoundManager>().PlaySoundEffect("player hurt");
         this.playerHurt = true;
         this.CurrentState = PlayerStates.HURT;
         this.animator.speed = 1;
@@ -142,6 +143,7 @@ public class PlayerAnimationController : MonoBehaviour
             if (Input.GetButtonDown("Fire1"))
             {
                 this.CurrentState = PlayerStates.ATTACK;
+                FindObjectOfType<SoundManager>().PlaySoundEffect("knight slash");
                 this.animator.speed = this.speed / 4;
             }
             // movement input; queue player movement
