@@ -9,15 +9,17 @@ TagManager:
   - Wall
   - EnemyProjectile
   - PlayerHurtbox
+  - PlayerAttack
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Wall
   - Water
   - UI
-  - 
-  - 
+  - Enemy
+  - Player
   - 
   - 
   - 
