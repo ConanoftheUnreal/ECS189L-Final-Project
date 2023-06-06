@@ -74,7 +74,7 @@ public class DungeonGenerator : IRoomGenerator
         TilemapRenderer exitsRenderer = exitsLayer.AddComponent<TilemapRenderer>();
         exitsRenderer.sortingOrder = 4;
         _tileMaps.Add("Exits", exitsLayer.GetComponent<Tilemap>());
-        exitsLayer.SetActive(false);
+        //exitsLayer.SetActive(false);
 
         // Create "Decorations" Layer
         GameObject decorationsLayer = new GameObject("Decorations");
@@ -194,9 +194,6 @@ public class DungeonGenerator : IRoomGenerator
 
         //Line up Exits tilemap with the other two, and make it 50% transparent for debugging purposes.
         PlaceRectangleHollow("Exits", "Black", width + 2, height + 4, new Vector2Int(0, 0));
-        Color tempColor = _tileMaps["Exits"].color;
-        tempColor.a = 0.5f;
-        _tileMaps["Exits"].color = tempColor;
 
         //Line up Decorations tilemap with the others
         PlaceRectangleHollow("Decorations", "Black", width + 2, height + 4, new Vector2Int(0, 0));
@@ -219,17 +216,14 @@ public class DungeonGenerator : IRoomGenerator
 
             int pathWidth = rect.topRight.x - rect.bottomLeft.x + 1;
             int pathHeight = rect.topRight.y - rect.bottomLeft.y + 1;
-            // Just use "Carpet_Center" is a placeholder tile to show where the paths are
-            PlaceRectangleFilled("Exits", "Carpet_Center", pathWidth, pathHeight, rect.bottomLeft);
 
-            // Logic for placing the large double door at exits that go upward
-            if (pathHeight > 2)
+            for (int x = rect.bottomLeft.x; x <= rect.topRight.x; x++)
             {
 
-                for (int x = rect.bottomLeft.x; x <= rect.topRight.x; x++)
+                for (int y = rect.topRight.y; y >= rect.bottomLeft.y; y--)
                 {
 
-                    for (int y = rect.topRight.y; y >= rect.bottomLeft.y; y--)
+                    if (rect.direction == ExitDirection.UP)
                     {
 
                         Tile currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
@@ -259,19 +253,49 @@ public class DungeonGenerator : IRoomGenerator
                                 {
                                     _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_MiddleRight"));
                                 }
-                                else if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_MiddleLeft")
+
+                            }
+
+                        }
+                        else if (currentTile == null)
+                        {
+
+                            Tile decorationsTileAbove = _tileMaps["Decorations"].GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
+
+                            if (decorationsTileAbove != null)
+                            {
+
+                                if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_MiddleLeft")
                                 {
+
                                     _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_BottomLeft"));
+                                    _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Up"));
+
                                 }
                                 else if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_MiddleRight")
                                 {
+                                  
                                     _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_BottomRight"));
+                                    _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Up"));
+
                                 }
 
                             }
 
                         }
 
+                    }
+                    else if ((rect.direction == ExitDirection.LEFT) && (x == rect.bottomLeft.x))
+                    {
+                        _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Left"));
+                    }
+                    else if ((rect.direction == ExitDirection.RIGHT) && (x == rect.topRight.x))
+                    {
+                        _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Right"));
+                    }
+                    else if ((rect.direction == ExitDirection.DOWN) && (y == rect.bottomLeft.y))
+                    {
+                        _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Down"));
                     }
 
                 }

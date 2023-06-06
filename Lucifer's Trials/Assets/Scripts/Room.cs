@@ -49,6 +49,7 @@ public class Room
 
         bordersTilemap.ClearAllTiles();
 
+        // If clearing the way for the exit caused some "middle" bicks to become "side" bricks, update them.
         for (int x = 0; x < collisionTilemap.size.x; x++)
         {
 
@@ -58,25 +59,33 @@ public class Room
                 Tile currentTile = collisionTilemap.GetTile(new Vector3Int(x, y, 0)) as Tile;
                 Tile tileToRight = collisionTilemap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;
                 Tile tileToLeft = collisionTilemap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
+                Tile tileBottomLeft = collisionTilemap.GetTile(new Vector3Int(x - 1, y - 1, 0)) as Tile;
+                Tile tileBottomRight = collisionTilemap.GetTile(new Vector3Int(x + 1, y - 1, 0)) as Tile;
                 
                 if (currentTile != null)
                 {
 
-                    if ((tileset.GetNameOfTile(currentTile) == "BottomWall_Right") && tileToRight == null)
+                    if ((tileset.GetNameOfTile(currentTile) == "BottomWall_Right") && (tileToRight == null))
                     {
                         collisionTilemap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BottomWall_Mid"));
                     }
-                    else if ((tileset.GetNameOfTile(currentTile) == "BottomWall_Left") && tileToLeft == null)
+                    else if ((tileset.GetNameOfTile(currentTile) == "BottomWall_Left") && (tileToLeft == null))
                     {
                         collisionTilemap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BottomWall_Mid"));
                     }
-                    else if ((tileset.GetNameOfTile(currentTile) == "TopWall_Right") && tileToRight == null)
+                    else if ((tileset.GetNameOfTile(currentTile) == "TopWall_Right") && (tileToRight == null))
                     {
-                        collisionTilemap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("TopWall_Mid"));
+                        if (tileBottomRight == null)
+                        {
+                            collisionTilemap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("TopWall_Mid"));
+                        }
                     }
-                    else if ((tileset.GetNameOfTile(currentTile) == "TopWall_Left") && tileToLeft == null)
+                    else if ((tileset.GetNameOfTile(currentTile) == "TopWall_Left") && (tileToLeft == null))
                     {
-                        collisionTilemap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("TopWall_Mid"));
+                        if (tileBottomLeft == null)
+                        {
+                            collisionTilemap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("TopWall_Mid"));
+                        }
                     }
 
                 }

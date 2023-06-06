@@ -60,7 +60,7 @@ public sealed class DungeonTileset : ITileset
         instance.PairNameAndTile("TopWall_Right", instance.GetTileByFilename("Dungeon_Tileset_3"));
 
         instance.PairNameAndTile("BlackBorder_Top", instance.GetTileByFilename("Dungeon_Tileset_43"));
-        instance.PairNameAndTile("BlackBorder_Bottom", instance.GetTileByFilename("Dungeon_Tileset_112"));
+        instance.PairNameAndTile("BlackBorder_Bottom", instance.GetTileByFilename("Dungeon_Tileset_108"));
         instance.PairNameAndTile("BlackBorder_Right", instance.GetTileByFilename("Dungeon_Tileset_26"));
         instance.PairNameAndTile("BlackBorder_Left", instance.GetTileByFilename("Dungeon_Tileset_27"));
         instance.PairNameAndTile("BlackBorder_BottomLeft", instance.GetTileByFilename("Dungeon_Tileset_42"));
@@ -77,6 +77,11 @@ public sealed class DungeonTileset : ITileset
         instance.PairNameAndTile("BigDoor_MiddleRight", instance.GetTileByFilename("Dungeon_Tileset_70"));
         instance.PairNameAndTile("BigDoor_BottomLeft", instance.GetTileByFilename("Dungeon_Tileset_85"));
         instance.PairNameAndTile("BigDoor_BottomRight", instance.GetTileByFilename("Dungeon_Tileset_86"));
+
+        instance.PairNameAndTile("Exit_Left", instance.GetTileByFilename("Dungeon_Tileset_110"));
+        instance.PairNameAndTile("Exit_Right", instance.GetTileByFilename("Dungeon_Tileset_116"));
+        instance.PairNameAndTile("Exit_Up", instance.GetTileByFilename("Dungeon_Tileset_114"));
+        instance.PairNameAndTile("Exit_Down", instance.GetTileByFilename("Dungeon_Tileset_115"));
 
     }
 
