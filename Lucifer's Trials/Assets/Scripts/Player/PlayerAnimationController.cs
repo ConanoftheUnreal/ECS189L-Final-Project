@@ -8,6 +8,7 @@ using Lucifer;
 public class PlayerAnimationController : MonoBehaviour
 {
     [SerializeField] private PlayerType playerType = PlayerType.WARRIOR;
+    Action<Vector2> Knockback;
 
     private bool statelock = false;
     private bool playerHurt = false;
@@ -91,6 +92,7 @@ public class PlayerAnimationController : MonoBehaviour
         {
             // queue player death
             this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            this.statelock = false;
             this.CurrentState = PlayerStates.DEATH;
             this.animator.speed = 1;
         }
@@ -103,7 +105,6 @@ public class PlayerAnimationController : MonoBehaviour
         }
 
         // determine knockback handling
-        Action<Vector2> Knockback = this.gameObject.GetComponent<PlayerMovement>().Knockback;
         switch (damageType)
         {
             case DamageTypes.CQC:
@@ -150,6 +151,9 @@ public class PlayerAnimationController : MonoBehaviour
                 Debug.Log("Error: player type is undefined.");
                 break;
         }
+
+        // declare function pointer for knockback call in `PlayerDamaged`
+        Knockback = this.gameObject.GetComponent<PlayerMovement>().Knockback;
     }
 
     void Update()
