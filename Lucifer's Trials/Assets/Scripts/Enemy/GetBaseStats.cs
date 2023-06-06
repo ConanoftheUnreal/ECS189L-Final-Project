@@ -58,6 +58,7 @@ public class GetBaseStats
     public float Orbit
     {
         get { return useConstant ? orbit : baseStats.Orbit; }
+        set { orbit = value; }
     }
 
     public float AttackRange
