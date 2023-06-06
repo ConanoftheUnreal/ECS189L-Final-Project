@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Polarith.AI.Editor</name>
+    </assembly>
+    <members>
+        <member name="T:Polarith.AI.MoveEditor.AIMBehaviourEditor">
+            <summary>
+            Custom editor for each derived <see cref="T:Polarith.AI.Move.AIMBehaviour"/>. When inheriting from this class, the three
+            methods <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawBehaviourInspector"/>, <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawEnvironmentInspector"/> and <see
+            cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawGizmoInspector"/> needs to be implemented. These methods define what is shown in the three
+            corresponding inspector tabs.
+            <para/>
+            Note that <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.Awake"/>, <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.OnEnable"/> and <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.OnInspectorGUI"/> are already implemented
+            for this level of inheritance, so the base versions of these methods should be called for each overridden
+            version of these methods.
+            </summary>
+        </member>
+        <member name="P:Polarith.AI.MoveEditor.AIMBehaviourEditor.BehaviourProperty">
+            <summary>
+            Needs to be implemented for ensuring that every behaviour editor has access to serialized properties. Can be
+            trivially implemented by calling <see cref="M:UnityEditor.SerializedObject.FindProperty(System.String)"/> with the name of the
+            back-end behaviour, e.g., <c>return serializedObject.FindProperty("Adjust");</c> for the AIMAdjust
+            behaviour.
+            </summary>
+        </member>
+        <member name="P:Polarith.AI.MoveEditor.AIMBehaviourEditor.AdvancedInspector">
+            <summary>
+            If <c>true</c>, the advanced inspector option is used. Thus, the advanced inspector should be displayed and
+            vice versa.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawBehaviourInspector">
+            <summary>
+            Defines elements to be displayed at the 'Behaviour' inspector tab. Here, all properties associated with the
+            back-end behaviour should be displayed.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawEnvironmentInspector">
+            <summary>
+            Defines elements to be displayed at the 'Environment' inspector tab. Here, all properties associated with
+            the behaviours perception should be displayed.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawGizmoInspector">
+            <summary>
+            Defines elements to be displayed at the 'Gizmo' inspector tab. Here, all properties associated with the
+            behaviour's gizmos should be displayed.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawHeaderBegin">
+            <summary>
+            Optional, defines elements to be displayed at the top of the inspector. For example, we use this method to
+            display our Polarith logo.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawHeaderEnd">
+            <summary>
+            Optional, defines elements to be displayed between <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawHeaderBegin"/> and the first property.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.OnInspectorGUI">
+            <summary>
+            The base implementation of the Polarith AIM behaviour inspector layout. It ensures that the necessary <see
+            cref="T:UnityEditor.SerializedObject"/> calls are done correctly. The pipeline is as follows:
+            <list type="number">
+            <item>Call to <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawHeaderBegin"/>,</item>
+            <item>
+            Display the inspector tab <see cref="M:UnityEngine.GUILayout.Toolbar(System.Int32,UnityEngine.GUIContent[],UnityEngine.GUILayoutOption[])"/>,
+            </item>
+            <item>
+            Display the property fields for <see cref="F:Polarith.AI.Move.AIMBehaviour.Order"/> and <see
+            cref="F:Polarith.AI.Move.AIMBehaviour.Label"/>,
+            </item>
+            <item>
+            According to the inspector tab, call either <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawBehaviourInspector"/>, <see
+            cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawEnvironmentInspector"/> or <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawGizmoInspector"/>.
+            </item>
+            </list>
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.Awake">
+            <summary>
+            Called at inspector initialization.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.OnEnable">
+            <summary>
+            Called when the inspector is shown.
+            </summary>
+        </member>
+        <member name="T:Polarith.AI.MoveEditor.AIMPerceptBehaviourEditor`1">
+            <summary>
+            Custom editor for each derived <see cref="T:Polarith.AI.Move.AIMPerceptBehaviour`1"/>. When inheriting from this class, the three
+            methods <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawBehaviourInspector"/>, <see cref="M:Polarith.AI.MoveEditor.AIMPerceptBehaviourEditor`1.DrawEnvironmentInspector"/> and <see
+            cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawGizmoInspector"/> needs to be implemented. These methods define what is shown in
+            the three corresponding inspector tabs.
+            <para/>
+            Note that <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.Awake"/>, <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.OnEnable"/>, <see
+            cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.OnInspectorGUI"/> and <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawEnvironmentInspector"/> are
+            already implemented for this level of inheritance, so the base versions of these methods should be called for
+            each overridden version of these methods.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMPerceptBehaviourEditor`1.DrawHeaderEnd">
+            <summary>
+            Optional, defines elements to be displayed between <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawHeaderBegin"/> and the
+            first property.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMPerceptBehaviourEditor`1.DrawEnvironmentInspector">
+            <summary>
+            Displays both the <see cref="F:Polarith.AI.Move.AIMPerceptBehaviour`1.FilteredEnvironments"/> list and the <see
+            cref="F:Polarith.AI.Move.AIMPerceptBehaviour`1.GameObjects"/> list. If an <see cref="T:Polarith.AI.Move.AIMSteeringPerceiver"/> is attached to
+            the game object, the <see cref="F:Polarith.AI.Move.AIMPerceptBehaviour`1.FilteredEnvironments"/> list uses popup fields for
+            assigning the environment labels. As against the labels can be set directly via textual input if no
+            perceiver is present.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMPerceptBehaviourEditor`1.OnEnable">
+            <summary>
+            Called when the inspector is shown.
+            </summary>
+        </member>
+        <member name="T:Polarith.AI.MoveEditor.AIMRadiusSteeringBehaviourEditor">
+            <summary>
+            Custom editor for each derived <see cref="T:Polarith.AI.Move.AIMRadiusSteeringBehaviour"/>. When inheriting from this class, the three
+            methods <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawBehaviourInspector"/>, <see
+            cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawEnvironmentInspector"/> and <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawGizmoInspector"/>
+            needs to be implemented. These methods define what is shown in the three corresponding inspector tabs.
+            <para/>
+            Note that <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.Awake"/>, <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.OnEnable"/>, <see
+            cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.OnInspectorGUI"/>, <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawEnvironmentInspector"/>, <see
+            cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawBehaviourInspector"/> and <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawGizmoInspector"/> are
+            already implemented for this level of inheritance, so the base versions of these methods should be called for
+            each overridden version of these methods.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMRadiusSteeringBehaviourEditor.DrawBehaviourInspector">
+            <summary>
+            Displays the properties of the corresponding <see cref="T:Polarith.AI.Move.RadiusSteeringBehaviour"/> inside a foldout.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMRadiusSteeringBehaviourEditor.DrawGizmoInspector">
+            <summary>
+            Displays the circle gizmo settings for the <see cref="F:Polarith.AI.Move.RadiusSteeringBehaviour.InnerRadius"/> and <see
+            cref="F:Polarith.AI.Move.RadiusSteeringBehaviour.OuterRadius"/>.
+            </summary>
+        </member>
+        <member name="T:Polarith.AI.MoveEditor.AIMSteeringBehaviourEditor">
+            <summary>
+            Custom editor for each derived <see cref="T:Polarith.AI.Move.AIMSteeringBehaviour"/>. When inheriting from this class, the three
+            methods <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawBehaviourInspector"/>, <see
+            cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawEnvironmentInspector"/> and <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawGizmoInspector"/>
+            needs to be implemented. These methods define what is shown in the three corresponding inspector tabs.
+            <para/>
+            Note that <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.Awake"/>, <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.OnEnable"/>, <see
+            cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.OnInspectorGUI"/>, <see cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawEnvironmentInspector"/> and <see
+            cref="M:Polarith.AI.MoveEditor.AIMBehaviourEditor.DrawBehaviourInspector"/> are already implemented for this level of inheritance, so the
+            base versions of these methods should be called for each overridden version of these methods.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMSteeringBehaviourEditor.DrawBehaviourInspector">
+            <summary>
+            Displays the properties of the corresponding <see cref="T:Polarith.AI.Move.SteeringBehaviour"/> inside a foldout.
+            </summary>
+        </member>
+        <member name="M:Polarith.AI.MoveEditor.AIMSteeringBehaviourEditor.DrawGizmoInspector">
+            <summary>
+            Displays the gizmo settings.
+            </summary>
+        </member>
+        <member name="P:Polarith.AI.MoveEditor.AIMSensorEditor.SensorName">
+            <summary>
+            The name of the sensor property. Is used to call serializedObject.FindProperty(SensorName).
+            </summary>
+        </member>
+        <member name="T:Polarith.AI.MoveEditor.AIMPlanarSensorEditor">
+            <summary>
+            Handles the proper building and updating of <see cref="T:Polarith.AI.Move.AIMPlanarSensor"/> instances.
+            </summary>
+        </member>
+    </members>
+</doc>

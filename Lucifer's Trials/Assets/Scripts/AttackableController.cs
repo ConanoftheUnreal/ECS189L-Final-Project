@@ -7,7 +7,7 @@ using Lucifer;
 public class AttackableController : MonoBehaviour
 {
     private bool knockedback = false;
-    private float knockbackDuration = 0.2f;
+    private float knockbackDuration = 0.25f;
     private float timePassed;
     private float knockbackForce = 3.0f;
     [SerializeField] int damage = 1;
@@ -16,9 +16,10 @@ public class AttackableController : MonoBehaviour
     {
         if (col.tag == "PlayerHurtbox")
         {
-            col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.CQC);
             // get `Player` gameobject from collider of `PlayerHurtbox` and hurt player
             col.transform.parent.GetComponent<PlayerController>().DecreaseHealth(damage);
+            // notify player they were damaged
+            col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.CQC);
         }
 
         if ((col.tag == "PlayerAttack") || (col.tag == "Projectile"))
