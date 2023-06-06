@@ -7,13 +7,21 @@ using UnityEngine;
 
 public class GoblinBeserker : Enemy
 {
+    // The layer that the player character is on. Important for collision detection
+    // algorithm used to check if player is in range.
     private static int _playerLayerMask = 1 << 7;
+
+    // Speed of enemy may be modified by the state the enemy is in. This holds
+    // that modified value.
     private float _speed;
+
+    // The direction enemy should be move given by Polarith Context Steering Alg.
     private Vector2 _movementDirection;
 
 
     public void Start()
     {
+        _state = EnemyState.PATROL;
         _currentHealth = stats.Health;
         _timeOnCooldown = 0;
         //_cooldown = false;
@@ -32,7 +40,6 @@ public class GoblinBeserker : Enemy
     private void Update()
     {
         UpdateState();
-        Debug.Log(_state.ToString());
         switch (_state)
         {
             case EnemyState.MOVE:
@@ -60,6 +67,7 @@ public class GoblinBeserker : Enemy
         GetMovementDirection();
     }
 
+    // Enable and Disables Polarith AI components for the given state.
     private void Move()
     {
         foreach (Polarith.AI.Move.AIMOrbit orbit in _contextSteering.GetComponents<Polarith.AI.Move.AIMOrbit>())
@@ -84,6 +92,7 @@ public class GoblinBeserker : Enemy
         }
     }
 
+    // Enable and Disables Polarith AI components for the given state.
     private void Patrol()
     {
         foreach (Polarith.AI.Move.AIMOrbit orbit in _contextSteering.GetComponents<Polarith.AI.Move.AIMOrbit>())
@@ -114,6 +123,7 @@ public class GoblinBeserker : Enemy
         }
     }
 
+    // Enable and Disables Polarith AI components for the given state.
     private void Orbit()
     {
         foreach (Polarith.AI.Move.AIMOrbit orbit in _contextSteering.GetComponents<Polarith.AI.Move.AIMOrbit>())
@@ -138,6 +148,7 @@ public class GoblinBeserker : Enemy
         }
     }
 
+    // Enable and Disables Polarith AI components for the given state.
     private void Flee()
     {
         foreach (Polarith.AI.Move.AIMOrbit orbit in _contextSteering.GetComponents<Polarith.AI.Move.AIMOrbit>())
@@ -168,15 +179,17 @@ public class GoblinBeserker : Enemy
         }
     }
 
+    // Updates the enemies state based on whether attack is on cooldown
+    // and if player is in certain ranges.
     protected override void UpdateState()
     {
         if (!_cooldown && GetRange(stats.Fov))
         {
-            _state = EnemyState.ATTACK;
-
+            // If attack is available to use and within attack range, then attack
+            // else move into attack range.
             if (GetRange(stats.AttackRange))
             {
-               /* Do an attack action */
+                _state = EnemyState.ATTACK;
             }
             else
             {
@@ -185,9 +198,17 @@ public class GoblinBeserker : Enemy
         }
         else if (GetRange(stats.Fov))
         {
+            // If attack is unavailbe and player in field of view, then move to orbit player.
+            // If in enemies attack range, quickly leave enemy attack range. If to far outside of
+            // Orbit value, than move closer to orbit.
             if (GetRange(.5f))
             {
+                // TODO: Need a flee range variable.
                 _state = EnemyState.FLEE;
+            }
+            else if (!GetRange(Stats.Orbit * 1.2f))
+            {
+                _state = EnemyState.MOVE;
             }
             else
             {
