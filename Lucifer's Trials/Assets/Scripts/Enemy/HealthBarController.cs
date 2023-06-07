@@ -21,6 +21,5 @@ public class HealthBarController : MonoBehaviour
     void Update()
     {
         healthSlider.transform.position = Camera.main.WorldToScreenPoint(transform.parent.position + this.offset);
-        Debug.Log(healthSlider.value);
     }
 }
