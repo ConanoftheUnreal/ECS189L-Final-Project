@@ -30,14 +30,14 @@ public class ManualRoomGeneration : MonoBehaviour
             _currentRoom.OpenExits();
             
             CameraController cc = _camera.gameObject.GetComponent<CameraController>();
-            cc.SnapToTilemap(_currentRoom.roomObject.transform.Find("Collision").GetComponent<Tilemap>());
+            cc.SnapToRoom(_currentRoom);
 
         }
 
         if (Input.GetButtonDown("Fire2"))
         {
 
-            _currentRoom.OpenExits();
+            //_currentRoom.OpenExits();
 
         }
 

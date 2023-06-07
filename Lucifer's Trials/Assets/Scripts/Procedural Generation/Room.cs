@@ -56,7 +56,7 @@ public class Room
 
                 Vector3 objectPosition = collisionTilemap.CellToWorld(new Vector3Int(exitPath.bottomLeft.x, exitPath.bottomLeft.y + 1));
                 exitObject.transform.position = objectPosition;
-                exitCollider.size = new Vector2(0.5f, 2);
+                exitCollider.size = new Vector2(0.5f, 2) * roomObject.transform.localScale;
     
             }
             else if (exitPath.direction == ExitDirection.RIGHT)
@@ -64,7 +64,7 @@ public class Room
 
                 Vector3 objectPosition = collisionTilemap.CellToWorld(new Vector3Int(exitPath.topRight.x + 1, exitPath.topRight.y));
                 exitObject.transform.position = objectPosition;
-                exitCollider.size = new Vector2(0.5f, 2);                
+                exitCollider.size = new Vector2(0.5f, 2) * roomObject.transform.localScale;                
 
             }
             else if (exitPath.direction == ExitDirection.UP)
@@ -72,7 +72,7 @@ public class Room
 
                 Vector3 objectPosition = collisionTilemap.CellToWorld(new Vector3Int(exitPath.bottomLeft.x + 1, exitPath.bottomLeft.y + 1));
                 exitObject.transform.position = objectPosition;
-                exitCollider.size = new Vector2(2, 0.5f);                
+                exitCollider.size = new Vector2(2, 0.5f) * roomObject.transform.localScale;                
 
             }
             else if (exitPath.direction == ExitDirection.DOWN)
@@ -80,9 +80,11 @@ public class Room
 
                 Vector3 objectPosition = collisionTilemap.CellToWorld(new Vector3Int(exitPath.bottomLeft.x + 1, exitPath.bottomLeft.y));
                 exitObject.transform.position = objectPosition;
-                exitCollider.size = new Vector2(2, 0.5f);                
+                exitCollider.size = new Vector2(2, 0.5f) * roomObject.transform.localScale;                
 
             }
+
+            exitObject.AddComponent<ExitManager>();
 
         }
 

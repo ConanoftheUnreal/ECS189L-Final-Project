@@ -15,6 +15,7 @@ public class DungeonGenerator : IRoomGenerator
     private const int MIN_NUM_COLUMNS = 1;
     private const int MIN_COLUMN_HEIGHT = 3;
     private const int MAX_COLUMN_GENERATION_TRIES = 10;
+    private const float ROOM_SCALE = 0.5f;
 
     private const int WALL_LAYER = 3;
 
@@ -304,6 +305,9 @@ public class DungeonGenerator : IRoomGenerator
             }
 
         }
+
+        // Scale room
+        room.transform.localScale = new Vector3(ROOM_SCALE, ROOM_SCALE, 0);
 
         // Add collider to Collision layer
         TilemapCollider2D collisionTilemapCollider = collisionLayer.AddComponent<TilemapCollider2D>();
