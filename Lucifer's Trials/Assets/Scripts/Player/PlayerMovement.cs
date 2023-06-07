@@ -55,12 +55,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (!this.isDashing)
         {
-            if (this.horizontal == -1 && this.vertical == 0)
+            if (this.horizontal == -1)
             {
                 //Debug.Log("Facing Left");
                 this.facedDirection = "Left";
             }
-            if (this.horizontal == 1 && this.vertical == 0)
+            if (this.horizontal == 1)
             {
                 //Debug.Log("Facing Right");
                 this.facedDirection = "Right";

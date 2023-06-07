@@ -85,4 +85,9 @@ public class PlayerController : MonoBehaviour
         this.wallet += amount;
         Debug.Log("Current Gold: " + this.wallet);
     }
+
+    public int GetWallet()
+    {
+        return this.wallet;
+    }
 }
