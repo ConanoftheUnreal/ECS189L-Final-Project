@@ -1,14 +1,5 @@
 {
   "dependencies": {
-    "com.friedforfun.contextsteering": {
-      "version": "file:C:/Users/gdsms/Downloads/ContextSteering-v0.0.1/ContextSteering-v0.0.1",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.unity.burst": "1.4.11",
-        "com.unity.textmeshpro": "3.0.6"
-      }
-    },
     "com.unity.2d.animation": {
       "version": "9.0.1",
       "depth": 1,
@@ -93,7 +84,7 @@
     },
     "com.unity.burst": {
       "version": "1.8.3",
-      "depth": 1,
+      "depth": 3,
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.2.1"

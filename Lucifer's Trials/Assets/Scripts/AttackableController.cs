@@ -24,6 +24,7 @@ public class AttackableController : MonoBehaviour
 
         if ((col.tag == "PlayerAttack") || (col.tag == "Projectile"))
         {
+            FindObjectOfType<SoundManager>().PlaySoundEffect("enemy hurt");
             var rb = this.GetComponent<Rigidbody2D>();
 
             var positionSelf = (Vector2)this.gameObject.transform.position;

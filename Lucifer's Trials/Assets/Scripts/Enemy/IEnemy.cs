@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
+// Interface for basic enemy classes.
+// Useful for factory pattern.
 public interface IEnemy
 {
     public float CurrentHealth { get; }

@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// BaseStats will hold the values of stats on an enemy that will never change throughout the game.
+// CreateAssetMenu allows it be a prefab.
 [CreateAssetMenu]
 public class BaseStats : ScriptableObject
 {
