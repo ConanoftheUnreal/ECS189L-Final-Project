@@ -25,6 +25,8 @@ public class Room
         Tilemap bordersTilemap = roomObject.transform.Find("Borders").GetComponent<Tilemap>();
         Tilemap decorationsTilemap = roomObject.transform.Find("Decorations").GetComponent<Tilemap>();
 
+        Transform exitsTransform = roomObject.transform.Find("Exits");
+
         foreach(ExitPathRectangle exitPath in exitPaths)
         {
 
@@ -42,6 +44,43 @@ public class Room
 
                     }
                 }
+
+            }
+
+            GameObject exitObject = new GameObject("Exit #" + exitPath.id.ToString());
+            exitObject.transform.SetParent(exitsTransform);
+            BoxCollider2D exitCollider = exitObject.AddComponent<BoxCollider2D>();
+
+            if (exitPath.direction == ExitDirection.LEFT)
+            {
+
+                Vector3 objectPosition = collisionTilemap.CellToWorld(new Vector3Int(exitPath.bottomLeft.x, exitPath.bottomLeft.y + 1));
+                exitObject.transform.position = objectPosition;
+                exitCollider.size = new Vector2(0.5f, 2);
+    
+            }
+            else if (exitPath.direction == ExitDirection.RIGHT)
+            {
+
+                Vector3 objectPosition = collisionTilemap.CellToWorld(new Vector3Int(exitPath.topRight.x + 1, exitPath.topRight.y));
+                exitObject.transform.position = objectPosition;
+                exitCollider.size = new Vector2(0.5f, 2);                
+
+            }
+            else if (exitPath.direction == ExitDirection.UP)
+            {
+
+                Vector3 objectPosition = collisionTilemap.CellToWorld(new Vector3Int(exitPath.bottomLeft.x + 1, exitPath.bottomLeft.y + 1));
+                exitObject.transform.position = objectPosition;
+                exitCollider.size = new Vector2(2, 0.5f);                
+
+            }
+            else if (exitPath.direction == ExitDirection.DOWN)
+            {
+
+                Vector3 objectPosition = collisionTilemap.CellToWorld(new Vector3Int(exitPath.bottomLeft.x + 1, exitPath.bottomLeft.y));
+                exitObject.transform.position = objectPosition;
+                exitCollider.size = new Vector2(2, 0.5f);                
 
             }
 
@@ -115,6 +154,7 @@ public class ExitPathRectangle
 
     public Vector2Int bottomLeft;
     public Vector2Int topRight;
-    public ExitDirection direction;    
+    public ExitDirection direction; 
+    public int id;
 
 }

@@ -205,6 +205,7 @@ public class DungeonGenerator : IRoomGenerator
         {
 
             ExitPathRectangle randomExit = possibleExitRects[Random.Range(0, possibleExitRects.Count)];
+            randomExit.id = i;
             exitRects.Add(randomExit);
             possibleExitRects.Remove(randomExit);
 
