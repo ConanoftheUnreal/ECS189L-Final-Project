@@ -8,6 +8,7 @@ public class DungeonGenerator : IRoomGenerator
     // Columns are the rectangles that generate in the room
     private int _maxColumns;
     private int _maxColumnLength;
+    private Vector2Int _size;
 
     // The number of exits in the room. The entrance counts as an exit.
     private int _numExits;
@@ -15,7 +16,7 @@ public class DungeonGenerator : IRoomGenerator
     private const int MIN_NUM_COLUMNS = 1;
     private const int MIN_COLUMN_HEIGHT = 3;
     private const int MAX_COLUMN_GENERATION_TRIES = 10;
-    private const float ROOM_SCALE = 0.5f;
+    private const float ROOM_SCALE = 1f;
 
     private const int WALL_LAYER = 3;
 
@@ -25,15 +26,15 @@ public class DungeonGenerator : IRoomGenerator
     // The tileset that this generator uses is the DungeonTileset
     private ITileset _tileset = DungeonTileset.Instance;
 
-    public DungeonGenerator(int maxColumns, int maxColumnLength)
+    public DungeonGenerator(int maxColumns, int maxColumnLength, Vector2Int size)
     {
 
         _maxColumns = maxColumns;
         _maxColumnLength = maxColumnLength;
-
+        _size = size;
     }
 
-    public Room Generate(int width, int height, int numExits, Vector2 location)
+    public Room Generate(int numExits)
     {
 
         // Reset tilemaps and number of exits because they a unique per-room
@@ -42,7 +43,6 @@ public class DungeonGenerator : IRoomGenerator
 
         // Create the gameobject for the room
         GameObject room = new GameObject("Room");
-        room.transform.position = location;
         
         // Add a grid component
         Grid grid = room.AddComponent<Grid>();
@@ -73,9 +73,9 @@ public class DungeonGenerator : IRoomGenerator
         GameObject exitsLayer = new GameObject("Exits");
         exitsLayer.transform.SetParent(room.transform);
         TilemapRenderer exitsRenderer = exitsLayer.AddComponent<TilemapRenderer>();
+        exitsRenderer.enabled = false;
         exitsRenderer.sortingOrder = 4;
         _tileMaps.Add("Exits", exitsLayer.GetComponent<Tilemap>());
-        //exitsLayer.SetActive(false);
 
         // Create "Decorations" Layer
         GameObject decorationsLayer = new GameObject("Decorations");
@@ -85,15 +85,15 @@ public class DungeonGenerator : IRoomGenerator
         _tileMaps.Add("Decorations", decorationsLayer.GetComponent<Tilemap>());
 
         // Place Ground tiles
-        PlaceRectangleFilled("Ground", "Ground", width + 2, height + 4, new Vector2Int(0, 0));
+        PlaceRectangleFilled("Ground", "Ground", _size.x + 2, _size.y + 4, new Vector2Int(0, 0));
         
         // Get position and size of ground area
         Vector3 groundPos = _tileMaps["Ground"].transform.position;
         Vector3Int groundSize = _tileMaps["Ground"].size;
 
         // Place the black border around the room
-        PlaceRectangleHollow("Collision", "Black", width + 2, height + 4, new Vector2Int(0, 0));
-        PlaceRectangleFilled("Collision", "Black", width, 2, new Vector2Int(1, height + 1));
+        PlaceRectangleHollow("Collision", "Black", _size.x + 2, _size.y + 4, new Vector2Int(0, 0));
+        PlaceRectangleFilled("Collision", "Black", _size.x, 2, new Vector2Int(1, _size.y + 1));
 
         // Generate a random number of columns
         int numColumns = Random.Range(MIN_NUM_COLUMNS, _maxColumns + 1);
@@ -137,8 +137,8 @@ public class DungeonGenerator : IRoomGenerator
                         that just don't look quite right
                     */
                     columnHeight = Mathf.Max(Random.Range(1, _maxColumnLength + 1), MIN_COLUMN_HEIGHT);
-                    x = Random.Range(1, width + 1);
-                    y = Random.Range(1, height + 1);
+                    x = Random.Range(1, _size.x + 1);
+                    y = Random.Range(1, _size.y + 1);
 
                     // Truncate columns that are too long and generate off the edges of the room
                     if (x + columnWidth > _tileMaps["Collision"].size.x)
@@ -189,15 +189,15 @@ public class DungeonGenerator : IRoomGenerator
             Place a black border around the edges of the Borders layer so that it is the same size as the Collision layer.
             This is so that we don't need to translate coordinates between the two.
         */
-        PlaceRectangleHollow("Borders", "Black", width + 2, height + 4, new Vector2Int(0, 0));
+        PlaceRectangleHollow("Borders", "Black", _size.x + 2, _size.y + 4, new Vector2Int(0, 0));
 
         PlaceBorders(_tileMaps["Borders"], _tileMaps["Collision"]);
 
         //Line up Exits tilemap with the other two, and make it 50% transparent for debugging purposes.
-        PlaceRectangleHollow("Exits", "Black", width + 2, height + 4, new Vector2Int(0, 0));
+        PlaceRectangleHollow("Exits", "Black", _size.x + 2, _size.y + 4, new Vector2Int(0, 0));
 
         //Line up Decorations tilemap with the others
-        PlaceRectangleHollow("Decorations", "Black", width + 2, height + 4, new Vector2Int(0, 0));
+        PlaceRectangleHollow("Decorations", "Black", _size.x + 2, _size.y + 4, new Vector2Int(0, 0));
         // Get all possible exit paths in this room
         List<ExitPathRectangle> possibleExitRects = FindPossibleExitPaths(_tileMaps["Collision"]);
         List<ExitPathRectangle> exitRects = new List<ExitPathRectangle>();
@@ -206,7 +206,7 @@ public class DungeonGenerator : IRoomGenerator
         {
 
             ExitPathRectangle randomExit = possibleExitRects[Random.Range(0, possibleExitRects.Count)];
-            randomExit.id = i;
+            randomExit.SetID(i);
             exitRects.Add(randomExit);
             possibleExitRects.Remove(randomExit);
 
@@ -378,8 +378,8 @@ public class DungeonGenerator : IRoomGenerator
                     Vector3Int upperPoint = new Vector3Int(x, y + 1, 0);
 
                     // currentRect will store the Rectangle that we will actually return representing this path
-                    currentRect.bottomLeft = new Vector2Int(lowerPoint.x, lowerPoint.y);
-                    currentRect.topRight = new Vector2Int(upperPoint.x, upperPoint.y);
+                    currentRect.SetBottomLeft(new Vector2Int(lowerPoint.x, lowerPoint.y));
+                    currentRect.SetTopRight(new Vector2Int(upperPoint.x, upperPoint.y));
 
                     // Also look at the tiles above and below our path
                     Tile belowTile = tileMapCopy.GetTile(lowerPoint - new Vector3Int(0, 1, 0)) as Tile;
@@ -451,20 +451,20 @@ public class DungeonGenerator : IRoomGenerator
                     // So update our Rectangle
                     if (upperPoint.x > currentRect.topRight.x)
                     {
-                        currentRect.topRight = new Vector2Int(upperPoint.x, upperPoint.y);
+                        currentRect.SetTopRight(new Vector2Int(upperPoint.x, upperPoint.y));
                     }
                     else if (lowerPoint.x < currentRect.bottomLeft.x)
                     {
-                        currentRect.bottomLeft = new Vector2Int(lowerPoint.x, lowerPoint.y);
+                        currentRect.SetBottomLeft(new Vector2Int(lowerPoint.x, lowerPoint.y));
                     }
 
                     if (x == 0)
                     {
-                        currentRect.direction = ExitDirection.LEFT;
+                        currentRect.SetDirection(ExitDirection.LEFT);
                     }
                     else if (x == tileMapCopy.size.x - 1)
                     {
-                        currentRect.direction = ExitDirection.RIGHT;
+                        currentRect.SetDirection(ExitDirection.RIGHT);
                     }
 
                     // Add it to our list of Rectangles
@@ -488,8 +488,8 @@ public class DungeonGenerator : IRoomGenerator
                     Vector3Int rightPoint = new Vector3Int(x + 1, y, 0);
 
                     // Initialize our rectangle
-                    currentRect.bottomLeft = new Vector2Int(leftPoint.x, leftPoint.y);
-                    currentRect.topRight = new Vector2Int(rightPoint.x, rightPoint.y);
+                    currentRect.SetBottomLeft(new Vector2Int(leftPoint.x, leftPoint.y));
+                    currentRect.SetTopRight(new Vector2Int(rightPoint.x, rightPoint.y));
 
                     // Check the tiles to the left and right of our path
                     Tile tileToleft = tileMapCopy.GetTile(leftPoint - new Vector3Int(1, 0, 0)) as Tile;
@@ -543,20 +543,20 @@ public class DungeonGenerator : IRoomGenerator
                     // If it is valid, updapte our rectangle
                     if (rightPoint.y > currentRect.topRight.y)
                     {
-                        currentRect.topRight = new Vector2Int(rightPoint.x, rightPoint.y);
+                        currentRect.SetTopRight(new Vector2Int(rightPoint.x, rightPoint.y));
                     }
                     else if (leftPoint.y < currentRect.bottomLeft.y)
                     {
-                        currentRect.bottomLeft = new Vector2Int(leftPoint.x, leftPoint.y);
+                        currentRect.SetBottomLeft(new Vector2Int(leftPoint.x, leftPoint.y));
                     }
 
                     if (y == 0)
                     {
-                        currentRect.direction = ExitDirection.DOWN;
+                        currentRect.SetDirection(ExitDirection.DOWN);
                     }
                     else if (y == tileMapCopy.size.y - 1)
                     {
-                        currentRect.direction = ExitDirection.UP;
+                        currentRect.SetDirection(ExitDirection.UP);
                     }
 
                     // And add the rectangle to our list

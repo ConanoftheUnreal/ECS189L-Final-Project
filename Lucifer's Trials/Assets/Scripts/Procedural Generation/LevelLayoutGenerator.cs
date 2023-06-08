@@ -1,22 +1,86 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum NodeType
+{
+
+    ROOT,
+    NORMAL,
+    BOSS
+
+}
+
 public class LevelLayoutNode
 {
 
-    public LevelLayoutNode parent;
-    public List<LevelLayoutNode> children = new List<LevelLayoutNode>();
+    private Room _room;
 
+    private LevelLayoutNode _parent;
+    private List<LevelLayoutNode> _children = new List<LevelLayoutNode>();
     private int _depth;
+    private NodeType _type;
 
-    public LevelLayoutNode(int depth)
+    public LevelLayoutNode(int depth, NodeType type)
     {
+
         _depth = depth;
+        _type = type;
+        
     }
 
-    public int getDepth()
+    public int depth
     {
-        return _depth;
+        get
+        {
+            return _depth;
+        }
+    }
+
+    public NodeType type
+    {
+        get
+        {
+            return _type;
+        }
+    }
+
+    public void SetType(NodeType type)
+    {
+        _type = type;
+    }
+
+    public LevelLayoutNode parent
+    {
+        get
+        {
+            return _parent;
+        }
+    }
+
+    public void SetParent(LevelLayoutNode node)
+    {
+        _parent = node;
+    }
+
+    public List<LevelLayoutNode> children
+    {
+        get
+        {
+            return _children;
+        }
+    }
+
+    public Room room
+    {
+        get
+        {
+            return _room;
+        }
+    }
+
+    public void SetRoom(Room room)
+    {
+        _room = room;
     }
 
 }
@@ -44,7 +108,7 @@ public class LevelLayoutGenerator
 
         _numRooms = 0;
 
-        LevelLayoutNode root = new LevelLayoutNode(1);
+        LevelLayoutNode root = new LevelLayoutNode(1, NodeType.ROOT);
         _numRooms++;
 
         LevelLayoutNode currentNode = root;
@@ -57,6 +121,11 @@ public class LevelLayoutGenerator
             AddChild(currentNode);
             currentDepth++;
             currentNode = currentNode.children[0];
+
+            if (currentDepth == _maxDepth)
+            {
+                currentNode.SetType(NodeType.BOSS);
+            }
 
         }
 
@@ -84,11 +153,11 @@ public class LevelLayoutGenerator
     private void AddChild(LevelLayoutNode parent)
     {
 
-        if ((_numRooms < _maxRooms) && (parent.children.Count < _maxChildren) && (parent.getDepth() < _maxDepth))
+        if ((_numRooms < _maxRooms) && (parent.children.Count < _maxChildren) && (parent.depth < _maxDepth))
         {
 
-            LevelLayoutNode child = new LevelLayoutNode(parent.getDepth() + 1);
-            child.parent = parent;
+            LevelLayoutNode child = new LevelLayoutNode(parent.depth + 1, NodeType.NORMAL);
+            child.SetParent(parent);
             parent.children.Add(child);
             _numRooms++;
 
