@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour
     private int SP;
     private int wallet;
 
-    [SerializeField] private GameObject Bank;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -90,7 +88,7 @@ public class PlayerController : MonoBehaviour
 
     void OnDestroy()
     {
-        this.Bank.GetComponent<BankData>().Deposite(this.wallet);
+        GameObject.Find("Bank").GetComponent<BankData>().Deposit(this.wallet);
     }
 
     public int GetWallet()

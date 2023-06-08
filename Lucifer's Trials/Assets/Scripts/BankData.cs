@@ -19,12 +19,12 @@ public class BankData : MonoBehaviour
         }
     }
 
-    public void Deposite(int moneyIn)
+    public void Deposit(int moneyIn)
     {
         BankData.instance.money += moneyIn;
     }
 
-    public int getMoney()
+    public int GetMoney()
     {
         return this.money;
     }

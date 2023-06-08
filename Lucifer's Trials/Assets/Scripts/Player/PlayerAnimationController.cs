@@ -174,6 +174,11 @@ public class PlayerAnimationController : MonoBehaviour
                 this.CurrentState = PlayerStates.ATTACK;
                 FindObjectOfType<SoundManager>().PlaySoundEffect("knight slash");
                 this.animator.speed = this.speed / 4;
+                // Warrior is always 1.25 times as fast as sorceress to attack
+                if (this.playerType == PlayerType.WARRIOR)
+                {
+                    this.animator.speed *= 1.25f;
+                }
             }
             // movement input; queue player movement
             else if ( ((this.horizontal != 0) || (this.vertical != 0)) && (!this.statelock) )
