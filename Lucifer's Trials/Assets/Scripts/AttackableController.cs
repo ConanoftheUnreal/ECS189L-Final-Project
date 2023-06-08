@@ -12,6 +12,10 @@ public class AttackableController : MonoBehaviour
     private float knockbackForce = 3.0f;
     [SerializeField] int damage = 1;
 
+    private int hitpoints = 5;
+    private int maxHitpoints = 5;
+    [SerializeField] private HealthBarController healthBar;
+
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.tag == "PlayerHurtbox")
@@ -24,6 +28,7 @@ public class AttackableController : MonoBehaviour
 
         if ((col.tag == "PlayerAttack") || (col.tag == "Projectile"))
         {
+            this.TakeDamage();
             FindObjectOfType<SoundManager>().PlaySoundEffect("enemy hurt");
             var rb = this.GetComponent<Rigidbody2D>();
 
@@ -43,6 +48,20 @@ public class AttackableController : MonoBehaviour
             rb.velocity = knockbackForce * knockbackDirection;
             knockedback = true;
             timePassed = 0.0f;
+        }
+    }
+
+    void Start()
+    {
+        this.healthBar.SetHealth(this.hitpoints, this.maxHitpoints);
+    }
+
+    private void TakeDamage()
+    {
+        if (this.hitpoints > 0)
+        {
+            this.hitpoints -= 1;
+            this.healthBar.SetHealth(this.hitpoints, this.maxHitpoints);
         }
     }
 

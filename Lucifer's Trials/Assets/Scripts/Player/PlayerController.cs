@@ -92,4 +92,9 @@ public class PlayerController : MonoBehaviour
     {
         this.Bank.GetComponent<BankData>().Deposite(this.wallet);
     }
+
+    public int GetWallet()
+    {
+        return this.wallet;
+    }
 }
