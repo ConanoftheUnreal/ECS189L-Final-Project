@@ -6,17 +6,19 @@ using Lucifer;
 
 public class AttackableController : MonoBehaviour
 {
+    // Attack interaction data
+    [SerializeField] GameObject deathEffect;
+    [SerializeField] int damage = 1;
     private bool knockedback = false;
     private float knockbackDuration = 0.25f;
     private float timePassed;
     private float knockbackForce = 3.0f;
-    [SerializeField] int damage = 1;
-
-    private int hitpoints = 5;
-    private int maxHitpoints = 5;
+    // Healthbar data
     [SerializeField] private HealthBarController healthBar;
+    [SerializeField] int maxHitpoints;
+    private int hitpoints;
 
-    void OnTriggerEnter2D(Collider2D col)
+    public void OnTriggerEnter2D(Collider2D col)
     {
         if (col.tag == "PlayerHurtbox")
         {
@@ -29,7 +31,7 @@ public class AttackableController : MonoBehaviour
         if ((col.tag == "PlayerAttack") || (col.tag == "Projectile"))
         {
             this.TakeDamage();
-            FindObjectOfType<SoundManager>().PlaySoundEffect("enemy hurt");
+            FindObjectOfType<SoundManager>().PlaySoundEffect("EnemyHurt");
             var rb = this.GetComponent<Rigidbody2D>();
 
             var positionSelf = (Vector2)this.gameObject.transform.position;
@@ -51,22 +53,34 @@ public class AttackableController : MonoBehaviour
         }
     }
 
-    void Start()
+    public void Start()
     {
+        this.hitpoints = this.maxHitpoints;
         this.healthBar.SetHealth(this.hitpoints, this.maxHitpoints);
     }
 
     private void TakeDamage()
     {
+        this.hitpoints -= 1;
         if (this.hitpoints > 0)
         {
-            this.hitpoints -= 1;
             this.healthBar.SetHealth(this.hitpoints, this.maxHitpoints);
+        }
+        else
+        {
+            // queue death animation of object
+            // TEMPORARY FOR TESTING:
+            DeathDisappear();
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DeathDisappear()
+    {
+        var effect = Instantiate(this.deathEffect, this.transform.position, Quaternion.identity) as GameObject;
+        Destroy(this.gameObject);
+    }
+
+    public void Update()
     {
         if (knockedback)
         {

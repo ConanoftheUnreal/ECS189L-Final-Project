@@ -87,11 +87,6 @@ public class PlayerAnimationController : MonoBehaviour
         var collisionPt = obj.GetComponent<Collider2D>().ClosestPoint(this.gameObject.transform.position);
         var knockbackDirection = ((Vector2)this.gameObject.transform.position - collisionPt).normalized;
         
-        // queue player hurt
-        FindObjectOfType<SoundManager>().PlaySoundEffect("player hurt");
-        this.playerHurt = true;
-        this.CurrentState = PlayerStates.HURT;
-        this.animator.speed = 1;
         // determine player death
         if (this.gameObject.GetComponent<PlayerController>().GetHealth() == 0)
         {
@@ -104,6 +99,7 @@ public class PlayerAnimationController : MonoBehaviour
         else
         {
             // queue player hurt
+            FindObjectOfType<SoundManager>().PlaySoundEffect("PlayerHurt");
             this.playerHurt = true;
             this.CurrentState = PlayerStates.HURT;
             this.animator.speed = 1;
@@ -158,7 +154,7 @@ public class PlayerAnimationController : MonoBehaviour
         }
         // start facing down
         this.animator.SetFloat("MoveX", 0.0f);
-        this.animator.SetFloat("MoveY", -1.0f);
+        this.animator.SetFloat("MoveY", -2.0f);
 
         // declare function pointer for knockback call in `PlayerDamaged`
         Knockback = this.gameObject.GetComponent<PlayerMovement>().Knockback;
@@ -175,12 +171,20 @@ public class PlayerAnimationController : MonoBehaviour
             if (Input.GetButtonDown("Fire1"))
             {
                 this.CurrentState = PlayerStates.ATTACK;
-                FindObjectOfType<SoundManager>().PlaySoundEffect("knight slash");
                 this.animator.speed = this.speed / 4;
-                // Warrior is always 1.25 times as fast as sorceress to attack
-                if (this.playerType == PlayerType.WARRIOR)
+                // player type specific changes
+                switch (playerType)
                 {
-                    this.animator.speed *= 1.25f;
+                    case PlayerType.WARRIOR:
+                        this.animator.speed *= 1.25f;
+                        FindObjectOfType<SoundManager>().PlaySoundEffect("Slash");
+                        break;
+                    case PlayerType.SORCERESS:
+                        FindObjectOfType<SoundManager>().PlaySoundEffect("Fireball");
+                        break;
+                    default:
+                        Debug.Log("Error: Invalid player type.");
+                        break;
                 }
             }
             // movement input; queue player movement
@@ -188,8 +192,8 @@ public class PlayerAnimationController : MonoBehaviour
             {
                 this.CurrentState = PlayerStates.WALK;
                 this.animator.speed = this.speed / 2;
-                this.animator.SetFloat("MoveX", this.horizontal);
-                this.animator.SetFloat("MoveY", this.vertical);
+                this.animator.SetFloat("MoveX", this.horizontal * 2);
+                this.animator.SetFloat("MoveY", this.vertical * 2);
             }
             // no input; queue idle
             else

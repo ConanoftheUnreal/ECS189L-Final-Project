@@ -14,24 +14,10 @@ public class ProjectileScript : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D col)
     {
         // All projectiles that hit a wall should be destroyed.
-        if (col.tag == "Wall" || col.tag == "PlayerHurtbox" || col.tag == "Enemy")
+        if (col.tag == "Wall")
         {
             Destroy(this.gameObject);
-
-            GameObject projectile;
-            switch (projectileType)
-            {
-                case ProjectileTypes.FIRE:
-                    // fire objects that hit a wall will cause ignition at collision
-                    projectile = Instantiate(this.afterEffectPrefab, this.gameObject.transform.position, Quaternion.identity);
-                    break;
-                case ProjectileTypes.PHYSICAL:
-                    // break effect or similar
-                    break;
-                default:
-                    Debug.Log("Error: Invalid projectile type.");
-                    break;
-            }
+            AfterEffect();
         }
 
         // Enemy projectiles that hit the player get destroyed
@@ -41,6 +27,25 @@ public class ProjectileScript : MonoBehaviour
             col.transform.parent.GetComponent<PlayerController>().DecreaseHealth(damage);
             col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.RANGED);
             Destroy(this.gameObject);
+            AfterEffect();
+        }
+    }
+
+    private void AfterEffect()
+    {
+        GameObject projectile;
+        switch (projectileType)
+        {
+            case ProjectileTypes.FIRE:
+                // fire objects that hit a wall will cause ignition at collision
+                projectile = Instantiate(this.afterEffectPrefab, this.gameObject.transform.position + new Vector3(0, 0.1f, 0), Quaternion.identity);
+                break;
+            case ProjectileTypes.PHYSICAL:
+                // break effect or similar
+                break;
+            default:
+                Debug.Log("Error: Invalid projectile type.");
+                break;
         }
     }
 

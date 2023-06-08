@@ -172,8 +172,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f5602e8cd8dc4274a214f2cfc03ec46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  deathEffect: {fileID: 4975326531328575795, guid: 3e3007a9752904beebc4042befc7b453, type: 3}
+  damage: 2
   healthBar: {fileID: 4110846404855728333}
+  maxHitpoints: 5
 --- !u!1001 &1326555311257451209
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1834,22 +1834,6 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
-    - target: {fileID: 2068921448115910726, guid: 71f5459bef14b4bc5978e443632b8453, type: 3}
-      propertyPath: damage
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6000384279227545751, guid: 71f5459bef14b4bc5978e443632b8453, type: 3}
-      propertyPath: m_BodyType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6000384279227545751, guid: 71f5459bef14b4bc5978e443632b8453, type: 3}
-      propertyPath: m_GravityScale
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6000384279227545751, guid: 71f5459bef14b4bc5978e443632b8453, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6792516063474445324, guid: 71f5459bef14b4bc5978e443632b8453, type: 3}
       propertyPath: m_RootOrder
       value: 19
@@ -1957,7 +1941,7 @@ PrefabInstance:
       objectReference: {fileID: 132107910, guid: 2c40fc339972d28e4843d41c5ba455e1, type: 3}
     - target: {fileID: 8230940089976714484, guid: 179e9cf92660943b397acda24b9b2440, type: 3}
       propertyPath: playerType
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8612283594644196230, guid: 179e9cf92660943b397acda24b9b2440, type: 3}
       propertyPath: m_RootOrder
