@@ -116,8 +116,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 58864932033294300}
-  low: {r: 1, g: 0, b: 0.07238674, a: 0}
-  high: {r: 0.18607318, g: 1, b: 0, a: 0}
+  low: {r: 1, g: 0, b: 0.07238674, a: 1}
+  high: {r: 0.18607318, g: 1, b: 0, a: 1}
   offset: {x: 0, y: 0.5, z: 0}
 --- !u!1 &6076875248827389795
 GameObject:
