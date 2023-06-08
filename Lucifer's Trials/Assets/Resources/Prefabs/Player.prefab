@@ -283,6 +283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerType: 0
+  dashEffect: {fileID: 4130583670508625789, guid: 322d5a9f38f26404181ad30b11547a61, type: 3}
 --- !u!114 &1437724484299744691
 MonoBehaviour:
   m_ObjectHideFlags: 0

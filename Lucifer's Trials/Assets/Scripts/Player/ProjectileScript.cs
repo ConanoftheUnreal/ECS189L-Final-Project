@@ -24,24 +24,28 @@ public class ProjectileScript : MonoBehaviour
         if (this.tag == "EnemyProjectile" && col.tag == "PlayerHurtbox")
         {
             // get `Player` gameobject from collider of `PlayerHurtbox` and hurt player
-            col.transform.parent.GetComponent<PlayerController>().DecreaseHealth(damage);
-            col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.RANGED);
-            Destroy(this.gameObject);
-            AfterEffect();
+            bool playerHurt = col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.RANGED);
+            if (playerHurt)
+            {
+                col.transform.parent.GetComponent<PlayerController>().DecreaseHealth(damage);
+                Destroy(this.gameObject);
+                AfterEffect();
+            }
         }
     }
 
     private void AfterEffect()
     {
-        GameObject projectile;
+        GameObject effect;
         switch (projectileType)
         {
             case ProjectileTypes.FIRE:
-                // fire objects that hit a wall will cause ignition at collision
-                projectile = Instantiate(this.afterEffectPrefab, this.gameObject.transform.position + new Vector3(0, 0.1f, 0), Quaternion.identity);
+                // ignition (burn spot) effect
+                effect = Instantiate(this.afterEffectPrefab, this.gameObject.transform.position + new Vector3(0, 0.1f, 0), Quaternion.identity);
                 break;
             case ProjectileTypes.PHYSICAL:
-                // break effect or similar
+                // break (pop) effect
+                effect = Instantiate(this.afterEffectPrefab, this.gameObject.transform.position, Quaternion.identity);
                 break;
             default:
                 Debug.Log("Error: Invalid projectile type.");

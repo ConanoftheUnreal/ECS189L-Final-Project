@@ -22,10 +22,11 @@ public class AttackableController : MonoBehaviour
     {
         if (col.tag == "PlayerHurtbox")
         {
-            // get `Player` gameobject from collider of `PlayerHurtbox` and hurt player
-            col.transform.parent.GetComponent<PlayerController>().DecreaseHealth(damage);
-            // notify player they were damaged
-            col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.CQC);
+            var playerHurt = col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.CQC);
+            if (playerHurt)
+            {
+                col.transform.parent.GetComponent<PlayerController>().DecreaseHealth(damage);
+            }
         }
 
         if ((col.tag == "PlayerAttack") || (col.tag == "Projectile"))

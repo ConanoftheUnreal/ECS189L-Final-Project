@@ -8,7 +8,9 @@ using Lucifer;
 public class PlayerAnimationController : MonoBehaviour
 {
     [SerializeField] private PlayerType playerType = PlayerType.WARRIOR;
+    [SerializeField] GameObject dashEffect;
     Action<Vector2> Knockback;
+    Func<bool> IsDashing;
 
     private bool statelock = false;
     private bool playerHurt = false;
@@ -81,8 +83,11 @@ public class PlayerAnimationController : MonoBehaviour
         return this.playerType;
     }
 
-    public void PlayerDamaged(GameObject obj, int damage, DamageTypes damageType)
+    public bool PlayerDamaged(GameObject obj, int damage, DamageTypes damageType)
     {
+        // invincibility frames
+        if (IsDashing()) return false;
+
         // determine location of collision relative to player
         var collisionPt = obj.GetComponent<Collider2D>().ClosestPoint(this.gameObject.transform.position);
         var knockbackDirection = ((Vector2)this.gameObject.transform.position - collisionPt).normalized;
@@ -129,6 +134,8 @@ public class PlayerAnimationController : MonoBehaviour
                 Debug.Log("Error: damage type is undefined.");
                 break;
         }
+
+        return true;
     }
 
     void Start()
@@ -158,6 +165,8 @@ public class PlayerAnimationController : MonoBehaviour
 
         // declare function pointer for knockback call in `PlayerDamaged`
         Knockback = this.gameObject.GetComponent<PlayerMovement>().Knockback;
+        // declare function pointer to determine player dashing
+        IsDashing = this.gameObject.GetComponent<PlayerMovement>().IsDashing;
     }
 
     void Update()
@@ -194,6 +203,29 @@ public class PlayerAnimationController : MonoBehaviour
                 this.animator.speed = this.speed / 2;
                 this.animator.SetFloat("MoveX", this.horizontal * 2);
                 this.animator.SetFloat("MoveY", this.vertical * 2);
+                if (IsDashing())
+                {
+                    GameObject effect;
+                    if ((this.vertical != 0) && (this.vertical == this.horizontal))
+                    {
+                        effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 45));
+                    }
+                    else if ((this.vertical != 0) && (this.vertical != this.horizontal))
+                    {
+                        if (this.horizontal == 0)
+                        {
+                            effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 90));
+                        }
+                        else
+                        {
+                            effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, -45));
+                        }
+                    }
+                    else
+                    {
+                        effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.identity);
+                    }
+                }
             }
             // no input; queue idle
             else
