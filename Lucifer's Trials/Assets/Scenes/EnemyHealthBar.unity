@@ -373,6 +373,14 @@ PrefabInstance:
       propertyPath: healthSlider
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4110846404855728333, guid: 71f5459bef14b4bc5978e443632b8453, type: 3}
+      propertyPath: low.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4110846404855728333, guid: 71f5459bef14b4bc5978e443632b8453, type: 3}
+      propertyPath: high.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4648927567878976072, guid: 71f5459bef14b4bc5978e443632b8453, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -469,9 +477,21 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7886883715680423264, guid: 71f5459bef14b4bc5978e443632b8453, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7947744074737142081, guid: 71f5459bef14b4bc5978e443632b8453, type: 3}
       propertyPath: m_SortingOrder
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008502750331846161, guid: 71f5459bef14b4bc5978e443632b8453, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008502750331846161, guid: 71f5459bef14b4bc5978e443632b8453, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
