@@ -156,6 +156,9 @@ public class PlayerAnimationController : MonoBehaviour
                 Debug.Log("Error: player type is undefined.");
                 break;
         }
+        // start facing down
+        this.animator.SetFloat("MoveX", 0.0f);
+        this.animator.SetFloat("MoveY", -1.0f);
 
         // declare function pointer for knockback call in `PlayerDamaged`
         Knockback = this.gameObject.GetComponent<PlayerMovement>().Knockback;

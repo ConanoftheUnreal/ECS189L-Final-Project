@@ -6,16 +6,32 @@ using Lucifer;
 
 public class ProjectileScript : MonoBehaviour
 {
-    private float speed = 10.0f;
     [SerializeField] int damage = 3;
+    [SerializeField] ProjectileTypes projectileType;
+    [SerializeField] GameObject afterEffectPrefab;
+    private float speed = 10.0f;
 
-    void OnTriggerEnter2D(Collider2D col)
+    public void OnTriggerEnter2D(Collider2D col)
     {
-        //Debug.Log("Collision");
         // All projectiles that hit a wall should be destroyed.
-        if (col.tag == "Wall")
+        if (col.tag == "Wall" || col.tag == "PlayerHurtbox" || col.tag == "Enemy")
         {
             Destroy(this.gameObject);
+
+            GameObject projectile;
+            switch (projectileType)
+            {
+                case ProjectileTypes.FIRE:
+                    // fire objects that hit a wall will cause ignition at collision
+                    projectile = Instantiate(this.afterEffectPrefab, this.gameObject.transform.position, Quaternion.identity);
+                    break;
+                case ProjectileTypes.PHYSICAL:
+                    // break effect or similar
+                    break;
+                default:
+                    Debug.Log("Error: Invalid projectile type.");
+                    break;
+            }
         }
 
         // Enemy projectiles that hit the player get destroyed

@@ -14,8 +14,9 @@ public class PlayerAttackController : MonoBehaviour
     {
         var playerClass = this.GetComponent<PlayerAnimationController>().GetPlayerType();
         var animator = this.gameObject.GetComponent<Animator>();
-        float x = animator.GetFloat("MoveX");
-        float y = animator.GetFloat("MoveY");
+        // division is for placement of projectiles
+        float x = animator.GetFloat("MoveX") / 2;
+        float y = animator.GetFloat("MoveY") / 2;
 
         // right or left
         if (x != 0)
@@ -29,7 +30,7 @@ public class PlayerAttackController : MonoBehaviour
                         attackSprite.SetActive(true);
                         break;
                     case PlayerType.SORCERESS:
-                        var projectile = (GameObject)Instantiate(playerProjectile, transform.position, Quaternion.Euler(0, 0, 180));
+                        var projectile = (GameObject)Instantiate(playerProjectile, transform.position + (new Vector3(x, -0.1f, 0)), Quaternion.Euler(0, 0, 180));
                         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
                         break;
                 }
@@ -43,7 +44,7 @@ public class PlayerAttackController : MonoBehaviour
                         attackSprite.SetActive(true);
                         break;
                     case PlayerType.SORCERESS:
-                        var projectile = (GameObject)Instantiate(playerProjectile, transform.position, Quaternion.Euler(0, 0, 0));
+                        var projectile = (GameObject)Instantiate(playerProjectile, transform.position + (new Vector3(x, -0.1f, 0)), Quaternion.Euler(0, 0, 0));
                         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
                         break;
                 }
@@ -61,7 +62,7 @@ public class PlayerAttackController : MonoBehaviour
                         attackSprite.SetActive(true);
                         break;
                     case PlayerType.SORCERESS:
-                        var projectile = (GameObject)Instantiate(playerProjectile, transform.position, Quaternion.Euler(0, 0, -90));
+                        var projectile = (GameObject)Instantiate(playerProjectile, transform.position + (new Vector3(0.1f, y, 0)), Quaternion.Euler(0, 0, -90));
                         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 1) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
                         break;
                 }
@@ -75,7 +76,7 @@ public class PlayerAttackController : MonoBehaviour
                         attackSprite.SetActive(true);
                         break;
                     case PlayerType.SORCERESS:
-                        var projectile = (GameObject)Instantiate(playerProjectile, transform.position, Quaternion.Euler(0, 0, 90));
+                        var projectile = (GameObject)Instantiate(playerProjectile, transform.position + (new Vector3(-0.1f, y, 0)), Quaternion.Euler(0, 0, 90));
                         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -1) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
                         break;
                 }

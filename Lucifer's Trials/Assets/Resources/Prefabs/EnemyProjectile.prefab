@@ -147,6 +147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9abfd21355604384f82a458f5deec74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 3
+  projectileType: 1
+  afterEffectPrefab: {fileID: 0}
 --- !u!50 &7125009551739407586
 Rigidbody2D:
   serializedVersion: 4

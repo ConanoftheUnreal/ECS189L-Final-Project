@@ -163,7 +163,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9abfd21355604384f82a458f5deec74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
+  damage: 1
+  projectileType: 0
+  afterEffectPrefab: {fileID: 1849479076875623358, guid: 3f77164342bb44ecca25626dde89bab0, type: 3}
 --- !u!95 &7517983170327238540
 Animator:
   serializedVersion: 5
@@ -194,6 +196,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7730560746514814314}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0caa88cc33ac640ec8af6743c9f1a14e, type: 3}
+  m_Script: {fileID: 11500000, guid: ad36e4f0ca2914a1cbb1b961432cce2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
