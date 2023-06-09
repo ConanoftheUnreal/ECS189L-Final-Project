@@ -8,7 +8,11 @@ using Lucifer;
 public class PlayerAnimationController : MonoBehaviour
 {
     [SerializeField] private PlayerType playerType = PlayerType.WARRIOR;
+    [SerializeField] GameObject dashEffect;
+    [SerializeField] GameObject deathEffect;
     Action<Vector2> Knockback;
+    Func<int, int> DecreaseHealth;
+    Func<bool> IsDashing;
 
     private bool statelock = false;
     private bool playerHurt = false;
@@ -81,29 +85,39 @@ public class PlayerAnimationController : MonoBehaviour
         return this.playerType;
     }
 
-    public void PlayerDamaged(GameObject obj, int damage, DamageTypes damageType)
+    public bool DamagePlayer(GameObject obj, int damage, DamageTypes damageType)
     {
+        if (IsDashing()) return false;
+
+        PlayerDamaged(obj, damage, damageType);
+        return true;
+    }
+
+    public bool PlayerDamaged(GameObject obj, int damage, DamageTypes damageType)
+    {
+        // invincibility frames
+        if (IsDashing()) return false;
+
         // determine location of collision relative to player
         var collisionPt = obj.GetComponent<Collider2D>().ClosestPoint(this.gameObject.transform.position);
         var knockbackDirection = ((Vector2)this.gameObject.transform.position - collisionPt).normalized;
         
-        // queue player hurt
-        FindObjectOfType<SoundManager>().PlaySoundEffect("player hurt");
-        this.playerHurt = true;
-        this.CurrentState = PlayerStates.HURT;
-        this.animator.speed = 1;
         // determine player death
-        if (this.gameObject.GetComponent<PlayerController>().GetHealth() == 0)
+        var health = DecreaseHealth(damage);
+        if (health == 0)
         {
             // queue player death
             this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             this.statelock = false;
             this.CurrentState = PlayerStates.DEATH;
             this.animator.speed = 1;
+            // play death effect
+            var effect = (GameObject)Instantiate(this.deathEffect, this.transform.position - (new Vector3(0.5f, 0, 0)), Quaternion.identity);
         }
         else
         {
             // queue player hurt
+            FindObjectOfType<SoundManager>().PlaySoundEffect("PlayerHurt");
             this.playerHurt = true;
             this.CurrentState = PlayerStates.HURT;
             this.animator.speed = 1;
@@ -133,6 +147,8 @@ public class PlayerAnimationController : MonoBehaviour
                 Debug.Log("Error: damage type is undefined.");
                 break;
         }
+
+        return true;
     }
 
     void Start()
@@ -156,9 +172,16 @@ public class PlayerAnimationController : MonoBehaviour
                 Debug.Log("Error: player type is undefined.");
                 break;
         }
+        // start facing down
+        this.animator.SetFloat("MoveX", 0.0f);
+        this.animator.SetFloat("MoveY", -2.0f);
 
         // declare function pointer for knockback call in `PlayerDamaged`
         Knockback = this.gameObject.GetComponent<PlayerMovement>().Knockback;
+        // declare function pointer to determine player dashing
+        IsDashing = this.gameObject.GetComponent<PlayerMovement>().IsDashing;
+        // declare function pointer to hurt player
+        DecreaseHealth = this.gameObject.GetComponent<PlayerController>().DecreaseHealth;
     }
 
     void Update()
@@ -172,16 +195,52 @@ public class PlayerAnimationController : MonoBehaviour
             if (Input.GetButtonDown("Fire1"))
             {
                 this.CurrentState = PlayerStates.ATTACK;
-                FindObjectOfType<SoundManager>().PlaySoundEffect("knight slash");
                 this.animator.speed = this.speed / 4;
+                // player type specific changes
+                switch (playerType)
+                {
+                    case PlayerType.WARRIOR:
+                        this.animator.speed *= 1.25f;
+                        FindObjectOfType<SoundManager>().PlaySoundEffect("Slash");
+                        break;
+                    case PlayerType.SORCERESS:
+                        FindObjectOfType<SoundManager>().PlaySoundEffect("Fireball");
+                        break;
+                    default:
+                        Debug.Log("Error: Invalid player type.");
+                        break;
+                }
             }
             // movement input; queue player movement
             else if ( ((this.horizontal != 0) || (this.vertical != 0)) && (!this.statelock) )
             {
                 this.CurrentState = PlayerStates.WALK;
                 this.animator.speed = this.speed / 2;
-                this.animator.SetFloat("MoveX", this.horizontal);
-                this.animator.SetFloat("MoveY", this.vertical);
+                this.animator.SetFloat("MoveX", this.horizontal * 2);
+                this.animator.SetFloat("MoveY", this.vertical * 2);
+                if (IsDashing())
+                {
+                    GameObject effect;
+                    if ((this.vertical != 0) && (this.vertical == this.horizontal))
+                    {
+                        effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 45));
+                    }
+                    else if ((this.vertical != 0) && (this.vertical != this.horizontal))
+                    {
+                        if (this.horizontal == 0)
+                        {
+                            effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 90));
+                        }
+                        else
+                        {
+                            effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, -45));
+                        }
+                    }
+                    else
+                    {
+                        effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.identity);
+                    }
+                }
             }
             // no input; queue idle
             else

@@ -7,12 +7,12 @@ using Lucifer;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float speed = 4.0f;
-    private float knockbackForce = 3.0f;
+    private float speed = 6.0f;
+    private float knockbackForce = 4.5f;
     private float horizontal;
     private float vertical;
     private bool isDashing = false;
-    private float dashDuration = 0.25f;
+    private float dashDuration = 0.1f;
     private float dashCooldown = 0.6f;
     private float sinceDash = 1.5f;
     private float curDuration;
@@ -22,6 +22,11 @@ public class PlayerMovement : MonoBehaviour
     public string GetFacedDirection()
     {
         return this.facedDirection;
+    }
+
+    public bool IsDashing()
+    {
+        return this.isDashing;
     }
 
     public void Knockback(Vector2 direction)
@@ -47,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown("space") && (this.rb.velocity != Vector2.zero) && (this.sinceDash >= this.dashCooldown))
         {
             // Debug.Log("Space Pressed");
-            FindObjectOfType<SoundManager>().PlaySoundEffect("dash");
+            FindObjectOfType<SoundManager>().PlaySoundEffect("Dash");
             this.isDashing = true;
             this.curDuration = 0.0f;
             this.sinceDash = 0.0f;
@@ -57,26 +62,20 @@ public class PlayerMovement : MonoBehaviour
         {
             if (this.horizontal == -1)
             {
-                //Debug.Log("Facing Left");
                 this.facedDirection = "Left";
             }
             if (this.horizontal == 1)
             {
-                //Debug.Log("Facing Right");
                 this.facedDirection = "Right";
             }
             if (this.horizontal == 0 && this.vertical == 1)
             {
-                //Debug.Log("Facing Up");
                 this.facedDirection = "Up";
             }
             if (this.horizontal == 0 && this.vertical == -1)
             {
-                //Debug.Log("Facing Down");
                 this.facedDirection = "Down";
             }
-
-            // Debug.Log(facedDirection);
         }
         
     }
@@ -88,8 +87,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (this.isDashing && (this.curDuration < this.dashDuration))
             {
-                // Debug.Log("Dashing");
-                this.rb.velocity = new Vector2(this.horizontal, this.vertical).normalized * (this.speed * 2f);
+                this.rb.velocity = new Vector2(this.horizontal, this.vertical).normalized * (this.speed * 3f);
                 this.curDuration += Time.deltaTime;
             }
             else

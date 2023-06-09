@@ -6,25 +6,49 @@ using Lucifer;
 
 public class ProjectileScript : MonoBehaviour
 {
-    private float speed = 10.0f;
     [SerializeField] int damage = 3;
+    [SerializeField] ProjectileTypes projectileType;
+    [SerializeField] GameObject afterEffectPrefab;
+    private float speed = 15.0f;
 
-    void OnTriggerEnter2D(Collider2D col)
+    public void OnTriggerEnter2D(Collider2D col)
     {
-        //Debug.Log("Collision");
         // All projectiles that hit a wall should be destroyed.
         if (col.tag == "Wall")
         {
             Destroy(this.gameObject);
+            AfterEffect();
         }
 
         // Enemy projectiles that hit the player get destroyed
         if (this.tag == "EnemyProjectile" && col.tag == "PlayerHurtbox")
         {
             // get `Player` gameobject from collider of `PlayerHurtbox` and hurt player
-            col.transform.parent.GetComponent<PlayerController>().DecreaseHealth(damage);
-            col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.RANGED);
-            Destroy(this.gameObject);
+            bool playerHit = col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.RANGED);
+            if (playerHit)
+            {
+                Destroy(this.gameObject);
+                AfterEffect();
+            }
+        }
+    }
+
+    private void AfterEffect()
+    {
+        GameObject effect;
+        switch (projectileType)
+        {
+            case ProjectileTypes.FIRE:
+                // ignition (burn spot) effect
+                effect = Instantiate(this.afterEffectPrefab, this.gameObject.transform.position + new Vector3(0, 0.1f, 0), Quaternion.identity);
+                break;
+            case ProjectileTypes.PHYSICAL:
+                // break (pop) effect
+                effect = Instantiate(this.afterEffectPrefab, this.gameObject.transform.position, Quaternion.identity);
+                break;
+            default:
+                Debug.Log("Error: Invalid projectile type.");
+                break;
         }
     }
 
