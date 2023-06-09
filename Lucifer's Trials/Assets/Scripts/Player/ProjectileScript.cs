@@ -24,10 +24,9 @@ public class ProjectileScript : MonoBehaviour
         if (this.tag == "EnemyProjectile" && col.tag == "PlayerHurtbox")
         {
             // get `Player` gameobject from collider of `PlayerHurtbox` and hurt player
-            bool playerHurt = col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.RANGED);
-            if (playerHurt)
+            bool playerHit = col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.RANGED);
+            if (playerHit)
             {
-                col.transform.parent.GetComponent<PlayerController>().DecreaseHealth(damage);
                 Destroy(this.gameObject);
                 AfterEffect();
             }

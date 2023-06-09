@@ -9,7 +9,9 @@ public class PlayerAnimationController : MonoBehaviour
 {
     [SerializeField] private PlayerType playerType = PlayerType.WARRIOR;
     [SerializeField] GameObject dashEffect;
+    [SerializeField] GameObject deathEffect;
     Action<Vector2> Knockback;
+    Func<int, int> DecreaseHealth;
     Func<bool> IsDashing;
 
     private bool statelock = false;
@@ -83,6 +85,14 @@ public class PlayerAnimationController : MonoBehaviour
         return this.playerType;
     }
 
+    public bool DamagePlayer(GameObject obj, int damage, DamageTypes damageType)
+    {
+        if (IsDashing()) return false;
+
+        PlayerDamaged(obj, damage, damageType);
+        return true;
+    }
+
     public bool PlayerDamaged(GameObject obj, int damage, DamageTypes damageType)
     {
         // invincibility frames
@@ -93,13 +103,16 @@ public class PlayerAnimationController : MonoBehaviour
         var knockbackDirection = ((Vector2)this.gameObject.transform.position - collisionPt).normalized;
         
         // determine player death
-        if (this.gameObject.GetComponent<PlayerController>().GetHealth() == 0)
+        var health = DecreaseHealth(damage);
+        if (health == 0)
         {
             // queue player death
             this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             this.statelock = false;
             this.CurrentState = PlayerStates.DEATH;
             this.animator.speed = 1;
+            // play death effect
+            var effect = (GameObject)Instantiate(this.deathEffect, this.transform.position - (new Vector3(0.25f, 0, 0)), Quaternion.identity);
         }
         else
         {
@@ -167,6 +180,8 @@ public class PlayerAnimationController : MonoBehaviour
         Knockback = this.gameObject.GetComponent<PlayerMovement>().Knockback;
         // declare function pointer to determine player dashing
         IsDashing = this.gameObject.GetComponent<PlayerMovement>().IsDashing;
+        // declare function pointer to hurt player
+        DecreaseHealth = this.gameObject.GetComponent<PlayerController>().DecreaseHealth;
     }
 
     void Update()

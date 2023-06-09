@@ -43,13 +43,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void DecreaseHealth(int amount)
+    public int DecreaseHealth(int amount)
     {
         this.health -= amount;
         if (this.health < 0)
         {
             this.health = 0;
         }
+        return this.health;
     }
 
     public int GetHealth()
