@@ -7,8 +7,8 @@ using Lucifer;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float speed = 4.0f;
-    private float knockbackForce = 3.0f;
+    private float speed = 6.0f;
+    private float knockbackForce = 4.5f;
     private float horizontal;
     private float vertical;
     private bool isDashing = false;

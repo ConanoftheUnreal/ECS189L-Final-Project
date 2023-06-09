@@ -12,7 +12,7 @@ public class AttackableController : MonoBehaviour
     private bool knockedback = false;
     private float knockbackDuration = 0.25f;
     private float timePassed;
-    private float knockbackForce = 3.0f;
+    private float knockbackForce = 4.5f;
     // Healthbar data
     [SerializeField] private HealthBarController healthBar;
     [SerializeField] int maxHitpoints;
