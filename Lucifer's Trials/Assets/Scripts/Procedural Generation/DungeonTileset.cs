@@ -88,6 +88,20 @@ public sealed class DungeonTileset : ITileset
         instance.PairNameAndTile("BlackBorderCorner_BottomLeft", instance.GetTileByFilename("Dungeon_Tileset_103"));
         instance.PairNameAndTile("BlackBorderCorner_BottomRight", instance.GetTileByFilename("Dungeon_Tileset_104"));
 
+        instance.PairNameAndTile("RectangleVent", instance.GetTileByFilename("Dungeon_Tileset_36"));
+
+        instance.PairNameAndTile("CircleVent_Top", instance.GetTileByFilename("Dungeon_Tileset_35"));
+        instance.PairNameAndTile("CircleVent_Bottom", instance.GetTileByFilename("Dungeon_Tileset_52"));
+
+        instance.PairNameAndTile("WallBanner_Top", instance.GetTileByFilename("Dungeon_Tileset_33"));
+        instance.PairNameAndTile("WallBanner_Bottom", instance.GetTileByFilename("Dungeon_Tileset_50"));
+
+        instance.PairNameAndTile("SingleWallTorch_Top", instance.GetTileByFilename("Dungeon_Tileset_9"));
+        instance.PairNameAndTile("SingleWallTorch_Bottom", instance.GetTileByFilename("Dungeon_Tileset_22"));
+
+        instance.PairNameAndTile("DoubleWallTorch_Top", instance.GetTileByFilename("Dungeon_Tileset_11"));
+        instance.PairNameAndTile("DoubleWallTorch_Bottom", instance.GetTileByFilename("Dungeon_Tileset_24"));
+
     }
 
     // Map a descriptive name to a tile object and vice versa

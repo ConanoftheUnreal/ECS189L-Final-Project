@@ -17,12 +17,24 @@ public class DungeonGenerator : IRoomGenerator
     private const int MIN_COLUMN_HEIGHT = 3;
     private const int MAX_COLUMN_GENERATION_TRIES = 10;
     private const float ROOM_SCALE = 1f;
+    private const float DECORATION_RATE = 0.2f;
 
     // _tileMaps maps a descriptive name to a tilemap
     private Dictionary<string, Tilemap> _tileMaps;
 
     // The tileset that this generator uses is the DungeonTileset
     private ITileset _tileset = DungeonTileset.Instance;
+
+    private enum WallDecorationType
+    {
+
+        RectangleVent,
+        CircleVent,
+        Banner,
+        SingleTorch,
+        DoubleTorch,
+
+    }
 
     public DungeonGenerator(int maxColumns, int maxColumnLength, Vector2Int size)
     {
@@ -96,6 +108,324 @@ public class DungeonGenerator : IRoomGenerator
 
         // Generate a random number of columns
         int numColumns = Random.Range(MIN_NUM_COLUMNS, _maxColumns + 1);
+        GenerateColumns(numColumns, room);
+
+        // Place the wall tiles onto the Collision tilemap
+        PlaceWalls(_tileMaps["Collision"]);
+
+        /*  
+            Place a black border around the edges of the Borders layer so that it is the same size as the Collision layer.
+            This is so that we don't need to translate coordinates between the two.
+        */
+        PlaceRectangleHollow("Borders", "Black", _size.x + 2, _size.y + 4, new Vector2Int(0, 0));
+
+        // Place the border tiles onto the Borders tilemap
+        PlaceBorders(_tileMaps["Borders"], _tileMaps["Collision"]);
+
+        //Line up Exits tilemap with the other two, and make it 50% transparent for debugging purposes.
+        PlaceRectangleHollow("Exits", "Black", _size.x + 2, _size.y + 4, new Vector2Int(0, 0));
+
+        //Line up Decorations tilemap with the others
+        PlaceRectangleHollow("Decorations", "Black", _size.x + 2, _size.y + 4, new Vector2Int(0, 0));
+        // Get all possible exit paths in this room
+        List<ExitPathRectangle> possibleExitRects = FindPossibleExitPaths(_tileMaps["Collision"]);
+        List<ExitPathRectangle> exitRects = new List<ExitPathRectangle>();
+        // Grab _numExits number of them at random
+        for (int i = 0; i < _numExits; i++)
+        {
+
+            ExitPathRectangle randomExit = possibleExitRects[Random.Range(0, possibleExitRects.Count)];
+            randomExit.SetID(i);
+            exitRects.Add(randomExit);
+            possibleExitRects.Remove(randomExit);
+
+            // And draw the exitPath
+            DrawExit(randomExit);
+
+        }
+
+        PlaceWallDecorations();
+
+        // Scale room
+        room.transform.localScale = new Vector3(ROOM_SCALE, ROOM_SCALE, 0);
+
+        // Add collider to Collision layer
+        TilemapCollider2D collisionTilemapCollider = collisionLayer.AddComponent<TilemapCollider2D>();
+        collisionLayer.AddComponent<CompositeCollider2D>();
+        Rigidbody2D colliderRigidBody = collisionLayer.GetComponent<Rigidbody2D>();
+        colliderRigidBody.bodyType = RigidbodyType2D.Static;
+        collisionTilemapCollider.usedByComposite = true;
+
+        return new Room(room, exitRects);
+
+    }
+
+    private void PlaceWallDecorations()
+    {
+
+        // Place the decorations
+        for (int x = 0; x < _tileMaps["Decorations"].size.x; x++)
+        {
+
+            for (int y = _tileMaps["Decorations"].size.y - 1; y >= 0; y--)
+            {
+
+                Tile currentCollisionTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
+                Tile currentDecoTile = _tileMaps["Decorations"].GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                // If this is a "Wall_Mid" tile
+                if ((currentCollisionTile != null) && (_tileset.GetNameOfTile(currentCollisionTile).Contains("Wall_Mid")))
+                {
+
+                    // Don't overwrite if there is already someting on this decoration tile
+                    if ((Random.Range(0f, 1f) < DECORATION_RATE) && (currentDecoTile == null))
+                    {
+
+                        // Make sure only generate on walls that are not edges
+                        if (_tileset.GetNameOfTile(currentCollisionTile).Contains("Bottom"))
+                        {
+
+                            Tile collisionTileAbove = _tileMaps["Collision"].GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
+
+                            if (!(_tileset.GetNameOfTile(collisionTileAbove).Contains("Mid")))
+                            {
+                                continue;
+                            }
+
+                        }
+                        else if (_tileset.GetNameOfTile(currentCollisionTile).Contains("Top"))
+                        {
+
+                            Tile collisionTileBelow = _tileMaps["Collision"].GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
+
+                            if (!(_tileset.GetNameOfTile(collisionTileBelow).Contains("Mid")))
+                            {
+                                continue;
+                            }
+
+                        }
+
+                        // Generate a random decoration type
+                        int numDifferentDecorations = System.Enum.GetNames(typeof(WallDecorationType)).Length;
+                        WallDecorationType decoType = (WallDecorationType)Random.Range(0, numDifferentDecorations + 1);
+
+                        // Place the decoration, or the first half of it if it is a two-tile decoration
+                        if (decoType == WallDecorationType.RectangleVent)
+                        {
+                            _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("RectangleVent"));
+                        }
+                        else if (decoType == WallDecorationType.CircleVent)
+                        {
+
+                            if (_tileset.GetNameOfTile(currentCollisionTile).Contains("Top"))
+                            {
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("CircleVent_Top"));
+                            }
+                            else if (_tileset.GetNameOfTile(currentCollisionTile).Contains("Bottom"))
+                            {
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("CircleVent_Bottom"));
+                            }
+
+                        }
+                        else if (decoType == WallDecorationType.Banner)
+                        {
+
+                            if (_tileset.GetNameOfTile(currentCollisionTile).Contains("Top"))
+                            {
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("WallBanner_Top"));
+                            }
+                            else if (_tileset.GetNameOfTile(currentCollisionTile).Contains("Bottom"))
+                            {
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("WallBanner_Bottom"));
+                            }
+
+                        }
+                        else if (decoType == WallDecorationType.SingleTorch)
+                        {
+
+                            if (_tileset.GetNameOfTile(currentCollisionTile).Contains("Top"))
+                            {
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("SingleWallTorch_Top"));
+                            }
+                            else if (_tileset.GetNameOfTile(currentCollisionTile).Contains("Bottom"))
+                            {
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("SingleWallTorch_Bottom"));
+                            }
+
+                        }
+                        else if (decoType == WallDecorationType.DoubleTorch)
+                        {
+
+                            if (_tileset.GetNameOfTile(currentCollisionTile).Contains("Top"))
+                            {
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("DoubleWallTorch_Top"));
+                            }
+                            else if (_tileset.GetNameOfTile(currentCollisionTile).Contains("Bottom"))
+                            {
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("DoubleWallTorch_Bottom"));
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        // Place the other half of the decorations if they take up two tiles
+        for (int x = 0; x < _tileMaps["Decorations"].size.x; x++)
+        {
+
+            for (int y = _tileMaps["Decorations"].size.y - 1; y >= 0; y--)
+            {
+
+                Tile currentDecoTile = _tileMaps["Decorations"].GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                if (currentDecoTile != null)
+                {
+
+                    if (_tileset.GetNameOfTile(currentDecoTile) == "CircleVent_Top")
+                    {
+                        _tileMaps["Decorations"].SetTile(new Vector3Int(x, y - 1, 0), _tileset.GetTileByName("CircleVent_Bottom"));
+                    }
+                    else if (_tileset.GetNameOfTile(currentDecoTile) == "CircleVent_Bottom")
+                    {
+                        _tileMaps["Decorations"].SetTile(new Vector3Int(x, y + 1, 0), _tileset.GetTileByName("CircleVent_Top"));
+                    }
+                    else if (_tileset.GetNameOfTile(currentDecoTile) == "WallBanner_Top")
+                    {
+                        _tileMaps["Decorations"].SetTile(new Vector3Int(x, y - 1, 0), _tileset.GetTileByName("WallBanner_Bottom"));
+                    }
+                    else if (_tileset.GetNameOfTile(currentDecoTile) == "WallBanner_Bottom")
+                    {
+                        _tileMaps["Decorations"].SetTile(new Vector3Int(x, y + 1, 0), _tileset.GetTileByName("WallBanner_Top"));
+                    }
+                    else if (_tileset.GetNameOfTile(currentDecoTile) == "SingleWallTorch_Top")
+                    {
+                        _tileMaps["Decorations"].SetTile(new Vector3Int(x, y - 1, 0), _tileset.GetTileByName("SingleWallTorch_Bottom"));
+                    }
+                    else if (_tileset.GetNameOfTile(currentDecoTile) == "SingleWallTorch_Bottom")
+                    {
+                        _tileMaps["Decorations"].SetTile(new Vector3Int(x, y + 1, 0), _tileset.GetTileByName("SingleWallTorch_Top"));
+                    }
+                    else if (_tileset.GetNameOfTile(currentDecoTile) == "DoubleWallTorch_Top")
+                    {
+                        _tileMaps["Decorations"].SetTile(new Vector3Int(x, y - 1, 0), _tileset.GetTileByName("DoubleWallTorch_Bottom"));
+                    }
+                    else if (_tileset.GetNameOfTile(currentDecoTile) == "DoubleWallTorch_Bottom")
+                    {
+                        _tileMaps["Decorations"].SetTile(new Vector3Int(x, y + 1, 0), _tileset.GetTileByName("DoubleWallTorch_Top"));
+                    }
+
+                }  
+
+            }
+
+        }
+
+    }
+
+    private void DrawExit(ExitPathRectangle rect)
+    {
+
+        int pathWidth = rect.topRight.x - rect.bottomLeft.x + 1;
+        int pathHeight = rect.topRight.y - rect.bottomLeft.y + 1;
+
+        for (int x = rect.bottomLeft.x; x <= rect.topRight.x; x++)
+        {
+
+            for (int y = rect.topRight.y; y >= rect.bottomLeft.y; y--)
+            {
+
+                // Logic for drawing the doors to the back wall if the exit leads up
+                if (rect.direction == ExitDirection.UP)
+                {
+
+                    Tile currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                    if (currentTile != null)
+                    {
+
+                        if (_tileset.GetNameOfTile(currentTile) != "Black")
+                        {
+
+                            Tile collisionTileAbove = _tileMaps["Collision"].GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
+                            Tile decorationsTileAbove = _tileMaps["Decorations"].GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
+
+                            if (x == rect.bottomLeft.x && _tileset.GetNameOfTile(collisionTileAbove) == "Black")
+                            {
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_TopLeft"));
+                            }
+                            else if (x == rect.topRight.x && _tileset.GetNameOfTile(collisionTileAbove) == "Black")
+                            {
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_TopRight"));
+                            }
+                            else if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_TopLeft")
+                            {
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_MiddleLeft"));
+                            }
+                            else if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_TopRight")
+                            {
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_MiddleRight"));
+                            }
+
+                        }
+
+                    }
+                    else if (currentTile == null)
+                    {
+
+                        Tile decorationsTileAbove = _tileMaps["Decorations"].GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
+
+                        if (decorationsTileAbove != null)
+                        {
+
+                            if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_MiddleLeft")
+                            {
+
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_BottomLeft"));
+                                _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Up"));
+
+                            }
+                            else if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_MiddleRight")
+                            {
+                                
+                                _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_BottomRight"));
+                                _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Up"));
+
+                            }
+
+                        }
+
+                    }
+
+                }
+                else if ((rect.direction == ExitDirection.LEFT) && (x == rect.bottomLeft.x))
+                {
+                    _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Left"));
+                }
+                else if ((rect.direction == ExitDirection.RIGHT) && (x == rect.topRight.x))
+                {
+                    _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Right"));
+                }
+                else if ((rect.direction == ExitDirection.DOWN) && (y == rect.bottomLeft.y))
+                {
+                    _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Down"));
+                }
+
+            }
+
+        }      
+
+    }
+
+    private void GenerateColumns(int numColumns, GameObject room)
+    {
+
+        GameObject collisionLayer = room.transform.Find("Collision").gameObject;
 
         // Generate all the columns
         for (int i = 0; i < numColumns; i++)
@@ -181,143 +511,6 @@ public class DungeonGenerator : IRoomGenerator
             } while (true);
 
         }
-
-        // Place the wall tiles onto the Collision tilemap
-        PlaceWalls(_tileMaps["Collision"]);
-
-        /*  
-            Place a black border around the edges of the Borders layer so that it is the same size as the Collision layer.
-            This is so that we don't need to translate coordinates between the two.
-        */
-        PlaceRectangleHollow("Borders", "Black", _size.x + 2, _size.y + 4, new Vector2Int(0, 0));
-
-        // Place the border tiles onto the Borders tilemap
-        PlaceBorders(_tileMaps["Borders"], _tileMaps["Collision"]);
-
-        //Line up Exits tilemap with the other two, and make it 50% transparent for debugging purposes.
-        PlaceRectangleHollow("Exits", "Black", _size.x + 2, _size.y + 4, new Vector2Int(0, 0));
-
-        //Line up Decorations tilemap with the others
-        PlaceRectangleHollow("Decorations", "Black", _size.x + 2, _size.y + 4, new Vector2Int(0, 0));
-        // Get all possible exit paths in this room
-        List<ExitPathRectangle> possibleExitRects = FindPossibleExitPaths(_tileMaps["Collision"]);
-        List<ExitPathRectangle> exitRects = new List<ExitPathRectangle>();
-        // Grab _numExits number of them at random
-        for (int i = 0; i < _numExits; i++)
-        {
-
-            ExitPathRectangle randomExit = possibleExitRects[Random.Range(0, possibleExitRects.Count)];
-            randomExit.SetID(i);
-            exitRects.Add(randomExit);
-            possibleExitRects.Remove(randomExit);
-
-        }
-
-        // And draw them to the Exits tilemap
-        foreach (ExitPathRectangle rect in exitRects)
-        {
-
-            int pathWidth = rect.topRight.x - rect.bottomLeft.x + 1;
-            int pathHeight = rect.topRight.y - rect.bottomLeft.y + 1;
-
-            for (int x = rect.bottomLeft.x; x <= rect.topRight.x; x++)
-            {
-
-                for (int y = rect.topRight.y; y >= rect.bottomLeft.y; y--)
-                {
-
-                    if (rect.direction == ExitDirection.UP)
-                    {
-
-                        Tile currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
-
-                        if (currentTile != null)
-                        {
-
-                            if (_tileset.GetNameOfTile(currentTile) != "Black")
-                            {
-
-                                Tile collisionTileAbove = _tileMaps["Collision"].GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
-                                Tile decorationsTileAbove = _tileMaps["Decorations"].GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
-
-                                if (x == rect.bottomLeft.x && _tileset.GetNameOfTile(collisionTileAbove) == "Black")
-                                {
-                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_TopLeft"));
-                                }
-                                else if (x == rect.topRight.x && _tileset.GetNameOfTile(collisionTileAbove) == "Black")
-                                {
-                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_TopRight"));
-                                }
-                                else if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_TopLeft")
-                                {
-                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_MiddleLeft"));
-                                }
-                                else if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_TopRight")
-                                {
-                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_MiddleRight"));
-                                }
-
-                            }
-
-                        }
-                        else if (currentTile == null)
-                        {
-
-                            Tile decorationsTileAbove = _tileMaps["Decorations"].GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
-
-                            if (decorationsTileAbove != null)
-                            {
-
-                                if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_MiddleLeft")
-                                {
-
-                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_BottomLeft"));
-                                    _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Up"));
-
-                                }
-                                else if (_tileset.GetNameOfTile(decorationsTileAbove) == "BigDoor_MiddleRight")
-                                {
-                                  
-                                    _tileMaps["Decorations"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("BigDoor_BottomRight"));
-                                    _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Up"));
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-                    else if ((rect.direction == ExitDirection.LEFT) && (x == rect.bottomLeft.x))
-                    {
-                        _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Left"));
-                    }
-                    else if ((rect.direction == ExitDirection.RIGHT) && (x == rect.topRight.x))
-                    {
-                        _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Right"));
-                    }
-                    else if ((rect.direction == ExitDirection.DOWN) && (y == rect.bottomLeft.y))
-                    {
-                        _tileMaps["Exits"].SetTile(new Vector3Int(x, y, 0), _tileset.GetTileByName("Exit_Down"));
-                    }
-
-                }
-
-            }
-
-        }
-
-        // Scale room
-        room.transform.localScale = new Vector3(ROOM_SCALE, ROOM_SCALE, 0);
-
-        // Add collider to Collision layer
-        TilemapCollider2D collisionTilemapCollider = collisionLayer.AddComponent<TilemapCollider2D>();
-        collisionLayer.AddComponent<CompositeCollider2D>();
-        Rigidbody2D colliderRigidBody = collisionLayer.GetComponent<Rigidbody2D>();
-        colliderRigidBody.bodyType = RigidbodyType2D.Static;
-        collisionTilemapCollider.usedByComposite = true;
-
-        return new Room(room, exitRects);
 
     }
 
