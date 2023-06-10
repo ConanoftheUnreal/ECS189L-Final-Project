@@ -1,4 +1,4 @@
 
 namespace Lucifer {
-    public enum DamageTypes { CQC, RANGED, AOE }
+    public enum DamageTypes { CQC, RANGED, COLLIDE }
 }

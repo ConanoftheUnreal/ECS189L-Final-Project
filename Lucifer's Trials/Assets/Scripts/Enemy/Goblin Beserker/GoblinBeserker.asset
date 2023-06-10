@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1377e0960b1bb144eb42d58efff74462, type: 3}
   m_Name: GoblinBeserker
   m_EditorClassIdentifier: 
-  MaxHealth: 100
+  MaxHealth: 6
   Speed: 2
   Cooldown: 1
   FoV: 10
   Orbit: 1.5
   AttackRange: 1
-  Damage: 1
+  Damage: 2

@@ -30,6 +30,11 @@ public class PlayerController : MonoBehaviour
         return (health == maxHealth);
     }
 
+    public bool PlayerDefeated()
+    {
+        return (health == 0);
+    }
+
     public bool AtMaxSP()
     {
         return (SP == maxSP);
