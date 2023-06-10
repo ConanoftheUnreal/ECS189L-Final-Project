@@ -18,8 +18,6 @@ public class DungeonGenerator : IRoomGenerator
     private const int MAX_COLUMN_GENERATION_TRIES = 10;
     private const float ROOM_SCALE = 1f;
 
-    private const int WALL_LAYER = 3;
-
     // _tileMaps maps a descriptive name to a tilemap
     private Dictionary<string, Tilemap> _tileMaps;
 
@@ -318,30 +316,6 @@ public class DungeonGenerator : IRoomGenerator
         Rigidbody2D colliderRigidBody = collisionLayer.GetComponent<Rigidbody2D>();
         colliderRigidBody.bodyType = RigidbodyType2D.Static;
         collisionTilemapCollider.usedByComposite = true;
-
-        // Create game objects at every collision tile to help with enemy AI
-        for (int x = 0; x < _tileMaps["Collision"].size.x; x++)
-        {
-
-            for (int y = 0; y < _tileMaps["Collision"].size.y; y++)
-            {
-
-                Tile currentTile = _tileMaps["Collision"].GetTile(new Vector3Int(x, y, 0)) as Tile;
-
-                if (currentTile != null)
-                {
-
-                    GameObject wallObject = new GameObject("Wall");
-                    wallObject.transform.SetParent(collisionLayer.transform);
-                    Vector3 offset = new Vector3(0.5f, 0.5f, 0);
-                    wallObject.transform.position = _tileMaps["Collision"].CellToWorld(new Vector3Int(x, y, 0)) + offset;
-                    wallObject.layer = WALL_LAYER;
-
-                }
-
-            }
-
-        }
 
         return new Room(room, exitRects);
 

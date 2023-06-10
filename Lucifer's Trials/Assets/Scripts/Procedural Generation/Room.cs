@@ -21,6 +21,10 @@ public class Room
     private Tilemap _decorationsTilemap;
     private Transform _exitsTransform;
 
+    private Dictionary<Vector2Int, GameObject> _wallObjects = new Dictionary<Vector2Int, GameObject>();
+
+    private const int WALL_LAYER = 3;
+
     public List<ExitPathRectangle> exitPaths
     {
         get
@@ -48,6 +52,9 @@ public class Room
         _decorationsTilemap = _decorationsObject.GetComponent<Tilemap>();
         _exitsTransform = _exitsObject.transform;
 
+        // Create Wall objects for AI pathfinding
+        CreateWallObjects();
+
     }
 
     public GameObject roomObject
@@ -56,6 +63,45 @@ public class Room
         {
             return _roomObject;
         }
+    }
+
+    // Function for destroying the wall object at a given location, usually for clearing out exits
+    private void DestroyWallObject(Vector2Int location)
+    {
+        Object.Destroy(_wallObjects[location]);
+    }
+
+    private void CreateWallObjects()
+    {
+
+        // Create game objects at every collision tile to help with enemy AI
+        for (int x = 0; x < _collisionTilemap.size.x; x++)
+        {
+
+            for (int y = 0; y < _collisionTilemap.size.y; y++)
+            {
+
+                Tile currentTile = _collisionTilemap.GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                if (currentTile != null)
+                {
+
+                    // Create Wall object at coordinate
+                    GameObject wallObject = new GameObject("Wall");
+                    wallObject.transform.SetParent(_collisionObject.transform);
+                    Vector3 offset = new Vector3(0.5f, 0.5f, 0);
+                    wallObject.transform.position = _collisionTilemap.CellToWorld(new Vector3Int(x, y, 0)) + offset;
+                    wallObject.layer = WALL_LAYER;
+
+                    // Store Wall object in dictionary
+                    _wallObjects.Add(new Vector2Int(x, y), wallObject);
+
+                }
+
+            }
+
+        }        
+
     }
 
     public void DisableRoom()
@@ -112,9 +158,17 @@ public class Room
                 for (int y = exitPath.bottomLeft.y; y <= exitPath.topRight.y; y++)
                 {     
 
+                    Tile currentCollisionTile = _collisionTilemap.GetTile(new Vector3Int(x, y, 0)) as Tile;
+
                     _collisionTilemap.SetTile(new Vector3Int(x, y, 0), null);
                     _bordersTilemap.SetTile(new Vector3Int(x, y, 0), null);
                     _decorationsTilemap.SetTile(new Vector3Int(x, y, 0), null);
+
+                    // Destroy the wall objects at this exit so that the AIs don't think that there is still a wall there
+                    if (currentCollisionTile != null)
+                    {
+                        DestroyWallObject(new Vector2Int(x, y));
+                    }
 
                 }
             }
