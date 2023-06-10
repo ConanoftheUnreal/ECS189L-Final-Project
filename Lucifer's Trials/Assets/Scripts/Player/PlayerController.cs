@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     {
         this.maxHealth = 10;
         this.maxSP = 5;
+        this.wallet = 500;
 
         this.health = 10;
 
@@ -85,6 +86,11 @@ public class PlayerController : MonoBehaviour
     {
         this.wallet += amount;
         Debug.Log("Current Gold: " + this.wallet);
+    }
+
+    public void DecreaseWallet(int amount)
+    {
+        this.wallet -= amount;
     }
 
     // Realizing this is not way to do this; we do not ensure that when the Player is destroyed
