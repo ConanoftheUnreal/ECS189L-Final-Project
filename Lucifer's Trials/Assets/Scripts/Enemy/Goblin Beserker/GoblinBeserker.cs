@@ -26,6 +26,7 @@ public class GoblinBeserker : Enemy
         _timeOnCooldown = 0;
         //_cooldown = false;
         _speed = stats.Speed;
+        _player = GameObject.Find("Player");
     }
 
     private void OnEnable()
