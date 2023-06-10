@@ -10,13 +10,23 @@ public class EnemyAttackController : MonoBehaviour
     private GameObject attackSprite;
     private enum Sprite { DOWN, LEFT, RIGHT, UP }
 
+    private bool canActivate;
+    private float timeSince;
+
     public void Start()
     {
-        enemyType = this.gameObject.GetComponent<EnemyAnimation>().GetEnemyType();
+        this.enemyType = this.gameObject.GetComponent<EnemyAnimation>().GetEnemyType();
+
+        this.canActivate = true;
+        this.timeSince = 0.0f;
     }
 
     public void ActivateAttackSprite()
     {
+        if (!canActivate) return;
+
+        canActivate = false;
+        
         var animator = this.gameObject.GetComponent<Animator>();
         float x = animator.GetFloat("MoveX");
         float y = animator.GetFloat("MoveY");
@@ -82,13 +92,16 @@ public class EnemyAttackController : MonoBehaviour
             
             case EnemyTypes.SLINGER:
 
+                // shoot an arrow in the direction of the player
                 var directionVec = (Vector2)(GameObject.Find("Player").transform.position - this.gameObject.transform.position);
+                // readjust orientation of enemy if player has moved around it
                 if (Vector2.Angle(directionVec, enemyVec) >= 90)
                 {
                     animator.SetFloat("MoveX", directionVec.x * 2);
                     animator.SetFloat("MoveY", directionVec.y * 2);
                 }
 
+                // determine proper sprite orientation
                 float theta;
                 if (directionVec.x >= 0)
                 {
@@ -98,6 +111,8 @@ public class EnemyAttackController : MonoBehaviour
                 {
                     theta = -(45 + Vector2.Angle(Vector2.up, -directionVec)) + 180;
                 }
+
+                // instantiate arrow and its attributes based on previous determinants
                 var projectile = (GameObject)Instantiate(this.projectilePrefab, transform.position, Quaternion.Euler(0, 0, theta));
                 projectile.GetComponent<Rigidbody2D>().velocity = directionVec.normalized * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
                 break;
@@ -112,6 +127,19 @@ public class EnemyAttackController : MonoBehaviour
     public void DeactivateAttackSprite()
     {
         attackSprite.SetActive(false);
+    }
+
+    public void Update()
+    {
+        if (!canActivate)
+        {
+            timeSince += Time.deltaTime;
+            if (timeSince >= 0.1)
+            {
+                canActivate = true;
+                timeSince = 0.0f;
+            }
+        }
     }
 
 }

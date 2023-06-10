@@ -112,8 +112,7 @@ public class EnemyAnimation : MonoBehaviour
     }
 
     public void EnemyDamaged(GameObject obj, bool killed, bool wasProjectile)
-    {   
-        FindObjectOfType<SoundManager>().PlaySoundEffect("EnemyHurt");
+    {
         // determine enemy death
         if (killed)
         {
