@@ -32,9 +32,11 @@ public class Room
     public Room(GameObject roomObject, List<ExitPathRectangle> exitPaths)
     {
 
+        // A room is parameterized with a game object for the room and a list of exit paths
         _roomObject = roomObject;
         _exitPaths = exitPaths;
 
+        // Get all of the relevant child gameobjects of this room
         _groundObject = _roomObject.transform.Find("Ground").gameObject;
         _collisionObject = _roomObject.transform.Find("Collision").gameObject;
         _bordersObject = _roomObject.transform.Find("Borders").gameObject;
@@ -59,6 +61,7 @@ public class Room
     public void DisableRoom()
     {
    
+        // To disable room, basically just disable all of the tilemap-containing objects inside of it
         _groundObject.SetActive(false);
         _collisionObject.SetActive(false);
         _bordersObject.SetActive(false);
@@ -70,6 +73,7 @@ public class Room
     public void EnableRoom()
     {
 
+        // And do the reverse for enabling the room
         _groundObject.SetActive(true);
         _collisionObject.SetActive(true);
         _bordersObject.SetActive(true);
@@ -85,6 +89,7 @@ public class Room
         {
             OpenExit(i);
         }
+
     }
 
     public void OpenExit(int exitID)
@@ -92,6 +97,13 @@ public class Room
 
         ExitPathRectangle exitPath = _exitPaths[exitID];
 
+        // Don't allow opening an exit that has already been opened
+        if (exitPath.isOpen)
+        {
+            return;
+        }
+
+        // If the exit does not exit UP, we need to clear away that wall for the exit
         if (exitPath.direction != ExitDirection.UP)
         {
 
@@ -109,10 +121,12 @@ public class Room
 
         }
 
+        // Create the object that the player will collide with in order to use the exit
         GameObject exitObject = new GameObject("Exit #" + exitPath.id.ToString());
         exitObject.transform.SetParent(_exitsTransform);
         BoxCollider2D exitCollider = exitObject.AddComponent<BoxCollider2D>();
 
+        // Set the locations for these exitObjects depending on the direction of the exit, as well as where the player will come out from
         if (exitPath.direction == ExitDirection.LEFT)
         {
 
@@ -154,11 +168,13 @@ public class Room
 
         }
 
+        // Each exitObject needs an ExitManager component
         exitObject.AddComponent<ExitManager>();
 
+        // Now, clear the border tilemaps because we need to re-create them since we modified the level by clearing out walls
         _bordersTilemap.ClearAllTiles();
 
-        // If clearing the way for the exit caused some "middle" bicks to become "side" bricks, update them.
+        // If clearing the way for the exit caused some "middle" bricks to become "side" bricks, update them.
         for (int x = 0; x < _collisionTilemap.size.x; x++)
         {
 
@@ -203,7 +219,11 @@ public class Room
 
         }
 
+        // Now, replace the borders
         DungeonGenerator.PlaceBorders(_bordersTilemap, _collisionTilemap);
+
+        // And set the open status of this exit path
+        exitPath.SetIsOpen(true);
 
     }
 
@@ -227,6 +247,20 @@ public class ExitPathRectangle
     private ExitDirection _direction; 
     private int _id;
     private Vector2 _entranceLocation;
+    private bool _isOpen;
+
+    public void SetIsOpen(bool value)
+    {
+        _isOpen = value;
+    }
+
+    public bool isOpen
+    {
+        get
+        {
+            return _isOpen;
+        }
+    }
 
     public void SetEntranceLocation(Vector2 location)
     {

@@ -3,12 +3,13 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
 
+    // Level Manager keeps track of the current room and the exits that the player uses
     private LevelLayoutNode _currentNode;
     private bool _justEnteredNewRoom = false;
     private GameObject _player;
     private int _recentlyUsedEntrance = 0;
 
-    private int EXIT_REENTER_DISTANCE = 1;
+    private float EXIT_REENTER_DISTANCE = 1.0f;
 
     public bool justEnteredNewRoom
     {
@@ -44,6 +45,7 @@ public class LevelManager : MonoBehaviour
     public void Update()
     {
 
+        // Get the player object
         if (_player == null)
         {
             _player = GameObject.FindGameObjectWithTag("Player");
@@ -51,6 +53,7 @@ public class LevelManager : MonoBehaviour
         else
         {
 
+            // Don't allow the player to leave through the same door they just entered from without stepping away first
             Vector2 entrancePosition = _currentNode.room.exitPaths[_recentlyUsedEntrance].entranceLocation;
             if (Distance(_player.transform.position, entrancePosition) > EXIT_REENTER_DISTANCE)
             {

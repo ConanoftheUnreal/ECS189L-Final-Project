@@ -32,6 +32,7 @@ public class DungeonGenerator : IRoomGenerator
         _maxColumns = maxColumns;
         _maxColumnLength = maxColumnLength;
         _size = size;
+        
     }
 
     public Room Generate(int numExits)
@@ -183,6 +184,7 @@ public class DungeonGenerator : IRoomGenerator
 
         }
 
+        // Place the wall tiles onto the Collision tilemap
         PlaceWalls(_tileMaps["Collision"]);
 
         /*  
@@ -191,6 +193,7 @@ public class DungeonGenerator : IRoomGenerator
         */
         PlaceRectangleHollow("Borders", "Black", _size.x + 2, _size.y + 4, new Vector2Int(0, 0));
 
+        // Place the border tiles onto the Borders tilemap
         PlaceBorders(_tileMaps["Borders"], _tileMaps["Collision"]);
 
         //Line up Exits tilemap with the other two, and make it 50% transparent for debugging purposes.
