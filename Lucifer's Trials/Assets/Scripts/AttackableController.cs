@@ -9,22 +9,39 @@ public class AttackableController : MonoBehaviour
     // Attack interaction data
     [SerializeField] GameObject deathEffect;
     [SerializeField] bool humanoid = false;
-    [SerializeField] int damage = 1;
     private bool knockedback = false;
     private float knockbackDuration = 0.25f;
     private float timePassed;
     private float knockbackForce = 4.5f;
     private Rigidbody2D rb;
+
     // Healthbar data
-    [SerializeField] int maxHitpoints;
     private int hitpoints;
     private HealthBarController healthBar;
+
+    // enemy data
+    private GoblinBeserker self;
+    private int damage;
+    private int maxHitpoints;
 
     public void Start()
     {
         this.healthBar = this.gameObject.transform.Find("Healthbar").gameObject.GetComponent<HealthBarController>();
+
+        this.self = this.gameObject.GetComponent<GoblinBeserker>();
+        if (this.self)
+        {
+            // determined by stats of the enemy
+            this.maxHitpoints = (int)this.self.Stats.Health;
+        }
+        else
+        {
+            // default for a random object
+            this.maxHitpoints = 3;
+        }
         this.hitpoints = this.maxHitpoints;
-        //this.rb = this.gameObject.GetComponent<Rigidbody2D>();
+
+        this.rb = this.gameObject.GetComponent<Rigidbody2D>();
     }
 
     public void OnTriggerEnter2D(Collider2D col)
@@ -87,13 +104,13 @@ public class AttackableController : MonoBehaviour
 
             var knockbackDirection = (positionSelf - positionAttack).normalized;
 
-            this.rb = this.gameObject.GetComponent<Rigidbody2D>();
             this.rb.velocity = knockbackForce * knockbackDirection;
             knockedback = true;
             timePassed = 0.0f;
         }
     }
 
+    // called upon death animation complete or object destroyed
     public void DeathDisappear()
     {
         var effect = Instantiate(this.deathEffect, this.transform.position, Quaternion.identity) as GameObject;
@@ -107,7 +124,7 @@ public class AttackableController : MonoBehaviour
         {
             if (timePassed >= knockbackDuration)
             {
-                this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                this.rb.velocity = Vector2.zero;
                 knockedback = false;
             }
             timePassed += Time.deltaTime;

@@ -163,6 +163,7 @@ public class EnemyAnimation : MonoBehaviour
         {
             this.CurrentState = EnemyAnimStates.IDLE;
             this.animator.speed = 1;
+            this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             statelock = true;
         }
         else if (!statelock)
@@ -176,12 +177,14 @@ public class EnemyAnimation : MonoBehaviour
                 this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 this.CurrentState = EnemyAnimStates.ATTACK;
                 this.animator.speed = 1;
+                this.animator.SetFloat("MoveX", horizontal * 2);
+                this.animator.SetFloat("MoveY", vertical * 2);
             }
             // Patrolling, Moving, Orbiting, Fleeing
             else if ( ((horizontal != 0) || (vertical != 0)) && (!this.statelock) )
             {
                 this.CurrentState = EnemyAnimStates.WALK;
-                this.animator.speed = 1;
+                this.animator.speed = this.enemy.Speed / 2;
                 this.animator.SetFloat("MoveX", horizontal * 2);
                 this.animator.SetFloat("MoveY", vertical * 2);
             }

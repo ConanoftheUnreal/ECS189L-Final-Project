@@ -9,7 +9,7 @@ public class ProjectileScript : MonoBehaviour
     [SerializeField] int damage = 3;
     [SerializeField] ProjectileTypes projectileType;
     [SerializeField] GameObject afterEffectPrefab;
-    private float speed = 15.0f;
+    private float speed = 12.0f;
 
     public void OnTriggerEnter2D(Collider2D col)
     {

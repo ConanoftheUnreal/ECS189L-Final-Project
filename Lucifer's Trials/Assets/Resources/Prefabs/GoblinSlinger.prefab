@@ -290,7 +290,7 @@ MonoBehaviour:
     orbit: 0
     attackRange: 0
     damage: 0
-    baseStats: {fileID: 11400000, guid: 169a9b1c8806e5c4683542e09a97832d, type: 2}
+    baseStats: {fileID: 11400000, guid: 51e97399e9fd3fa44af72782f5829ffe, type: 2}
   _currentHealth: 0
   _timeOnCooldown: 0
   _cooldown: 0
