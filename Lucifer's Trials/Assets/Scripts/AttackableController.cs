@@ -49,7 +49,10 @@ public class AttackableController : MonoBehaviour
         // if collision with player, hurt the player
         if (col.tag == "PlayerHurtbox")
         {
-            col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.COLLIDE);
+            if (hitpoints > 0)
+            {
+                col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.COLLIDE);
+            }
         }
 
         // if collision with something that hurts, self gets hurt
