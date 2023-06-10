@@ -928,6 +928,7 @@ public class DungeonGenerator : IRoomGenerator
             for (int y = 0; y < collisionMap.size.y; y++)
             {
 
+                // Place inner-BlackBorder-tiles
                 Tile currentTile = collisionMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
 
                 if (currentTile == null || tileset.GetNameOfTile(currentTile) != "Black")
@@ -940,7 +941,7 @@ public class DungeonGenerator : IRoomGenerator
                     if ((tileBelow != null) && (tileToRight != null))
                     {
 
-                        if ((tileset.GetNameOfTile(tileBelow) == "Black"))
+                        if (tileset.GetNameOfTile(tileBelow) == "Black")
                         {
                             bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BlackBorder_BottomRight"));
                         }
@@ -950,12 +951,54 @@ public class DungeonGenerator : IRoomGenerator
                     if ((tileBelow != null) && (tileToLeft != null))
                     {
 
-                        if ((tileset.GetNameOfTile(tileBelow) == "Black"))
+                        if (tileset.GetNameOfTile(tileBelow) == "Black")
                         {
                             bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BlackBorder_BottomLeft"));
                         }
 
                     }
+
+                }
+
+                // Place outter-BlackBorder-tiles
+                currentTile = bordersMap.GetTile(new Vector3Int(x, y, 0)) as Tile;
+
+                if (currentTile == null)
+                {
+
+                    Tile tileBelow = bordersMap.GetTile(new Vector3Int(x, y - 1, 0)) as Tile;
+                    Tile tileAbove = bordersMap.GetTile(new Vector3Int(x, y + 1, 0)) as Tile;
+                    Tile tileToLeft = bordersMap.GetTile(new Vector3Int(x - 1, y, 0)) as Tile;
+                    Tile tileToRight = bordersMap.GetTile(new Vector3Int(x + 1, y, 0)) as Tile;          
+
+                    if ((tileBelow != null) && (tileset.GetNameOfTile(tileBelow) == "BlackBorder_Left"))
+                    {
+                        if ((tileToRight != null) && (tileset.GetNameOfTile(tileToRight) == "BlackBorder_Top"))
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BlackBorderCorner_TopLeft"));
+                        }
+                    }
+                    else if ((tileBelow != null) && (tileset.GetNameOfTile(tileBelow) == "BlackBorder_Right"))
+                    {
+                        if ((tileToLeft != null) && (tileset.GetNameOfTile(tileToLeft) == "BlackBorder_Top"))
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BlackBorderCorner_TopRight"));
+                        }
+                    }          
+                    else if ((tileAbove != null) && (tileset.GetNameOfTile(tileAbove) == "BlackBorder_Left"))
+                    {
+                        if ((tileToRight != null) && (tileset.GetNameOfTile(tileToRight) == "BlackBorder_Bottom"))
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BlackBorderCorner_BottomLeft"));
+                        }
+                    } 
+                    else if ((tileAbove != null) && (tileset.GetNameOfTile(tileAbove) == "BlackBorder_Right"))
+                    {
+                        if ((tileToLeft != null) && (tileset.GetNameOfTile(tileToLeft) == "BlackBorder_Bottom"))
+                        {
+                            bordersMap.SetTile(new Vector3Int(x, y, 0), tileset.GetTileByName("BlackBorderCorner_BottomRight"));
+                        }
+                    } 
 
                 }
 
