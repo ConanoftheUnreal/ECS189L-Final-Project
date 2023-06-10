@@ -85,14 +85,6 @@ public class PlayerAnimationController : MonoBehaviour
         return this.playerType;
     }
 
-    public bool DamagePlayer(GameObject obj, int damage, DamageTypes damageType)
-    {
-        if (IsDashing()) return false;
-
-        PlayerDamaged(obj, damage, damageType);
-        return true;
-    }
-
     public bool PlayerDamaged(GameObject obj, int damage, DamageTypes damageType)
     {
         // invincibility frames
@@ -113,6 +105,7 @@ public class PlayerAnimationController : MonoBehaviour
             this.animator.speed = 1;
             // play death effect
             var effect = (GameObject)Instantiate(this.deathEffect, this.transform.position - (new Vector3(0.5f, 0, 0)), Quaternion.identity);
+            return true;
         }
         else
         {
@@ -130,18 +123,18 @@ public class PlayerAnimationController : MonoBehaviour
                 // determine knockback by vector btw both objects
                 this.animator.SetFloat("MoveX", -knockbackDirection.x);
                 this.animator.SetFloat("MoveY", -knockbackDirection.y);
-                if (this.playerHurt) Knockback(knockbackDirection);
+                Knockback(knockbackDirection);
                 break;
             case DamageTypes.RANGED:
                 // determine knockback by direction of missile
                 var objVec = obj.GetComponent<Rigidbody2D>().velocity.normalized;
                 this.animator.SetFloat("MoveX", -objVec.x);
                 this.animator.SetFloat("MoveY", -objVec.y);
-                if (this.playerHurt) Knockback(objVec);
+                Knockback(objVec);
                 break;
-            case DamageTypes.AOE:
-                // no knockback for AOE
-                // this.statelock = false (not sure if we want player locked during AOE damage)
+            case DamageTypes.COLLIDE:
+                var hitDirection = new Vector2(UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f)).normalized;
+                Knockback(hitDirection);
                 break;
             default:
                 Debug.Log("Error: damage type is undefined.");

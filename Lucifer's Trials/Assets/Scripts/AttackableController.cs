@@ -8,28 +8,71 @@ public class AttackableController : MonoBehaviour
 {
     // Attack interaction data
     [SerializeField] GameObject deathEffect;
+    [SerializeField] bool humanoid = false;
     [SerializeField] int damage = 1;
     private bool knockedback = false;
     private float knockbackDuration = 0.25f;
     private float timePassed;
     private float knockbackForce = 4.5f;
+    private Rigidbody2D rb;
     // Healthbar data
-    [SerializeField] private HealthBarController healthBar;
     [SerializeField] int maxHitpoints;
     private int hitpoints;
+    private HealthBarController healthBar;
+
+    public void Start()
+    {
+        this.healthBar = this.gameObject.transform.Find("Healthbar").gameObject.GetComponent<HealthBarController>();
+        this.hitpoints = this.maxHitpoints;
+        //this.rb = this.gameObject.GetComponent<Rigidbody2D>();
+    }
 
     public void OnTriggerEnter2D(Collider2D col)
     {
+        // if collision with player, hurt the player
         if (col.tag == "PlayerHurtbox")
         {
-            col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.CQC);
+            col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.COLLIDE);
         }
 
+        // if collision with something that hurts, self gets hurt
         if ((col.tag == "PlayerAttack") || (col.tag == "Projectile"))
         {
-            this.TakeDamage();
+            // get damage based on type of attacking object; NOT YET IMPLEMENTED, VALUE IS A PLACEHOLDER VALUE
+            var attackersDamage = 1;
+
+            var wasProjectile = false;
+            if (col.tag == "Projectile")
+            {
+                wasProjectile = true;
+            }
+
+            this.TakeDamage(col, attackersDamage, wasProjectile);
             FindObjectOfType<SoundManager>().PlaySoundEffect("EnemyHurt");
-            var rb = this.GetComponent<Rigidbody2D>();
+        }
+    }
+
+    private void TakeDamage(Collider2D col, int attackersDamage, bool wasProjectile)
+    {
+        // attacking enemy
+        if (humanoid)
+        {
+            var killed = false;
+            this.hitpoints -= attackersDamage;
+            if (hitpoints <= 0)
+            {
+                killed = true;
+            }
+            this.gameObject.GetComponent<EnemyAnimation>().EnemyDamaged(col.gameObject, killed, wasProjectile);
+        }
+        // attacking breakable object
+        else
+        {
+            this.hitpoints -= attackersDamage;
+            if (this.hitpoints <= 0)
+            {
+                DeathDisappear();
+            }
 
             var positionSelf = (Vector2)this.gameObject.transform.position;
             Vector2 positionAttack;
@@ -44,30 +87,10 @@ public class AttackableController : MonoBehaviour
 
             var knockbackDirection = (positionSelf - positionAttack).normalized;
 
-            rb.velocity = knockbackForce * knockbackDirection;
+            this.rb = this.gameObject.GetComponent<Rigidbody2D>();
+            this.rb.velocity = knockbackForce * knockbackDirection;
             knockedback = true;
             timePassed = 0.0f;
-        }
-    }
-
-    public void Start()
-    {
-        this.hitpoints = this.maxHitpoints;
-        this.healthBar.SetHealth(this.hitpoints, this.maxHitpoints);
-    }
-
-    private void TakeDamage()
-    {
-        this.hitpoints -= 1;
-        if (this.hitpoints > 0)
-        {
-            this.healthBar.SetHealth(this.hitpoints, this.maxHitpoints);
-        }
-        else
-        {
-            // queue death animation of object
-            // TEMPORARY FOR TESTING:
-            DeathDisappear();
         }
     }
 
@@ -79,6 +102,7 @@ public class AttackableController : MonoBehaviour
 
     public void Update()
     {
+        this.healthBar.SetHealth(this.hitpoints, this.maxHitpoints);
         if (knockedback)
         {
             if (timePassed >= knockbackDuration)

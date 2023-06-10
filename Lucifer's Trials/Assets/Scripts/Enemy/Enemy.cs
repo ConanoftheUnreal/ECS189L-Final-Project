@@ -40,7 +40,7 @@ public abstract class Enemy : MonoBehaviour, IEnemy
     }
 
     public abstract void Attack();
-    public abstract void GetMovementDirection();
+    public abstract void UpdateMovementDirection();
     protected abstract bool GetRange(float range);
     protected abstract void UpdateState();
 }

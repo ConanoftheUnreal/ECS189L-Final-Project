@@ -5,10 +5,16 @@ using UnityEngine.UI;
 
 public class HealthBarController : MonoBehaviour
 {
-    [SerializeField] private Slider healthSlider;
+    private Slider healthSlider;
     [SerializeField] private Color low;
     [SerializeField] private Color high;
     [SerializeField] private Vector3 offset;
+
+    public void Start()
+    {
+        // healthSlider is the only child object
+        healthSlider = this.gameObject.transform.GetChild(0).gameObject.GetComponent<Slider>();
+    }
 
     public void SetHealth(int health, int maxHealth)
     {

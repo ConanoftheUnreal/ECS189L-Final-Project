@@ -64,7 +64,7 @@ public class GoblinBeserker : Enemy
                 break;
         }
 
-        GetMovementDirection();
+        UpdateMovementDirection();
     }
 
     // Enable and Disables Polarith AI components for the given state.
@@ -249,7 +249,17 @@ public class GoblinBeserker : Enemy
         /* Do the Attack Thing */
     }
 
-    public override void GetMovementDirection()
+    public Vector2 MovementDirection
+    {
+        get { return _movementDirection; }
+    }
+
+    public float Speed
+    {
+        get { return _speed; }
+    }
+
+    public override void UpdateMovementDirection()
     {
         if (Mathf2.Approximately(_contextSteering.DecidedDirection.sqrMagnitude, 0))
         {
