@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 23
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7924457800496581044
 MonoBehaviour:
@@ -53,4 +53,16 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     loop: 1
-  sfxClips: []
+  sfxClips:
+  - clip: {fileID: 8300000, guid: 9e81f06539a3e2e43b8928c17f3df78b, type: 3}
+    audioSource: {fileID: 0}
+    title: bad select
+    volume: 0.3
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: f6599f9beba7e8d49942fe949bd537c9, type: 3}
+    audioSource: {fileID: 0}
+    title: good select
+    volume: 0.3
+    pitch: 1
+    loop: 0
