@@ -206,7 +206,7 @@ public class GoblinBeserker : Enemy
                 // TODO: Need a flee range variable.
                 _state = EnemyState.FLEE;
             }
-            else if (!GetRange(Stats.Orbit * 1.2f))
+            else if (!GetRange(Stats.Orbit * 1.5f))
             {
                 _state = EnemyState.MOVE;
             }
