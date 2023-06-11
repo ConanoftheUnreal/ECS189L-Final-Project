@@ -60,7 +60,7 @@ public class AttackableController : MonoBehaviour
         if ((col.tag == "PlayerAttack") || (col.tag == "Projectile"))
         {
             // get damage based on type of attacking object; NOT YET IMPLEMENTED, VALUE IS A PLACEHOLDER VALUE
-            var attackersDamage = 1;
+            var attackersDamage = GameObject.Find("Player").GetComponent<PlayerController>().GetAttack();
 
             var wasProjectile = false;
             if (col.tag == "Projectile")
