@@ -64,9 +64,9 @@ public class LevelManager : MonoBehaviour
 
     }
 
-    private float Distance(Vector2 v1, Vector2 v2)
+    public static float Distance(Vector2 v1, Vector2 v2)
     {
-        return Mathf.Abs(-(v1 - v2).magnitude);
+        return Mathf.Abs((v1 - v2).magnitude);
     }
 
 }
