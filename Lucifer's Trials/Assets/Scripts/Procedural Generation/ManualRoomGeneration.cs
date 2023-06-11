@@ -17,8 +17,7 @@ public class ManualRoomGeneration : MonoBehaviour
     {
 
         _roomGenerator = new DungeonGenerator(5, 5, new Vector2Int(16, 9));
-        //_levelLayoutGenerator = new LevelLayoutGenerator(5, 15, 3);
-        _levelLayoutGenerator = new LevelLayoutGenerator(1, 1, 3);
+        _levelLayoutGenerator = new LevelLayoutGenerator(5, 15, 3);
         _levelGenerator = new LevelGenerator(_levelLayoutGenerator, _roomGenerator);
 
         GameObject perceiver = Object.Instantiate(_SteeringPerceiver);

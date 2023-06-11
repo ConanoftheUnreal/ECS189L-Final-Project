@@ -66,6 +66,14 @@ public class Room
         }
     }
 
+    public int numAliveEnemies
+    {
+        get
+        {
+            return _enemyObjects.Count;
+        }
+    }
+
     public Room(GameObject roomObject, List<ExitPathRectangle> exitPaths)
     {
 
@@ -102,6 +110,12 @@ public class Room
         // Subtract 1 from the y value to account for the back wall which is thicker than all the other surrounding walls
         _centerPoint = roomObject.transform.position + roomSize / 2 - new Vector3(0, 1, 0);
 
+    }
+
+    // Remove dead enemies from the list of enemies in the room
+    public void UpdateEnemiesList()
+    {
+        _enemyObjects.RemoveAll(enemy => enemy == null);
     }
 
     private void SpawnEnemies(List<Vector2Int> possibleSpawnLocations)
@@ -219,7 +233,10 @@ public class Room
 
         foreach (GameObject enemy in _enemyObjects)
         {
-            enemy.SetActive(false);
+            if (enemy != null)
+            {
+                enemy.SetActive(false);
+            }
         }
 
     }
@@ -236,7 +253,10 @@ public class Room
 
         foreach (GameObject enemy in _enemyObjects)
         {
-            enemy.SetActive(true);
+            if (enemy != null)
+            {
+                enemy.SetActive(true);
+            }
         }
 
     }

@@ -19,7 +19,7 @@ public class ExitManager : MonoBehaviour
     {
 
         // If the player collides with this exit
-        if (collision.gameObject.tag == "Player")
+        if ((collision.gameObject.tag == "Player") && (_levelManager.isCurrentRoomCleared))
         {
             
             // Make sure they are not trying to go out the entrance in the Root room
