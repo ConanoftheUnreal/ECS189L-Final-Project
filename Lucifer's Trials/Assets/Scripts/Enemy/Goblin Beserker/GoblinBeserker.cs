@@ -2,8 +2,10 @@ using Polarith.AI.Move;
 using Polarith.Utils;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GoblinBeserker : Enemy
 {
@@ -18,6 +20,8 @@ public class GoblinBeserker : Enemy
     // The direction enemy should be move given by Polarith Context Steering Alg.
     private Vector2 _movementDirection;
 
+    private Vector2 _centerOfRoom;
+
     // private bool _isAttacking;
     public void Start()
     {
@@ -27,6 +31,15 @@ public class GoblinBeserker : Enemy
         //_cooldown = false;
         _speed = stats.Speed;
         _player = GameObject.Find("Player");
+        _centerOfRoom = Vector2.zero;
+    }
+
+    public void Awake()
+    {
+        if (_centerOfRoom == Vector2.zero)
+        {
+            setRoomCenter();
+        }
     }
 
     private void OnEnable()
@@ -36,6 +49,17 @@ public class GoblinBeserker : Enemy
 
         if (_contextSteering == null)
             Debug.LogWarning("Context Steering Not Found");
+    }
+
+    private void setRoomCenter()
+    {
+        GameObject rootRoom = GameObject.FindWithTag("Root");
+        if (rootRoom == null)
+        {
+            Debug.LogWarning("rootRoom Not found");
+        }
+        LevelManager levelManager = rootRoom.GetComponent<LevelManager>();
+        _centerOfRoom = levelManager.GetCenterOfCurrentRoom();
     }
 
     private void Update()
@@ -293,7 +317,33 @@ public class GoblinBeserker : Enemy
         _movementDirection = _contextSteering.DecidedDirection;
 
         Ray theRay = new Ray(transform.position, transform.TransformDirection(_movementDirection));
+        RaycastHit2D hit;
         Debug.DrawRay(transform.position, transform.TransformDirection(_movementDirection));
+
+        if (Physics.Raycast(transform.position, (Vector2 )transform.position + _movementDirection, 1, layerMask: 1 << 3))
+        {
+            if (_centerOfRoom == Vector2.zero)
+            {
+                setRoomCenter();
+            }
+
+            Vector2 playerToCenter = _centerOfRoom - (Vector2)transform.position;
+
+            if (Vector3.Cross(new Vector3(_movementDirection.x, _movementDirection.y, 0), new Vector3(playerToCenter.x, playerToCenter.y, 0)).z > 0)
+            {
+                Debug.Log("Positive Z");
+            }
+            else if (Vector3.Cross(new Vector3(_movementDirection.x, _movementDirection.y, 0), new Vector3(playerToCenter.x, playerToCenter.y, 0)).z < 0)
+            {
+                Debug.Log("Negative Z");
+            }
+        }
         //Debug.Log(_contextSteering.DecidedDirection);
     }
 }
+
+/*
+GameObject rootRoom = GameObject.Find("Root");
+LevelManager levelManager = rootRoom.GetComponent<LevelManager>();
+Vector2 roomCenter = levelManager.GetCenterOfCurrentRoom();
+*/
