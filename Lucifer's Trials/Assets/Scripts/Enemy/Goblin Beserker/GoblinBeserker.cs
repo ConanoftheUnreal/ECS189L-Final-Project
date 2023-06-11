@@ -202,7 +202,7 @@ public class GoblinBeserker : Enemy
             // If attack is unavailbe and player in field of view, then move to orbit player.
             // If in enemies attack range, quickly leave enemy attack range. If to far outside of
             // Orbit value, than move closer to orbit.
-            if (GetRange(.5f))
+            if (GetRange(.3f))
             {
                 // TODO: Need a flee range variable.
                 _state = EnemyState.FLEE;
