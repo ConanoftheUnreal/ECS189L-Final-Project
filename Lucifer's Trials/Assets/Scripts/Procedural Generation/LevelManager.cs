@@ -31,7 +31,14 @@ public class LevelManager : MonoBehaviour
 
     public void SetCurrentNode(LevelLayoutNode node)
     {
+
         _currentNode = node;
+
+        // Add the collision object for the current room to the AI sensor system
+        GameObject perceiver = GameObject.FindWithTag("SteeringPerciever").transform.Find("WallEnv").gameObject;
+        Polarith.AI.Package.EnvironmentUpdater environmentUpdater = perceiver.GetComponent<Polarith.AI.Package.EnvironmentUpdater>();
+        environmentUpdater.GameObjectCollections[0] = _currentNode.room.collisionObject;
+
     }
 
     public LevelLayoutNode currentNode

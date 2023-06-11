@@ -5,6 +5,7 @@ public class ManualRoomGeneration : MonoBehaviour
 
     [SerializeField] private Camera _camera;
     [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private GameObject _SteeringPerceiver;
 
     private DungeonGenerator _roomGenerator;
     private LevelLayoutGenerator _levelLayoutGenerator;
@@ -19,6 +20,16 @@ public class ManualRoomGeneration : MonoBehaviour
         //_levelLayoutGenerator = new LevelLayoutGenerator(5, 15, 3);
         _levelLayoutGenerator = new LevelLayoutGenerator(1, 1, 3);
         _levelGenerator = new LevelGenerator(_levelLayoutGenerator, _roomGenerator);
+
+        GameObject perceiver = Object.Instantiate(_SteeringPerceiver);
+
+        GameObject wallEvn = perceiver.transform.Find("WallEnv").gameObject;
+        Polarith.AI.Package.EnvironmentUpdater environmentUpdater = wallEvn.GetComponent<Polarith.AI.Package.EnvironmentUpdater>();
+        environmentUpdater.GameObjectCollections[0] = this.gameObject;
+
+        GameObject enemiesEnv = perceiver.transform.Find("EnemiesEnv").gameObject;
+        environmentUpdater = enemiesEnv.GetComponent<Polarith.AI.Package.EnvironmentUpdater>();
+        environmentUpdater.GameObjectCollections[0] = GameObject.Find("Enemies");
 
     }
 
@@ -45,6 +56,7 @@ public class ManualRoomGeneration : MonoBehaviour
                 player.transform.position = new Vector3(entranceLocation.x, entranceLocation.y, 0);
                 player.transform.SetParent(_levelManager.currentNode.room.roomObject.transform);
                 player.GetComponent<SpriteRenderer>().enabled = true;
+
             }
 
         }

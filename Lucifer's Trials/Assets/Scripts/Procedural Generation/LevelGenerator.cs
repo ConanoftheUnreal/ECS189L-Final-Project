@@ -37,13 +37,6 @@ public class LevelGenerator
         // Generate a room for the current node
         node.SetRoom(_roomGenerator.Generate(node.children.Count + 1));
 
-        // Give each room in the level a unique ID
-        node.room.SetID(_currentRoomID);
-        _currentRoomID++;
-
-        // Spawn enemies in room
-        node.room.SpawnEnemies();
-
         if (node.type == NodeType.ROOT)
         {
 

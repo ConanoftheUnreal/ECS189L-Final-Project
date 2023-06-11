@@ -21,10 +21,7 @@ public class Room
     private Tilemap _decorationsTilemap;
     private Transform _exitsTransform;
 
-    private int _id;
-
     private Dictionary<Vector2Int, GameObject> _wallObjects = new Dictionary<Vector2Int, GameObject>();
-    private List<Vector2Int> _possibleEnemySpawns = new List<Vector2Int>();
 
     private List<GameObject> _enemyObjects = new List<GameObject>();
 
@@ -34,11 +31,6 @@ public class Room
     private const int MIN_ENEMIES_SPAWN = 5;
     private const int MAX_ENEMIES_SPAWN = 10;
     private const float SLINGER_SPAWN_RATE = 0.3f;
-
-    public void SetID(int id)
-    {
-        _id = id;
-    }
 
     public List<ExitPathRectangle> exitPaths
     {
@@ -53,6 +45,14 @@ public class Room
         get
         {
             return _roomObject;
+        }
+    }
+
+    public GameObject collisionObject
+    {
+        get
+        {
+            return _collisionObject;
         }
     }
 
@@ -79,26 +79,22 @@ public class Room
         CreateWallObjects();
 
         // Find the possible locations for spawning enemies
-        _possibleEnemySpawns = FindPossibleEnemySpawns();
+        List<Vector2Int> possibleEnemySpawns = FindPossibleEnemySpawns();
+
+        // Spawn enemies at random subset of possible locations
+        SpawnEnemies(possibleEnemySpawns);
 
     }
 
-    public void SpawnEnemies()
+    private void SpawnEnemies(List<Vector2Int> possibleSpawnLocations)
     {
-
-        // Add the collision object of this room to the AI system
-        GameObject perciever = GameObject.FindWithTag("SteeringPerciever").transform.Find("WallEnv").gameObject;
-        Polarith.AI.Package.EnvironmentUpdater environmentUpdater = perciever.GetComponent<Polarith.AI.Package.EnvironmentUpdater>();
-        environmentUpdater.GameObjectCollections[_id] = _collisionObject;
-
-        Debug.Log(_id);
 
         GameObject parentObject = GameObject.Find("Enemies");
         FactoryGoblinBeserker beserkerSpawner = parentObject.GetComponent<FactoryGoblinBeserker>();
         FactoryGoblinSlinger slingerSpawner = parentObject.GetComponent<FactoryGoblinSlinger>();
 
         int numEnemies = Random.Range(MIN_ENEMIES_SPAWN, MAX_ENEMIES_SPAWN + 1);
-        List<Vector2Int> possibleSpawns = new List<Vector2Int>(_possibleEnemySpawns);
+        List<Vector2Int> possibleSpawns = new List<Vector2Int>(possibleSpawnLocations);
 
         for (int i = 0; i < numEnemies; i++)
         {
