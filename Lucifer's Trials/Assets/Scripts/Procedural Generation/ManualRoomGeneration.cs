@@ -61,12 +61,14 @@ public class ManualRoomGeneration : MonoBehaviour
 
         }
 
+        
         if (Input.GetButtonDown("Fire2"))
         {
 
-            _levelManager.currentNode.room.OpenAllExits();
+            Debug.Log(_levelManager.GetCenterOfCurrentRoom());
 
         }
+        
 
     }
 

@@ -7,7 +7,7 @@ using Lucifer;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float speed = 6.0f;
+    private float speed;
     private float knockbackForce = 4.5f;
     private float horizontal;
     private float vertical;
@@ -66,11 +66,13 @@ public class PlayerMovement : MonoBehaviour
         {
             if (this.isDashing && (this.curDuration < this.dashDuration))
             {
+                this.speed = GameObject.Find("Player").GetComponent<PlayerController>().GetSpeed();
                 this.rb.velocity = new Vector2(this.horizontal, this.vertical).normalized * (this.speed * 3f);
                 this.curDuration += Time.deltaTime;
             }
             else
             {
+                this.speed = GameObject.Find("Player").GetComponent<PlayerController>().GetSpeed();
                 this.isDashing = false;
                 this.rb.velocity = new Vector2(this.horizontal, this.vertical).normalized * this.speed;
             }

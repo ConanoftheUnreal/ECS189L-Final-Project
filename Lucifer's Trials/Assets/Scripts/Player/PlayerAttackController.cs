@@ -29,6 +29,8 @@ public class PlayerAttackController : MonoBehaviour
                         attackSprite.SetActive(true);
                         break;
                     case PlayerType.SORCERESS:
+                        var projectileDamage = GameObject.Find("Player").GetComponent<PlayerController>().GetAttack();
+                        playerProjectile.GetComponent<ProjectileScript>().SetProjectileDamage(projectileDamage);
                         var projectile = (GameObject)Instantiate(playerProjectile, transform.position + (new Vector3(0, -0.1f, 0)), Quaternion.Euler(0, 0, 180));
                         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
                         break;
@@ -43,6 +45,8 @@ public class PlayerAttackController : MonoBehaviour
                         attackSprite.SetActive(true);
                         break;
                     case PlayerType.SORCERESS:
+                        var projectileDamage = GameObject.Find("Player").GetComponent<PlayerController>().GetAttack();
+                        playerProjectile.GetComponent<ProjectileScript>().SetProjectileDamage(projectileDamage);
                         var projectile = (GameObject)Instantiate(playerProjectile, transform.position + (new Vector3(0, -0.1f, 0)), Quaternion.Euler(0, 0, 0));
                         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
                         break;
@@ -61,6 +65,8 @@ public class PlayerAttackController : MonoBehaviour
                         attackSprite.SetActive(true);
                         break;
                     case PlayerType.SORCERESS:
+                        var projectileDamage = GameObject.Find("Player").GetComponent<PlayerController>().GetAttack();
+                        playerProjectile.GetComponent<ProjectileScript>().SetProjectileDamage(projectileDamage);
                         var projectile = (GameObject)Instantiate(playerProjectile, transform.position + (new Vector3(0.1f, 0, 0)), Quaternion.Euler(0, 0, -90));
                         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 1) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
                         break;
@@ -75,6 +81,8 @@ public class PlayerAttackController : MonoBehaviour
                         attackSprite.SetActive(true);
                         break;
                     case PlayerType.SORCERESS:
+                        var projectileDamage = GameObject.Find("Player").GetComponent<PlayerController>().GetAttack();
+                        playerProjectile.GetComponent<ProjectileScript>().SetProjectileDamage(projectileDamage);
                         var projectile = (GameObject)Instantiate(playerProjectile, transform.position + (new Vector3(-0.1f, 0, 0)), Quaternion.Euler(0, 0, 90));
                         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -1) * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
                         break;

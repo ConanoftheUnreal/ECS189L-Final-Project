@@ -41,6 +41,11 @@ public class LevelManager : MonoBehaviour
 
     }
 
+    public Vector2 GetCenterOfCurrentRoom()
+    {
+        return _currentNode.room.centerPoint;
+    }
+
     public LevelLayoutNode currentNode
     {
         get
