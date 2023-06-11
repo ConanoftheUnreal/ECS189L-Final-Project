@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 539110190498284885}
   - component: {fileID: 4612618203386585717}
   - component: {fileID: 4762662440450478630}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GoblinBerserker
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Sprite: {fileID: -1566087332, guid: 45b5348cd2015cd4b9a9335e126534f5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -184,7 +184,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6949441089291722045}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -202,7 +202,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &7237144075086487430
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -246,7 +246,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.28, y: 0.1}
+  m_Size: {x: 0.3, y: 0.25}
   m_EdgeRadius: 0
 --- !u!95 &862532076700801884
 Animator:

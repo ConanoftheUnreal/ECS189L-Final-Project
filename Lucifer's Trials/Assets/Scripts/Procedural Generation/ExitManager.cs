@@ -23,7 +23,7 @@ public class ExitManager : MonoBehaviour
         {
             
             // Make sure they are not trying to go out the entrance in the Root room
-            if (!((_levelManager.currentNode.room.roomObject.name == "Root") && _id == (LevelGenerator.ENTRANCE_EXIT_ID)))
+            if (!((_levelManager.currentNode.room.roomObject.name == "Root") && (_id == LevelGenerator.ENTRANCE_EXIT_ID)))
             {
 
                 // Also make sure they don't accidentally leave the room they just entered

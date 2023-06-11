@@ -21,6 +21,12 @@ public class FactoryGoblinSlinger : Factory
         {
             Debug.LogWarning("EnemyPrefab Not Set");
         }
+
+        player = GameObject.FindWithTag("Player");
+
+        GameObject tmp = GameObject.FindWithTag("SteeringPerciever");
+        perceiver = tmp.GetComponent<Polarith.AI.Move.AIMSteeringPerceiver>();
+        Debug.Log(perceiver.gameObject.name);
     }
 
     public override IEnemy GetEnemy()
@@ -42,7 +48,7 @@ public class FactoryGoblinSlinger : Factory
 
         Polarith.AI.Move.AIMSteeringFilter tmp = instance.GetComponentInChildren<Polarith.AI.Move.AIMSteeringFilter>();
         if (tmp == null) { Debug.LogWarning("AIMSteeringFilter not found!!"); }
-        Debug.Log(tmp);
+        //Debug.Log(tmp.gameObject.name);
         tmp.SteeringPerceiver = perceiver;
 
         float orbit = newGoblin.Stats.Orbit;

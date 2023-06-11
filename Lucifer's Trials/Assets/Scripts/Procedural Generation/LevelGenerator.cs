@@ -54,9 +54,6 @@ public class LevelGenerator
 
         }
 
-        // Then open the entrance to this room
-        node.room.OpenExit(ENTRANCE_EXIT_ID);
-
         // For each child of this current node
         for (int i = 0; i < node.children.Count; i++)
         {

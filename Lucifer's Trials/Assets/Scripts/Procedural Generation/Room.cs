@@ -21,15 +21,48 @@ public class Room
     private Tilemap _decorationsTilemap;
     private Transform _exitsTransform;
 
+    private Vector2 _centerPoint;
+
     private Dictionary<Vector2Int, GameObject> _wallObjects = new Dictionary<Vector2Int, GameObject>();
 
+    private List<GameObject> _enemyObjects = new List<GameObject>();
+
     private const int WALL_LAYER = 3;
+
+    private const float MIN_SPAWN_DISTANCE_FROM_ENTRANCE = 5.0f;
+    private const int MIN_ENEMIES_SPAWN = 3;
+    private const int MAX_ENEMIES_SPAWN = 7;
+    private const float SLINGER_SPAWN_RATE = 0.3f;
 
     public List<ExitPathRectangle> exitPaths
     {
         get
         {
             return _exitPaths;
+        }
+    }
+    
+    public GameObject roomObject
+    {
+        get
+        {
+            return _roomObject;
+        }
+    }
+
+    public GameObject collisionObject
+    {
+        get
+        {
+            return _collisionObject;
+        }
+    }
+
+    public Vector2 centerPoint
+    {
+        get
+        {
+            return _centerPoint;
         }
     }
 
@@ -55,14 +88,84 @@ public class Room
         // Create Wall objects for AI pathfinding
         CreateWallObjects();
 
+        // Open the entrance to this room
+        OpenExit(LevelGenerator.ENTRANCE_EXIT_ID);
+
+        // Find the possible locations for spawning enemies
+        List<Vector2Int> possibleEnemySpawns = FindPossibleEnemySpawns();
+
+        // Spawn enemies at random subset of possible locations
+        SpawnEnemies(possibleEnemySpawns);
+
+        // Find the center of the room
+        Vector3 roomSize = new Vector3((float)(_collisionTilemap.size.x), (float)(_collisionTilemap.size.y), 0);
+        // Subtract 1 from the y value to account for the back wall which is thicker than all the other surrounding walls
+        _centerPoint = roomObject.transform.position + roomSize / 2 - new Vector3(0, 1, 0);
+
     }
 
-    public GameObject roomObject
+    private void SpawnEnemies(List<Vector2Int> possibleSpawnLocations)
     {
-        get
+
+        GameObject parentObject = GameObject.Find("Enemies");
+        FactoryGoblinBeserker beserkerSpawner = parentObject.GetComponent<FactoryGoblinBeserker>();
+        FactoryGoblinSlinger slingerSpawner = parentObject.GetComponent<FactoryGoblinSlinger>();
+
+        int numEnemies = Random.Range(MIN_ENEMIES_SPAWN, MAX_ENEMIES_SPAWN + 1);
+        List<Vector2Int> possibleSpawns = new List<Vector2Int>(possibleSpawnLocations);
+
+        for (int i = 0; i < numEnemies; i++)
         {
-            return _roomObject;
+
+            Vector2Int randomSpawn = possibleSpawns[Random.Range(0, possibleSpawns.Count)];
+            possibleSpawns.Remove(randomSpawn);
+            
+            //Offset the spawn location a bit to avoid issue with enemies spawning inside walls
+            Vector3 spawnLocation = _collisionTilemap.CellToWorld(new Vector3Int(randomSpawn.x, randomSpawn.y, 0));
+            spawnLocation = spawnLocation + new Vector3(0.5f, 1f, 0);
+
+            Factory spawner;
+            if (Random.Range(0f, 1f) < SLINGER_SPAWN_RATE)
+            {
+                spawner = slingerSpawner;
+            }
+            else
+            {
+                spawner = beserkerSpawner;
+            }
+
+            GameObject enemyObject = ((GoblinBeserker)(spawner.GetEnemy(spawnLocation))).gameObject;
+            _enemyObjects.Add(enemyObject);
+
         }
+
+    }
+
+    private List<Vector2Int> FindPossibleEnemySpawns()
+    {
+
+        List<Vector2Int> possibleSpawns = new List<Vector2Int>();
+        Vector2 entranceLocation = exitPaths[LevelGenerator.ENTRANCE_EXIT_ID].entranceLocation;
+
+        for (int x = 0; x < _collisionTilemap.size.x; x++)
+        {
+
+            for (int y = 0; y < _collisionTilemap.size.y; y++)
+            {
+
+                float distanceFromEntrance = LevelManager.Distance(entranceLocation, new Vector2Int(x, y));
+
+                if ((_collisionTilemap.GetTile(new Vector3Int(x, y, 0)) == null) && (distanceFromEntrance >= MIN_SPAWN_DISTANCE_FROM_ENTRANCE))
+                {
+                    possibleSpawns.Add(new Vector2Int(x, y));
+                }
+
+            }
+
+        }
+
+        return possibleSpawns;
+
     }
 
     // Function for destroying the wall object at a given location, usually for clearing out exits
@@ -114,6 +217,11 @@ public class Room
         _exitsObject.SetActive(false);
         _decorationsObject.SetActive(false);
 
+        foreach (GameObject enemy in _enemyObjects)
+        {
+            enemy.SetActive(false);
+        }
+
     }
 
     public void EnableRoom()
@@ -125,6 +233,11 @@ public class Room
         _bordersObject.SetActive(true);
         _exitsObject.SetActive(true);
         _decorationsObject.SetActive(true);
+
+        foreach (GameObject enemy in _enemyObjects)
+        {
+            enemy.SetActive(true);
+        }
 
     }
 
