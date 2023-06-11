@@ -93,6 +93,7 @@ public class Room
 
             Vector2Int randomSpawn = possibleSpawns[Random.Range(0, possibleSpawns.Count)];
             possibleSpawns.Remove(randomSpawn);
+            Vector3 spawnLocation = _collisionTilemap.CellToWorld(new Vector3Int(randomSpawn.x, randomSpawn.y, 0));
 
             Factory spawner;
             if (Random.Range(0f, 1f) < SLINGER_SPAWN_RATE)
@@ -104,7 +105,7 @@ public class Room
                 spawner = beserkerSpawner;
             }
 
-            GameObject enemyObject = ((GoblinBeserker)(spawner.GetEnemy(new Vector3(randomSpawn.x, randomSpawn.y, 0)))).gameObject;
+            GameObject enemyObject = ((GoblinBeserker)(spawner.GetEnemy(new Vector3(spawnLocation.x, spawnLocation.y, 0)))).gameObject;
             _enemyObjects.Add(enemyObject);
 
         }
