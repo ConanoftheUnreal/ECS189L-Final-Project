@@ -8,7 +8,7 @@ public class FactoryGoblinBeserker : Factory
     [SerializeField] private Polarith.AI.Move.AIMSteeringPerceiver perceiver;
     [SerializeField] private GoblinBeserker prefab;
     [SerializeField] private GameObject enemies;
-    private float time = 0f;
+    private GameObject player;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +21,8 @@ public class FactoryGoblinBeserker : Factory
         {
             Debug.LogWarning("EnemyPrefab Not Set");
         }
+
+        player = GameObject.FindWithTag("Player");
     }
 
     public override IEnemy GetEnemy()
@@ -30,17 +32,37 @@ public class FactoryGoblinBeserker : Factory
 
     public override IEnemy GetEnemy(Vector3 position)
     {
+        if (player == null)
+        {
+            player = GameObject.FindWithTag("Player");
+
+            if (player == null) { Debug.LogWarning("Player Cannot be found in scene!!"); }
+        }
+
         GameObject instance = Instantiate(prefab.gameObject, position, Quaternion.identity);
         GoblinBeserker newGoblin = instance.GetComponent<GoblinBeserker>();
 
         Polarith.AI.Move.AIMSteeringFilter tmp = instance.GetComponentInChildren<Polarith.AI.Move.AIMSteeringFilter>();
-        if (tmp == null) { Debug.LogWarning("help"); }
+        if (tmp == null) { Debug.LogWarning("AIMSteeringFilter not found!!"); }
         Debug.Log(tmp);
         tmp.SteeringPerceiver = perceiver;
 
         float orbit = newGoblin.Stats.Orbit;
         orbit = Random.Range(orbit * .9f, orbit * 1.1f);
         newGoblin.Stats.Orbit = orbit;
+
+        Polarith.AI.Move.AIMOrbit[] orb = instance.GetComponentsInChildren<Polarith.AI.Move.AIMOrbit>();
+        orb[0].Orbit.Radius = orbit;
+        orb[1].Orbit.Radius = orbit * .75f;
+
+        foreach (Polarith.AI.Move.AIMSeek seek in instance.GetComponentsInChildren<Polarith.AI.Move.AIMSeek>())
+        {
+            if (seek.Label == "Seek Player" || seek.Label == "Flee Player")
+            {
+                seek.GameObjects[0] = player;
+                continue;
+            }
+        }
 
         newGoblin.transform.SetParent(transform, true);
 
@@ -50,20 +72,5 @@ public class FactoryGoblinBeserker : Factory
     public override IEnemy GetEnemy(IEnemy enemy)
     {
         throw new System.NotImplementedException();
-    }
-
-    private void Update()
-    {
-        /*if (time > 5f)
-        {
-            GoblinBeserker tmp = (GoblinBeserker) GetEnemy(Vector3.zero);
-
-            GameObject t = tmp.gameObject;
-            t.transform.SetParent(enemies.transform, true);
-            t.SetActive(true);
-            time = 0;
-        }
-
-        time += Time.deltaTime;*/
     }
 }
