@@ -16,7 +16,8 @@ public class ManualRoomGeneration : MonoBehaviour
     {
 
         _roomGenerator = new DungeonGenerator(5, 5, new Vector2Int(16, 9));
-        _levelLayoutGenerator = new LevelLayoutGenerator(5, 15, 3);
+        //_levelLayoutGenerator = new LevelLayoutGenerator(5, 15, 3);
+        _levelLayoutGenerator = new LevelLayoutGenerator(1, 1, 3);
         _levelGenerator = new LevelGenerator(_levelLayoutGenerator, _roomGenerator);
 
     }
@@ -40,9 +41,10 @@ public class ManualRoomGeneration : MonoBehaviour
                 cc.SnapToRoom(_levelManager.currentNode.room);
 
                 Vector2 entranceLocation = _levelManager.currentNode.room.exitPaths[LevelGenerator.ENTRANCE_EXIT_ID].entranceLocation;
-                GameObject player = Instantiate(_playerPrefab, new Vector3(entranceLocation.x, entranceLocation.y, 0), Quaternion.identity);
+                GameObject player = GameObject.Find("Player");
+                player.transform.position = new Vector3(entranceLocation.x, entranceLocation.y, 0);
                 player.transform.SetParent(_levelManager.currentNode.room.roomObject.transform);
-
+                player.GetComponent<SpriteRenderer>().enabled = true;
             }
 
         }

@@ -15,7 +15,6 @@ public class Room
     private GameObject _bordersObject;
     private GameObject _exitsObject;
     private GameObject _decorationsObject;
-    private GameObject _enemyObject;
 
     private Tilemap _collisionTilemap;
     private Tilemap _bordersTilemap;
@@ -23,13 +22,15 @@ public class Room
     private Transform _exitsTransform;
 
     private Dictionary<Vector2Int, GameObject> _wallObjects = new Dictionary<Vector2Int, GameObject>();
-    private List<Vector2Int> _possibleEnemySpawns;
+
+    private List<GameObject> _enemyObjects = new List<GameObject>();
 
     private const int WALL_LAYER = 3;
 
     private const float MIN_SPAWN_DISTANCE_FROM_ENTRANCE = 5.0f;
     private const int MIN_ENEMIES_SPAWN = 5;
     private const int MAX_ENEMIES_SPAWN = 10;
+    private const float SLINGER_SPAWN_RATE = 0.3f;
 
     public List<ExitPathRectangle> exitPaths
     {
@@ -70,29 +71,41 @@ public class Room
         CreateWallObjects();
 
         // Find the possible locations for spawning enemies
-        _possibleEnemySpawns = FindPossibleEnemySpawns();
+        List<Vector2Int> possibleEnemySpawns = FindPossibleEnemySpawns();
 
-        // Create a new object to place all of the enemies under
-        _enemyObject = new GameObject("Enemy");
-        _enemyObject.transform.SetParent(_roomObject.transform);
-
-        //FactoryGoblinBeserker _goblinFactory;
-
-        //SpawnEnemies(_enemyObject, _goblinFactory);
+        // Spawn enemies at random subset of possible locations
+        SpawnEnemies(possibleEnemySpawns);
 
     }
 
-    private void SpawnEnemies(GameObject parent, Factory spawner)
+    private void SpawnEnemies(List<Vector2Int> possibleSpawnLocations)
     {
 
+        GameObject parentObject = GameObject.Find("Enemies");
+        FactoryGoblinBeserker beserkerSpawner = parentObject.GetComponent<FactoryGoblinBeserker>();
+        FactoryGoblinSlinger slingerSpawner = parentObject.GetComponent<FactoryGoblinSlinger>();
+
         int numEnemies = Random.Range(MIN_ENEMIES_SPAWN, MAX_ENEMIES_SPAWN + 1);
-        List<Vector2Int> possibleSpawns = new List<Vector2Int>(_possibleEnemySpawns);
+        List<Vector2Int> possibleSpawns = new List<Vector2Int>(possibleSpawnLocations);
 
         for (int i = 0; i < numEnemies; i++)
         {
 
             Vector2Int randomSpawn = possibleSpawns[Random.Range(0, possibleSpawns.Count)];
             possibleSpawns.Remove(randomSpawn);
+
+            Factory spawner;
+            if (Random.Range(0f, 1f) < SLINGER_SPAWN_RATE)
+            {
+                spawner = slingerSpawner;
+            }
+            else
+            {
+                spawner = beserkerSpawner;
+            }
+
+            GameObject enemyObject = ((GoblinBeserker)(spawner.GetEnemy(new Vector3(randomSpawn.x, randomSpawn.y, 0)))).gameObject;
+            _enemyObjects.Add(enemyObject);
 
         }
 
@@ -174,6 +187,11 @@ public class Room
         _exitsObject.SetActive(false);
         _decorationsObject.SetActive(false);
 
+        foreach (GameObject enemy in _enemyObjects)
+        {
+            enemy.SetActive(false);
+        }
+
     }
 
     public void EnableRoom()
@@ -185,6 +203,11 @@ public class Room
         _bordersObject.SetActive(true);
         _exitsObject.SetActive(true);
         _decorationsObject.SetActive(true);
+
+        foreach (GameObject enemy in _enemyObjects)
+        {
+            enemy.SetActive(true);
+        }
 
     }
 
