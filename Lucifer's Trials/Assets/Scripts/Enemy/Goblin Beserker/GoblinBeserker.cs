@@ -18,7 +18,7 @@ public class GoblinBeserker : Enemy
     // The direction enemy should be move given by Polarith Context Steering Alg.
     private Vector2 _movementDirection;
 
-
+    // private bool _isAttacking;
     public void Start()
     {
         _state = EnemyState.PATROL;
@@ -44,20 +44,23 @@ public class GoblinBeserker : Enemy
         switch (_state)
         {
             case EnemyState.MOVE:
+                _speed = stats.Speed;
                 Move();
-                break;    
+                break;
             case EnemyState.ATTACK:
+                //Attack();
+                _cooldown = true;
                 break;
             case EnemyState.PATROL:
-                _speed = _speed * 0.8f;
+                _speed = stats.Speed * 0.8f;
                 Patrol();
                 break;
             case EnemyState.ORBIT:
-                _speed = _speed * .5f;
+                _speed = stats.Speed * .5f;
                 Orbit();
                 break;
             case EnemyState.FLEE:
-                _speed = _speed * 1.2f;
+                _speed = stats.Speed * 1.2f;
                 Flee();
                 break;
             default:
@@ -184,6 +187,21 @@ public class GoblinBeserker : Enemy
     // and if player is in certain ranges.
     protected override void UpdateState()
     {
+        if (_cooldown)
+        {
+            _timeOnCooldown += Time.deltaTime;
+            if (_timeOnCooldown > Stats.Cooldown)
+            {
+                _cooldown = false;
+                _timeOnCooldown = 0;
+            }
+        }
+
+        if (_isAttacking)
+        {
+            return;
+        }
+
         if (!_cooldown && GetRange(stats.Fov))
         {
             // If attack is available to use and within attack range, then attack
@@ -202,7 +220,7 @@ public class GoblinBeserker : Enemy
             // If attack is unavailbe and player in field of view, then move to orbit player.
             // If in enemies attack range, quickly leave enemy attack range. If to far outside of
             // Orbit value, than move closer to orbit.
-            if (GetRange(.3f))
+            if (GetRange(.5f))
             {
                 // TODO: Need a flee range variable.
                 _state = EnemyState.FLEE;
@@ -247,7 +265,11 @@ public class GoblinBeserker : Enemy
 
     public override void Attack()
     {
-        /* Do the Attack Thing */
+        _isAttacking = true;
+        //_controller.ActivateAttackSprite();
+        _isAttacking = false;
+
+        _cooldown = true;
     }
 
     public Vector2 MovementDirection
@@ -268,7 +290,7 @@ public class GoblinBeserker : Enemy
             return;
         }
 
-        //Debug.Log(_contextSteering.DecidedDirection);
         _movementDirection = _contextSteering.DecidedDirection;
+        //Debug.Log(_contextSteering.DecidedDirection);
     }
 }
