@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fdaea2bd5c9408244bb87976017f54ca
+guid: 3ea6356ddde47924b8fd67e736ff053e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -119,97 +119,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Attack
+      name: Heart
       rect:
         serializedVersion: 2
-        x: 322
-        y: 0
-        width: 28
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8fcd52689cba86c419d64824b9f25415
-      internalID: 530672647
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Health
-      rect:
-        serializedVersion: 2
-        x: 164
-        y: 192
-        width: 24
-        height: 34
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9760645159ea5734b84106143e8a6ada
-      internalID: -186807588
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Speed
-      rect:
-        serializedVersion: 2
-        x: 482
-        y: 580
-        width: 30
-        height: 22
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 79fa903def2c31442b51472bab8c210b
-      internalID: -1165406019
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Arrow
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 674
-        width: 30
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e66034396f9f94de98db867de0d161f1
-      internalID: -945581093
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Gold
-      rect:
-        serializedVersion: 2
-        x: 322
-        y: 448
-        width: 28
-        height: 30
+        x: 40
+        y: 43
+        width: 19
+        height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -217,8 +133,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 362596e19704a374d815a177c626d591
-      internalID: 1613295747
+      spriteID: 93d9295f018c87e43a89d4becebfc2f3
+      internalID: -1379122106
       vertices: []
       indices: 
       edges: []
@@ -234,11 +150,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Arrow: -945581093
-      Attack: 530672647
-      Gold: 1613295747
-      Health: -186807588
-      Speed: -1165406019
+      Heart: -1379122106
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

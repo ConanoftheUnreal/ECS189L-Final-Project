@@ -211,7 +211,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     void Update()
     {
-        if (!statelock)
+        if (!statelock && Time.timeScale == 1)
         {
             this.horizontal = Input.GetAxisRaw("Horizontal");
             this.vertical = Input.GetAxisRaw("Vertical");
