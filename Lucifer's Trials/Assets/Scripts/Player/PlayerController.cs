@@ -10,16 +10,19 @@ public class PlayerController : MonoBehaviour
     private int maxSP;
     private int health;
     private int SP;
+    private int attack;
+    private int speed;
     private int wallet;
 
     // Start is called before the first frame update
     void Start()
     {
         this.maxHealth = 10;
+        this.health = 10;
         this.maxSP = 5;
         this.wallet = 500;
-
-        this.health = 10;
+        this.attack = 1;
+        this.speed = 6;
 
         // begin background music
         FindObjectOfType<SoundManager>().PlayMusicTrack("Game Theme");
@@ -115,5 +118,25 @@ public class PlayerController : MonoBehaviour
     public int GetWallet()
     {
         return this.wallet;
+    }
+
+    public void IncreaseAttack(int amount)
+    {
+        this.attack += amount;
+    }
+
+    public int GetAttack()
+    {
+        return this.attack;
+    }
+
+    public void IncreaseSpeed(int amount)
+    {
+        this.speed += amount;
+    }
+
+    public int GetSpeed()
+    {
+        return this.speed;
     }
 }
