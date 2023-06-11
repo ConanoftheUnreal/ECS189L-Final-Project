@@ -58,4 +58,9 @@ public class ProjectileScript : MonoBehaviour
         return this.speed;
     }
 
+    public void SetProjectileDamage(int dmg)
+    {
+        this.damage = dmg;
+    }
+
 }

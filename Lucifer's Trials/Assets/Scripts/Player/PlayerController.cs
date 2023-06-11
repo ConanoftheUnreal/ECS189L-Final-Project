@@ -17,13 +17,31 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.maxHealth = 10;
-        this.health = 10;
-        this.maxSP = 5;
-        this.wallet = 500;
-        this.attack = 1;
-        this.speed = 6;
+        var playerType = this.gameObject.GetComponent<PlayerAnimationController>().GetPlayerType();
 
+        switch(playerType)
+        {
+            case PlayerType.WARRIOR:
+                this.maxHealth = 10;
+                this.health = 10;
+                //this.maxSP = 5;
+                this.wallet = 0;
+                this.attack = 3;
+                this.speed = 6;
+                break;
+            case PlayerType.SORCERESS:
+                this.maxHealth = 7;
+                this.health = 7;
+                //this.maxSP = 5;
+                this.wallet = 0;
+                this.attack = 1;
+                this.speed = 8;
+
+                break;
+            default:
+                Debug.Log("Error: player type is undefined.");
+                break;
+        }
         // begin background music
         FindObjectOfType<SoundManager>().PlayMusicTrack("Game Theme");
     }
