@@ -516,6 +516,10 @@ PrefabInstance:
       propertyPath: selfObject
       value: 
       objectReference: {fileID: 3455608235691972618}
+    - target: {fileID: 2869275437297175902, guid: 57746dfd9967c0a459e47e36bf9f769f, type: 3}
+      propertyPath: GameObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4151567297467579877, guid: 57746dfd9967c0a459e47e36bf9f769f, type: 3}
       propertyPath: m_RootOrder
       value: -1
