@@ -11,7 +11,7 @@ public class ExitManager : MonoBehaviour
 
         // Get the ID for this room as well as the LevelManager for the current level
         _id = int.Parse(this.gameObject.name.Substring(this.gameObject.name.IndexOf("#") + 1));
-        _levelManager = GameObject.Find("Root").GetComponent<LevelManager>();
+        _levelManager = GameObject.FindWithTag("Root").GetComponent<LevelManager>();
         
     }   
 

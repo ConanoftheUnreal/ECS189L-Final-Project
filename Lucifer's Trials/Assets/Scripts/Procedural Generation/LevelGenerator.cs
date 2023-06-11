@@ -43,6 +43,7 @@ public class LevelGenerator
             levelManager.SetCurrentNode(node);
             // And name it "Root"
             node.room.roomObject.name = "Root";
+            node.room.roomObject.tag = "Root";
 
         }
         else 
