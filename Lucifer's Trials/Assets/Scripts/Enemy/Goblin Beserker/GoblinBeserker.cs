@@ -291,6 +291,9 @@ public class GoblinBeserker : Enemy
         }
 
         _movementDirection = _contextSteering.DecidedDirection;
+
+        Ray theRay = new Ray(transform.position, transform.TransformDirection(_movementDirection));
+        Debug.DrawRay(transform.position, transform.TransformDirection(_movementDirection));
         //Debug.Log(_contextSteering.DecidedDirection);
     }
 }
