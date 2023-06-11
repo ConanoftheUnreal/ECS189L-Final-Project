@@ -5,8 +5,6 @@ public class LevelGenerator
     private LevelLayoutGenerator _layoutGenerator;
     private IRoomGenerator _roomGenerator;
 
-    private int _currentRoomID = 0;
-
     // The entrance to a room from its parent always has the exit ID 0
     public static int ENTRANCE_EXIT_ID = 0;
 
@@ -55,9 +53,6 @@ public class LevelGenerator
             node.room.DisableRoom();
 
         }
-
-        // Then open the entrance to this room
-        node.room.OpenExit(ENTRANCE_EXIT_ID);
 
         // For each child of this current node
         for (int i = 0; i < node.children.Count; i++)

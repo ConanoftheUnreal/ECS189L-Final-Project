@@ -28,8 +28,8 @@ public class Room
     private const int WALL_LAYER = 3;
 
     private const float MIN_SPAWN_DISTANCE_FROM_ENTRANCE = 5.0f;
-    private const int MIN_ENEMIES_SPAWN = 5;
-    private const int MAX_ENEMIES_SPAWN = 10;
+    private const int MIN_ENEMIES_SPAWN = 3;
+    private const int MAX_ENEMIES_SPAWN = 7;
     private const float SLINGER_SPAWN_RATE = 0.3f;
 
     public List<ExitPathRectangle> exitPaths
@@ -78,6 +78,9 @@ public class Room
         // Create Wall objects for AI pathfinding
         CreateWallObjects();
 
+        // Open the entrance to this room
+        OpenExit(LevelGenerator.ENTRANCE_EXIT_ID);
+
         // Find the possible locations for spawning enemies
         List<Vector2Int> possibleEnemySpawns = FindPossibleEnemySpawns();
 
@@ -101,7 +104,10 @@ public class Room
 
             Vector2Int randomSpawn = possibleSpawns[Random.Range(0, possibleSpawns.Count)];
             possibleSpawns.Remove(randomSpawn);
+            
+            //Offset the spawn location a bit to avoid issue with enemies spawning inside walls
             Vector3 spawnLocation = _collisionTilemap.CellToWorld(new Vector3Int(randomSpawn.x, randomSpawn.y, 0));
+            spawnLocation = spawnLocation + new Vector3(0.5f, 1f, 0);
 
             Factory spawner;
             if (Random.Range(0f, 1f) < SLINGER_SPAWN_RATE)
@@ -113,7 +119,7 @@ public class Room
                 spawner = beserkerSpawner;
             }
 
-            GameObject enemyObject = ((GoblinBeserker)(spawner.GetEnemy(new Vector3(spawnLocation.x, spawnLocation.y, 0)))).gameObject;
+            GameObject enemyObject = ((GoblinBeserker)(spawner.GetEnemy(spawnLocation))).gameObject;
             _enemyObjects.Add(enemyObject);
 
         }
