@@ -22,8 +22,6 @@ public class Room
     private Tilemap _decorationsTilemap;
     private Transform _exitsTransform;
 
-    private Factory _goblinFactory;
-
     private Dictionary<Vector2Int, GameObject> _wallObjects = new Dictionary<Vector2Int, GameObject>();
     private List<Vector2Int> _possibleEnemySpawns;
 
@@ -78,10 +76,9 @@ public class Room
         _enemyObject = new GameObject("Enemy");
         _enemyObject.transform.SetParent(_roomObject.transform);
 
-        // Add a GoblinBerserker factory for spawning goblins in the room
-        _goblinFactory = _roomObject.AddComponent<FactoryGoblinBeserker>();
+        //FactoryGoblinBeserker _goblinFactory;
 
-        SpawnEnemies(_enemyObject, _goblinFactory);
+        //SpawnEnemies(_enemyObject, _goblinFactory);
 
     }
 
