@@ -9,7 +9,7 @@ public class ProjectileScript : MonoBehaviour
     [SerializeField] int damage = 3;
     [SerializeField] ProjectileTypes projectileType;
     [SerializeField] GameObject afterEffectPrefab;
-    private float speed = 15.0f;
+    private float speed = 12.0f;
 
     public void OnTriggerEnter2D(Collider2D col)
     {
@@ -24,6 +24,7 @@ public class ProjectileScript : MonoBehaviour
         if (this.tag == "EnemyProjectile" && col.tag == "PlayerHurtbox")
         {
             // get `Player` gameobject from collider of `PlayerHurtbox` and hurt player
+            FindObjectOfType<SoundManager>().PlaySoundEffect("Player Hurt");
             bool playerHit = col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.RANGED);
             if (playerHit)
             {

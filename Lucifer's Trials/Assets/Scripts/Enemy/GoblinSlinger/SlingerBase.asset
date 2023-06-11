@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1377e0960b1bb144eb42d58efff74462, type: 3}
   m_Name: SlingerBase
   m_EditorClassIdentifier: 
-  MaxHealth: 0
-  Speed: 0
-  Cooldown: 0
-  FoV: 0
-  Orbit: 0
-  AttackRange: 0
+  MaxHealth: 3
+  Speed: 1
+  Cooldown: 1
+  FoV: 10
+  Orbit: 5
+  AttackRange: 2.5
   Damage: 0

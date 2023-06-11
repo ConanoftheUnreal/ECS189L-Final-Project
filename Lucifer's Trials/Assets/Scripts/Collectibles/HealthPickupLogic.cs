@@ -28,6 +28,7 @@ public class Health : MonoBehaviour
             {
                 Destroy(this.gameObject);
                 // Increase player's health
+                FindObjectOfType<SoundManager>().PlaySoundEffect("Item Pickup");
                 col.GetComponent<PlayerController>().IncreaseHealth(healthGain);
             }
         }

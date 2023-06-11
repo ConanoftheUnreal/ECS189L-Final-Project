@@ -17,5 +17,5 @@ public interface IEnemy
     public EnemyState State { get; set; }
 
     public void Attack();
-    public void GetMovementDirection();
+    public void UpdateMovementDirection();
 }

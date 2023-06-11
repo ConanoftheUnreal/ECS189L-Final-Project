@@ -85,14 +85,6 @@ public class PlayerAnimationController : MonoBehaviour
         return this.playerType;
     }
 
-    public bool DamagePlayer(GameObject obj, int damage, DamageTypes damageType)
-    {
-        if (IsDashing()) return false;
-
-        PlayerDamaged(obj, damage, damageType);
-        return true;
-    }
-
     public bool PlayerDamaged(GameObject obj, int damage, DamageTypes damageType)
     {
         // invincibility frames
@@ -107,17 +99,18 @@ public class PlayerAnimationController : MonoBehaviour
         if (health == 0)
         {
             // queue player death
+            FindObjectOfType<SoundManager>().StopCurrentTrack();
             this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             this.statelock = false;
             this.CurrentState = PlayerStates.DEATH;
             this.animator.speed = 1;
             // play death effect
             var effect = (GameObject)Instantiate(this.deathEffect, this.transform.position - (new Vector3(0.5f, 0, 0)), Quaternion.identity);
+            return true;
         }
         else
         {
             // queue player hurt
-            FindObjectOfType<SoundManager>().PlaySoundEffect("PlayerHurt");
             this.playerHurt = true;
             this.CurrentState = PlayerStates.HURT;
             this.animator.speed = 1;
@@ -130,18 +123,18 @@ public class PlayerAnimationController : MonoBehaviour
                 // determine knockback by vector btw both objects
                 this.animator.SetFloat("MoveX", -knockbackDirection.x);
                 this.animator.SetFloat("MoveY", -knockbackDirection.y);
-                if (this.playerHurt) Knockback(knockbackDirection);
+                Knockback(knockbackDirection);
                 break;
             case DamageTypes.RANGED:
                 // determine knockback by direction of missile
                 var objVec = obj.GetComponent<Rigidbody2D>().velocity.normalized;
                 this.animator.SetFloat("MoveX", -objVec.x);
                 this.animator.SetFloat("MoveY", -objVec.y);
-                if (this.playerHurt) Knockback(objVec);
+                Knockback(objVec);
                 break;
-            case DamageTypes.AOE:
-                // no knockback for AOE
-                // this.statelock = false (not sure if we want player locked during AOE damage)
+            case DamageTypes.COLLIDE:
+                var hitDirection = new Vector2(UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f)).normalized;
+                Knockback(hitDirection);
                 break;
             default:
                 Debug.Log("Error: damage type is undefined.");
@@ -149,6 +142,11 @@ public class PlayerAnimationController : MonoBehaviour
         }
 
         return true;
+    }
+
+    public void SetClass(PlayerType playerType)
+    {
+        this.playerType = playerType;
     }
 
     void Start()
@@ -182,6 +180,33 @@ public class PlayerAnimationController : MonoBehaviour
         IsDashing = this.gameObject.GetComponent<PlayerMovement>().IsDashing;
         // declare function pointer to hurt player
         DecreaseHealth = this.gameObject.GetComponent<PlayerController>().DecreaseHealth;
+    }
+
+    // Function redefines all the private fields that are required to be changed based on the PlayerType
+    public void StartNewAnimation()
+    {
+        // set player sprite/animations
+        this.animator = this.GetComponent<Animator>();
+        this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+        switch(this.playerType)
+        {
+            case PlayerType.WARRIOR:
+                // set Animation Controller
+                this.animator.runtimeAnimatorController
+                = Resources.Load<RuntimeAnimatorController>("Sprites/PlayerSprites/Animations/Warrior_Animations/AC_Warrior");
+                break;
+            case PlayerType.SORCERESS:
+                // set Animation Controller
+                this.animator.runtimeAnimatorController
+                = Resources.Load<RuntimeAnimatorController>("Sprites/PlayerSprites/Animations/Sorceress_Animations/AC_Sorceress");
+                break;
+            default:
+                Debug.Log("Error: player type is undefined.");
+                break;
+        }
+        // start facing down
+        this.animator.SetFloat("MoveX", 0.0f);
+        this.animator.SetFloat("MoveY", -2.0f);
     }
 
     void Update()

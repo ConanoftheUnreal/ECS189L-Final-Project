@@ -41,7 +41,7 @@ public class ShopLogic : MonoBehaviour
                 {
                     this.invalidBuyText.gameObject.SetActive(true);
                     this.validBuyText.gameObject.SetActive(false);
-                    FindObjectOfType<SoundManager>().PlaySoundEffect("bad select");
+                    FindObjectOfType<SoundManager>().PlaySoundEffect("Bad Select");
                 }
                 else
                 {
@@ -49,7 +49,7 @@ public class ShopLogic : MonoBehaviour
                     this.invalidBuyText.gameObject.SetActive(false);
                     this.validBuyText.gameObject.SetActive(true);
                     GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(item1Cost);
-                    FindObjectOfType<SoundManager>().PlaySoundEffect("good select");
+                    FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
                 }
                 break;
             case 2:
@@ -57,7 +57,7 @@ public class ShopLogic : MonoBehaviour
                 {
                     this.invalidBuyText.gameObject.SetActive(true);
                     this.validBuyText.gameObject.SetActive(false);
-                    FindObjectOfType<SoundManager>().PlaySoundEffect("bad select");
+                    FindObjectOfType<SoundManager>().PlaySoundEffect("Bad Select");
                 }
                 else
                 {
@@ -65,7 +65,7 @@ public class ShopLogic : MonoBehaviour
                     this.invalidBuyText.gameObject.SetActive(false);
                     this.validBuyText.gameObject.SetActive(true);
                     GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(item2Cost);
-                    FindObjectOfType<SoundManager>().PlaySoundEffect("good select");
+                    FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
                 }
                 break;
             case 3:
@@ -73,7 +73,7 @@ public class ShopLogic : MonoBehaviour
                 {
                     this.invalidBuyText.gameObject.SetActive(true);
                     this.validBuyText.gameObject.SetActive(false);
-                    FindObjectOfType<SoundManager>().PlaySoundEffect("bad select");
+                    FindObjectOfType<SoundManager>().PlaySoundEffect("Bad Select");
                 }
                 else
                 {
@@ -81,7 +81,7 @@ public class ShopLogic : MonoBehaviour
                     this.invalidBuyText.gameObject.SetActive(false);
                     this.validBuyText.gameObject.SetActive(true);
                     GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(item3Cost);
-                    FindObjectOfType<SoundManager>().PlaySoundEffect("good select");
+                    FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
                 }
                 break;
         }
@@ -95,7 +95,7 @@ public class ShopLogic : MonoBehaviour
         this.gameObject.SetActive(false);
         this.invalidBuyText.gameObject.SetActive(false);
         this.validBuyText.gameObject.SetActive(false);
-        FindObjectOfType<SoundManager>().PlaySoundEffect("good select");
+        FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
     }
 
     void Update()

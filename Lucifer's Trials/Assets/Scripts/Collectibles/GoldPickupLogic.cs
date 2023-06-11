@@ -40,6 +40,7 @@ public class GoldPickupLogic : MonoBehaviour
                     Debug.Log("Error: Invalid currency type provided.");
                     break;
             }
+            FindObjectOfType<SoundManager>().PlaySoundEffect("Coin Pickup");
             col.GetComponent<PlayerController>().IncreaseWallet(amount);
         }
     }

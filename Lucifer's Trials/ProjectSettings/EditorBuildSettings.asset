@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: c40040f433af22b41a4d0a06829c5c8d
   - enabled: 1
-    path: Assets/Scenes/BasicMovement.unity
+    path: Assets/Scenes/TestingRoom.unity
     guid: 5ed5e4ab1c5ab734e9eb7d5d938471e7
   - enabled: 1
     path: Assets/Scenes/DeathScreen.unity

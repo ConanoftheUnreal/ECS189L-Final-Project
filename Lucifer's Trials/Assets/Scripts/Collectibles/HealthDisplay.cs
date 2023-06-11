@@ -5,26 +5,30 @@ using UnityEngine.UI;
 
 public class HealthDisplay : MonoBehaviour
 {
-    private int health;
-    public Text healthText;
     [SerializeField] private GameObject player;
 
-    // Start is called before the first frame update
-    void Start()
+    private Slider healthSlider;
+    [SerializeField] private Color low;
+    [SerializeField] private Color high;
+
+    public void Start()
     {
-        this.healthText.text = this.player.GetComponent<PlayerController>().GetHealth().ToString();
+        // healthSlider is the only child object
+        healthSlider = this.gameObject.transform.GetChild(0).gameObject.GetComponent<Slider>();
     }
 
-    // Update is called once per frame
+    public void SetHealth(int health, int maxHealth)
+    {
+        healthSlider.value = health;
+        healthSlider.maxValue = maxHealth;
+
+        healthSlider.fillRect.GetComponentInChildren<Image>().color = Color.Lerp(this.low, this.high, this.healthSlider.normalizedValue);
+    }
+
     void Update()
     {
-        this.healthText.text = "HEALTH : " +  this.player.GetComponent<PlayerController>().GetHealth().ToString();
-        //Temporary testing function for taking damage
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            health--;
-        }
-
-
+        int health = this.player.GetComponent<PlayerController>().GetHealth();
+        int maxHealth = this.player.GetComponent<PlayerController>().GetMaxHealth();
+        SetHealth(health, maxHealth);
     }
 }

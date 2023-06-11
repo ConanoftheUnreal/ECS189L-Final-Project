@@ -22,12 +22,17 @@ public class PlayerController : MonoBehaviour
         this.health = 10;
 
         // begin background music
-        FindObjectOfType<SoundManager>().PlayMusicTrack("game theme");
+        FindObjectOfType<SoundManager>().PlayMusicTrack("Game Theme");
     }
 
     public bool AtMaxHealth()
     {
         return (health == maxHealth);
+    }
+
+    public bool PlayerDefeated()
+    {
+        return (health == 0);
     }
 
     public bool AtMaxSP()
@@ -57,6 +62,11 @@ public class PlayerController : MonoBehaviour
     public int GetHealth()
     {
         return this.health;
+    }
+
+    public int GetMaxHealth()
+    {
+        return this.maxHealth;
     }
 
     public void IncreaseSP(int amount)

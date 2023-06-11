@@ -51,31 +51,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown("space") && (this.rb.velocity != Vector2.zero) && (this.sinceDash >= this.dashCooldown))
         {
-            // Debug.Log("Space Pressed");
             FindObjectOfType<SoundManager>().PlaySoundEffect("Dash");
             this.isDashing = true;
             this.curDuration = 0.0f;
             this.sinceDash = 0.0f;
-        }
-
-        if (!this.isDashing)
-        {
-            if (this.horizontal == -1)
-            {
-                this.facedDirection = "Left";
-            }
-            if (this.horizontal == 1)
-            {
-                this.facedDirection = "Right";
-            }
-            if (this.horizontal == 0 && this.vertical == 1)
-            {
-                this.facedDirection = "Up";
-            }
-            if (this.horizontal == 0 && this.vertical == -1)
-            {
-                this.facedDirection = "Down";
-            }
         }
         
     }
