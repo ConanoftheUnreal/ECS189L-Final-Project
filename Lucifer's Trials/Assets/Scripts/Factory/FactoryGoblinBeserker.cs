@@ -40,7 +40,9 @@ public class FactoryGoblinBeserker : Factory
 
         float orbit = newGoblin.Stats.Orbit;
         orbit = Random.Range(orbit * .9f, orbit * 1.1f);
-        newGoblin.Stats.Orbit = orbit; 
+        newGoblin.Stats.Orbit = orbit;
+
+        newGoblin.transform.SetParent(transform, true);
 
         return newGoblin;
     }
@@ -52,7 +54,7 @@ public class FactoryGoblinBeserker : Factory
 
     private void Update()
     {
-        if (time > 5f)
+        /*if (time > 5f)
         {
             GoblinBeserker tmp = (GoblinBeserker) GetEnemy(Vector3.zero);
 
@@ -62,6 +64,6 @@ public class FactoryGoblinBeserker : Factory
             time = 0;
         }
 
-        time += Time.deltaTime;
+        time += Time.deltaTime;*/
     }
 }
