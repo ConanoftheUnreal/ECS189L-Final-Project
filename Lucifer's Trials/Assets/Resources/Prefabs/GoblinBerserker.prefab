@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 539110190498284885}
   - component: {fileID: 4612618203386585717}
   - component: {fileID: 4762662440450478630}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GoblinBerserker
   m_TagString: Enemy
   m_Icon: {fileID: 0}

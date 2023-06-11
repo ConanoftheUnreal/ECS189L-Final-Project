@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 8585621319558794034}
   - component: {fileID: 3938590529501458716}
   - component: {fileID: 5578568550356647767}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GoblinSlinger
   m_TagString: Enemy
   m_Icon: {fileID: 0}
