@@ -144,6 +144,11 @@ public class PlayerAnimationController : MonoBehaviour
         return true;
     }
 
+    public void SetClass(PlayerType playerType)
+    {
+        this.playerType = playerType;
+    }
+
     void Start()
     {
         // set player sprite/animations
@@ -175,6 +180,33 @@ public class PlayerAnimationController : MonoBehaviour
         IsDashing = this.gameObject.GetComponent<PlayerMovement>().IsDashing;
         // declare function pointer to hurt player
         DecreaseHealth = this.gameObject.GetComponent<PlayerController>().DecreaseHealth;
+    }
+
+    // Function redefines all the private fields that are required to be changed based on the PlayerType
+    public void StartNewAnimation()
+    {
+        // set player sprite/animations
+        this.animator = this.GetComponent<Animator>();
+        this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+        switch(this.playerType)
+        {
+            case PlayerType.WARRIOR:
+                // set Animation Controller
+                this.animator.runtimeAnimatorController
+                = Resources.Load<RuntimeAnimatorController>("Sprites/PlayerSprites/Animations/Warrior_Animations/AC_Warrior");
+                break;
+            case PlayerType.SORCERESS:
+                // set Animation Controller
+                this.animator.runtimeAnimatorController
+                = Resources.Load<RuntimeAnimatorController>("Sprites/PlayerSprites/Animations/Sorceress_Animations/AC_Sorceress");
+                break;
+            default:
+                Debug.Log("Error: player type is undefined.");
+                break;
+        }
+        // start facing down
+        this.animator.SetFloat("MoveX", 0.0f);
+        this.animator.SetFloat("MoveY", -2.0f);
     }
 
     void Update()

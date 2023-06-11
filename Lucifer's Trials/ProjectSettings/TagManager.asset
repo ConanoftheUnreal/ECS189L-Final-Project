@@ -12,6 +12,8 @@ TagManager:
   - PlayerAttack
   - Enemy
   - EnemyAttack
+  - Sorceress
+  - Warrior
   layers:
   - Default
   - TransparentFX
