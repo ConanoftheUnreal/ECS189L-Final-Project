@@ -123,6 +123,7 @@ public class EnemyAnimation : MonoBehaviour
             this.animator.speed = 1;
             // play death effect
             var effect = (GameObject)Instantiate(this.deathEffect, this.transform.position - (new Vector3(0.5f, 0, 0)), Quaternion.identity);
+            FindObjectOfType<SoundManager>().PlaySoundEffect("Enemy Defeated");
             return;
         }
         else
