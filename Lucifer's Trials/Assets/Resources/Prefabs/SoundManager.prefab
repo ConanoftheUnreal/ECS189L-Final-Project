@@ -49,20 +49,80 @@ MonoBehaviour:
   musicTracks:
   - clip: {fileID: 8300000, guid: fc11983f99ae7e24fb9c4fa5b1aeb099, type: 3}
     audioSource: {fileID: 0}
-    title: game theme
+    title: Game Theme
+    volume: 1
+    pitch: 1
+    loop: 1
+  - clip: {fileID: 8300000, guid: 1137c5ce3f110cf4d85787f4c259b2af, type: 3}
+    audioSource: {fileID: 0}
+    title: Title Theme
     volume: 1
     pitch: 1
     loop: 1
   sfxClips:
   - clip: {fileID: 8300000, guid: 9e81f06539a3e2e43b8928c17f3df78b, type: 3}
     audioSource: {fileID: 0}
-    title: bad select
+    title: Bad Select
     volume: 0.3
     pitch: 1
     loop: 0
   - clip: {fileID: 8300000, guid: f6599f9beba7e8d49942fe949bd537c9, type: 3}
     audioSource: {fileID: 0}
-    title: good select
+    title: Good Select
+    volume: 0.3
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 7ea2a9db19cda3b4e89ae669b4703e66, type: 3}
+    audioSource: {fileID: 0}
+    title: Slash
+    volume: 0.3
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: e2fea31350aa1984a8e4777855473426, type: 3}
+    audioSource: {fileID: 0}
+    title: Fireball
+    volume: 0.3
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: c535335540b07d248b605f7e8e35bd08, type: 3}
+    audioSource: {fileID: 0}
+    title: Item Pickup
+    volume: 0.3
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: feb1098c41b5bf047bccfaa80668bcb1, type: 3}
+    audioSource: {fileID: 0}
+    title: Coin Pickup
+    volume: 0.3
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: da36548314a7f7045b6d1e51304d40f6, type: 3}
+    audioSource: {fileID: 0}
+    title: Dash
+    volume: 0.3
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 8b461b3091f328c43877e328a233d264, type: 3}
+    audioSource: {fileID: 0}
+    title: Player Hurt
+    volume: 0.3
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 8c42aa3aee289594fb75761a216b22c7, type: 3}
+    audioSource: {fileID: 0}
+    title: Enemy Defeated
+    volume: 0.3
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 70efcf1d52023804995180ee907f922e, type: 3}
+    audioSource: {fileID: 0}
+    title: Enemy Hurt
+    volume: 0.3
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: c7daf953ae84b2b48951e508aa66e6ea, type: 3}
+    audioSource: {fileID: 0}
+    title: Game Over
     volume: 0.3
     pitch: 1
     loop: 0

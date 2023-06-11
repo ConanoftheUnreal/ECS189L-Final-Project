@@ -1144,12 +1144,48 @@ PrefabInstance:
       value: SoundManager
       objectReference: {fileID: 0}
     - target: {fileID: 7924457800496581044, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
+      propertyPath: sfxClips.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7924457800496581044, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
+      propertyPath: sfxClips.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: e2fea31350aa1984a8e4777855473426, type: 3}
+    - target: {fileID: 7924457800496581044, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
+      propertyPath: sfxClips.Array.data[3].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7ea2a9db19cda3b4e89ae669b4703e66, type: 3}
+    - target: {fileID: 7924457800496581044, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
       propertyPath: sfxClips.Array.data[0].pitch
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7924457800496581044, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
       propertyPath: sfxClips.Array.data[1].pitch
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7924457800496581044, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
+      propertyPath: sfxClips.Array.data[2].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7924457800496581044, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
+      propertyPath: sfxClips.Array.data[2].title
+      value: fireball
+      objectReference: {fileID: 0}
+    - target: {fileID: 7924457800496581044, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
+      propertyPath: sfxClips.Array.data[3].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7924457800496581044, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
+      propertyPath: sfxClips.Array.data[3].title
+      value: slash
+      objectReference: {fileID: 0}
+    - target: {fileID: 7924457800496581044, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
+      propertyPath: sfxClips.Array.data[2].volume
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7924457800496581044, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
+      propertyPath: sfxClips.Array.data[3].volume
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

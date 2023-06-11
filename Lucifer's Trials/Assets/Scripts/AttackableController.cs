@@ -51,6 +51,7 @@ public class AttackableController : MonoBehaviour
         {
             if (hitpoints > 0)
             {
+                FindObjectOfType<SoundManager>().PlaySoundEffect("Player Hurt");
                 col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.COLLIDE);
             }
         }
@@ -67,8 +68,8 @@ public class AttackableController : MonoBehaviour
                 wasProjectile = true;
             }
 
+            FindObjectOfType<SoundManager>().PlaySoundEffect("Enemy Hurt");
             this.TakeDamage(col, attackersDamage, wasProjectile);
-            FindObjectOfType<SoundManager>().PlaySoundEffect("EnemyHurt");
         }
     }
 

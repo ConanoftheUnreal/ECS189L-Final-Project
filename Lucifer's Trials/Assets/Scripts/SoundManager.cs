@@ -71,6 +71,13 @@ public class SoundManager : MonoBehaviour
         this.trackPlaying = track;
     }
 
+    public void StopCurrentTrack()
+    {    
+        this.trackPlaying.audioSource.Stop();
+
+        this.trackPlaying = null;
+    }
+
 
     public void PlaySoundEffect(string title)
     {

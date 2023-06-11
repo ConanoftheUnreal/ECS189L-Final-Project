@@ -99,6 +99,7 @@ public class PlayerAnimationController : MonoBehaviour
         if (health == 0)
         {
             // queue player death
+            FindObjectOfType<SoundManager>().StopCurrentTrack();
             this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             this.statelock = false;
             this.CurrentState = PlayerStates.DEATH;
@@ -110,7 +111,6 @@ public class PlayerAnimationController : MonoBehaviour
         else
         {
             // queue player hurt
-            FindObjectOfType<SoundManager>().PlaySoundEffect("PlayerHurt");
             this.playerHurt = true;
             this.CurrentState = PlayerStates.HURT;
             this.animator.speed = 1;

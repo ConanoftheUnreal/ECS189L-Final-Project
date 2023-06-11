@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
         this.health = 10;
 
         // begin background music
-        FindObjectOfType<SoundManager>().PlayMusicTrack("game theme");
+        FindObjectOfType<SoundManager>().PlayMusicTrack("Game Theme");
     }
 
     public bool AtMaxHealth()
