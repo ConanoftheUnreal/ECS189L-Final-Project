@@ -5,6 +5,8 @@ public class LevelGenerator
     private LevelLayoutGenerator _layoutGenerator;
     private IRoomGenerator _roomGenerator;
 
+    private int _currentRoomID = 0;
+
     // The entrance to a room from its parent always has the exit ID 0
     public static int ENTRANCE_EXIT_ID = 0;
 
@@ -34,6 +36,13 @@ public class LevelGenerator
         
         // Generate a room for the current node
         node.SetRoom(_roomGenerator.Generate(node.children.Count + 1));
+
+        // Give each room in the level a unique ID
+        node.room.SetID(_currentRoomID);
+        _currentRoomID++;
+
+        // Spawn enemies in room
+        node.room.SpawnEnemies();
 
         if (node.type == NodeType.ROOT)
         {
