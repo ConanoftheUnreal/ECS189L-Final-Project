@@ -21,6 +21,8 @@ public class Room
     private Tilemap _decorationsTilemap;
     private Transform _exitsTransform;
 
+    private Vector2 _centerPoint;
+
     private Dictionary<Vector2Int, GameObject> _wallObjects = new Dictionary<Vector2Int, GameObject>();
 
     private List<GameObject> _enemyObjects = new List<GameObject>();
@@ -56,6 +58,14 @@ public class Room
         }
     }
 
+    public Vector2 centerPoint
+    {
+        get
+        {
+            return _centerPoint;
+        }
+    }
+
     public Room(GameObject roomObject, List<ExitPathRectangle> exitPaths)
     {
 
@@ -86,6 +96,11 @@ public class Room
 
         // Spawn enemies at random subset of possible locations
         SpawnEnemies(possibleEnemySpawns);
+
+        // Find the center of the room
+        Vector3 roomSize = new Vector3((float)(_collisionTilemap.size.x), (float)(_collisionTilemap.size.y), 0);
+        // Subtract 1 from the y value to account for the back wall which is thicker than all the other surrounding walls
+        _centerPoint = roomObject.transform.position + roomSize / 2 - new Vector3(0, 1, 0);
 
     }
 
