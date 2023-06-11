@@ -122,7 +122,7 @@ Transform:
   - {fileID: 3292435599191028526}
   - {fileID: 1261753835966030249}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8815456198550243887
 SpriteRenderer:
@@ -210,7 +210,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3455608235691972618}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -312,8 +312,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathEffect: {fileID: 4975326531328575795, guid: 3e3007a9752904beebc4042befc7b453, type: 3}
   humanoid: 1
-  damage: 1
-  maxHitpoints: 3
 --- !u!114 &8585621319558794034
 MonoBehaviour:
   m_ObjectHideFlags: 0
