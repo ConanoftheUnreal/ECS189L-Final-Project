@@ -23,6 +23,10 @@ public class FactoryGoblinBeserker : Factory
         }
 
         player = GameObject.FindWithTag("Player");
+
+        GameObject tmp = GameObject.FindWithTag("SteeringPerciever");
+        perceiver = tmp.GetComponent<Polarith.AI.Move.AIMSteeringPerceiver>();
+        Debug.Log(perceiver.gameObject.name);
     }
 
     public override IEnemy GetEnemy()
@@ -44,7 +48,7 @@ public class FactoryGoblinBeserker : Factory
 
         Polarith.AI.Move.AIMSteeringFilter tmp = instance.GetComponentInChildren<Polarith.AI.Move.AIMSteeringFilter>();
         if (tmp == null) { Debug.LogWarning("AIMSteeringFilter not found!!"); }
-        Debug.Log(tmp);
+        //Debug.Log(tmp);
         tmp.SteeringPerceiver = perceiver;
 
         float orbit = newGoblin.Stats.Orbit;
