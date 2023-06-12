@@ -68,6 +68,7 @@ public class DungeonGenerator : IRoomGenerator
 
         // Create "Collision" layer
         GameObject collisionLayer = new GameObject("Collision");
+        collisionLayer.tag = "Wall";
         collisionLayer.transform.SetParent(room.transform);
         TilemapRenderer collisionRenderer = collisionLayer.AddComponent<TilemapRenderer>();
         collisionRenderer.sortingOrder = 1;
