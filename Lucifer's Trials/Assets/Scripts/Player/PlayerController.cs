@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
                 this.health = 10;
                 //this.maxSP = 5;
                 this.wallet = 0;
-                this.attack = 3;
+                this.attack = 3; // originally 3
                 this.speed = 6;
                 break;
             case PlayerType.SORCERESS:

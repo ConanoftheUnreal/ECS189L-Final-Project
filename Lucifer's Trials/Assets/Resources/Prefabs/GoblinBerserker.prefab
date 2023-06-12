@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8009272537773148218}
   - component: {fileID: 2554794198455484916}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &7237144075086487430
 BoxCollider2D:
@@ -698,7 +698,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1089369113971012499, guid: 57746dfd9967c0a459e47e36bf9f769f, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2630474377111739604, guid: 57746dfd9967c0a459e47e36bf9f769f, type: 3}
       propertyPath: selfObject

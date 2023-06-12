@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1261753835966030249}
   - component: {fileID: 8976750777474806866}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &772322302820928117
 BoxCollider2D:

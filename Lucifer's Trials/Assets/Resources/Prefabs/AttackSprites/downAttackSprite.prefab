@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4372487923180030213}
   - component: {fileID: 1704040667867416723}
   - component: {fileID: 8638495488003285919}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: downAttackSprite
   m_TagString: PlayerAttack
   m_Icon: {fileID: 0}

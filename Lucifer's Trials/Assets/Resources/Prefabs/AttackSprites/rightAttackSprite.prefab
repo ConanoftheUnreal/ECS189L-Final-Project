@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4724003826766134978}
   - component: {fileID: 4975362927345278595}
   - component: {fileID: 6211864681883254368}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: rightAttackSprite
   m_TagString: PlayerAttack
   m_Icon: {fileID: 0}

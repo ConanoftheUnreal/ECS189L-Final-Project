@@ -57,7 +57,7 @@ public class AttackableController : MonoBehaviour
         }
 
         // if collision with something that hurts, self gets hurt
-        if ((col.tag == "PlayerAttack") || (col.tag == "Projectile"))
+        if (((col.tag == "PlayerAttack") || (col.tag == "Projectile")))
         {
             // get damage based on type of attacking object; NOT YET IMPLEMENTED, VALUE IS A PLACEHOLDER VALUE
             var attackersDamage = GameObject.Find("Player").GetComponent<PlayerController>().GetAttack();
