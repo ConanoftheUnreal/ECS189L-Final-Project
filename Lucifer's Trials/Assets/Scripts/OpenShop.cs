@@ -16,6 +16,11 @@ public class OpenShopTestScript : MonoBehaviour
         }
     }
 
+    void OnTriggerExit2D()
+    {
+        this.player = null;
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && this.player != null && Time.timeScale == 1)
