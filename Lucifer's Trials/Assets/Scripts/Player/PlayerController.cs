@@ -14,6 +14,20 @@ public class PlayerController : MonoBehaviour
     private int speed;
     private int wallet;
 
+    private PlayerController instance;
+
+    void Awake() {
+        if (instance == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
