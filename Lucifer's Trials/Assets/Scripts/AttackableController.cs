@@ -78,6 +78,11 @@ public class AttackableController : MonoBehaviour
         // attacking enemy
         if (humanoid)
         {
+            // shouldn't be able to take damage if already at or below 0 health
+            if (this.hitpoints <= 0)
+            {
+                return;
+            }
             var killed = false;
             this.hitpoints -= attackersDamage;
             if (hitpoints <= 0)
