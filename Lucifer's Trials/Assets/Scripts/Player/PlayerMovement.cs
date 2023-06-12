@@ -55,6 +55,12 @@ public class PlayerMovement : MonoBehaviour
             this.isDashing = true;
             this.curDuration = 0.0f;
             this.sinceDash = 0.0f;
+            // ensure all attack sprites are disabled (no damaging enemies while dashing)
+            for (int i = 0; i < 4; i++)
+            {
+                // all attack sprites are the first 4 gameobjects of the player
+                this.gameObject.transform.GetChild(i).gameObject.SetActive(false);
+            }
         }
         
     }
