@@ -133,7 +133,8 @@ public class PlayerAnimationController : MonoBehaviour
                 Knockback(objVec);
                 break;
             case DamageTypes.COLLIDE:
-                var hitDirection = new Vector2(UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f)).normalized;
+                //var hitDirection = new Vector2(UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f)).normalized;
+                var hitDirection = new Vector2(-this.animator.GetFloat("MoveX"), -this.animator.GetFloat("MoveY")).normalized;
                 Knockback(hitDirection);
                 break;
             default:
@@ -225,7 +226,7 @@ public class PlayerAnimationController : MonoBehaviour
                 switch (playerType)
                 {
                     case PlayerType.WARRIOR:
-                        this.animator.speed *= 1.25f;
+                        this.animator.speed *= 1.5f;
                         FindObjectOfType<SoundManager>().PlaySoundEffect("Slash");
                         break;
                     case PlayerType.SORCERESS:

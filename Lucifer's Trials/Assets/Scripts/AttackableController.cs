@@ -24,6 +24,9 @@ public class AttackableController : MonoBehaviour
     private int damage;
     private int maxHitpoints;
 
+    // so that exiting play mode causes no errors with onDestroy
+    private bool isQuitting = false;
+
     public void Start()
     {
         this.healthBar = this.gameObject.transform.Find("Healthbar").gameObject.GetComponent<HealthBarController>();
@@ -42,6 +45,9 @@ public class AttackableController : MonoBehaviour
         this.hitpoints = this.maxHitpoints;
 
         this.rb = this.gameObject.GetComponent<Rigidbody2D>();
+
+        // bump damage
+        this.damage = 1;
     }
 
     public void OnTriggerEnter2D(Collider2D col)
@@ -51,15 +57,17 @@ public class AttackableController : MonoBehaviour
         {
             if (hitpoints > 0)
             {
-                FindObjectOfType<SoundManager>().PlaySoundEffect("Player Hurt");
-                col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.COLLIDE);
+                var wasHurt = col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.COLLIDE);
+                if (wasHurt)
+                {
+                    FindObjectOfType<SoundManager>().PlaySoundEffect("Player Hurt");
+                }
             }
         }
 
         // if collision with something that hurts, self gets hurt
         if (((col.tag == "PlayerAttack") || (col.tag == "Projectile")))
         {
-            // get damage based on type of attacking object; NOT YET IMPLEMENTED, VALUE IS A PLACEHOLDER VALUE
             var attackersDamage = GameObject.Find("Player").GetComponent<PlayerController>().GetAttack();
 
             var wasProjectile = false;
@@ -137,6 +145,23 @@ public class AttackableController : MonoBehaviour
                 knockedback = false;
             }
             timePassed += Time.deltaTime;
+        }
+    }
+
+    void OnApplicationQuit()
+    {
+        this.isQuitting = true;
+    }
+
+    public void OnDestroy()
+    {
+        if (!this.isQuitting)
+        {
+            var drop = this.gameObject.GetComponent<DropRateLogic>().GetEnemyDrop();
+            if (drop != null)
+            {
+                Instantiate(drop, this.transform.position - (new Vector3(0, 0.3f, 0)), Quaternion.identity);
+            }
         }
     }
 }
