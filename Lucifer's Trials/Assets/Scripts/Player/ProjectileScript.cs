@@ -14,7 +14,7 @@ public class ProjectileScript : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D col)
     {
         // All projectiles that hit a wall should be destroyed.
-        if (col.tag == "Wall")
+        if ( (col.tag == "Wall") || (col.tag == "PlayerAttack") || (this.tag == "Projectile" && col.tag == "EnemyHitbox") )
         {
             Destroy(this.gameObject);
             AfterEffect();
@@ -31,12 +31,6 @@ public class ProjectileScript : MonoBehaviour
                 Destroy(this.gameObject);
                 AfterEffect();
             }
-        }
-
-        if (col.tag == "PlayerAttack")
-        {
-            Destroy(this.gameObject);
-            AfterEffect();
         }
     }
 
