@@ -323,11 +323,11 @@ public class GoblinBeserker : Enemy
 
         _movementDirection = _contextSteering.DecidedDirection;
 
-        Ray theRay = new Ray(transform.position, transform.TransformDirection(_movementDirection));
-        //RaycastHit2D hit;
-        Debug.DrawRay(transform.position, transform.TransformDirection(_movementDirection));
+        /*UnityEngine.Ray theRay = new Ray(origin: transform.position, direction: transform.TransformDirection(_movementDirection));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, (Vector2)transform.position + _movementDirection, 1);
+        //Debug.DrawRay(theRay, out hit, 1));
 
-        if (Physics.Raycast(transform.position, (Vector2 )transform.position + _movementDirection, 1, layerMask: 1 << 2))
+        if (Physics.Raycast(transform.position, _movementDirection, 1))
         {
             Debug.Log("here");
             if (_centerOfRoom == Vector2.zero)
@@ -346,7 +346,7 @@ public class GoblinBeserker : Enemy
                 Debug.Log("Negative Z");
             }
         }
-        //Debug.Log(_contextSteering.DecidedDirection);
+        //Debug.Log(_contextSteering.DecidedDirection);*/
     }
 }
 
