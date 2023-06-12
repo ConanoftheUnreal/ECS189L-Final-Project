@@ -61,6 +61,12 @@ public class PlayerController : MonoBehaviour
         return (SP == maxSP);
     }
 
+    public void IncreaseMaxHealth(int amount)
+    {
+        this.health += amount;
+        this.maxHealth += amount;
+    }
+
     public void IncreaseHealth(int amount)
     {
         this.health += amount;
