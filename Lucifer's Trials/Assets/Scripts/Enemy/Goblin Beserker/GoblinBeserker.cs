@@ -36,10 +36,6 @@ public class GoblinBeserker : Enemy
 
     public void Awake()
     {
-        if (_centerOfRoom == Vector2.zero)
-        {
-            setRoomCenter();
-        }
     }
 
     private void OnEnable()
@@ -49,6 +45,11 @@ public class GoblinBeserker : Enemy
 
         if (_contextSteering == null)
             Debug.LogWarning("Context Steering Not Found");
+
+        /*if (_centerOfRoom == Vector2.zero)
+        {
+            setRoomCenter();
+        } */
     }
 
     private void setRoomCenter()
@@ -57,8 +58,15 @@ public class GoblinBeserker : Enemy
         if (rootRoom == null)
         {
             Debug.LogWarning("rootRoom Not found");
+            return;
         }
         LevelManager levelManager = rootRoom.GetComponent<LevelManager>();
+
+        if (levelManager == null)
+        {
+            Debug.LogWarning("levelManager not found");
+            return;
+        }
         _centerOfRoom = levelManager.GetCenterOfCurrentRoom();
     }
 
@@ -310,18 +318,18 @@ public class GoblinBeserker : Enemy
     {
         if (Mathf2.Approximately(_contextSteering.DecidedDirection.sqrMagnitude, 0))
         {
-            Debug.Log("here");
             return;
         }
 
         _movementDirection = _contextSteering.DecidedDirection;
 
         Ray theRay = new Ray(transform.position, transform.TransformDirection(_movementDirection));
-        RaycastHit2D hit;
+        //RaycastHit2D hit;
         Debug.DrawRay(transform.position, transform.TransformDirection(_movementDirection));
 
-        if (Physics.Raycast(transform.position, (Vector2 )transform.position + _movementDirection, 1, layerMask: 1 << 3))
+        if (Physics.Raycast(transform.position, (Vector2 )transform.position + _movementDirection, 1, layerMask: 1 << 2))
         {
+            Debug.Log("here");
             if (_centerOfRoom == Vector2.zero)
             {
                 setRoomCenter();
