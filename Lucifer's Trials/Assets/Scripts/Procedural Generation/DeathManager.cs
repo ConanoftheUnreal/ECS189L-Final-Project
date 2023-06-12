@@ -21,7 +21,15 @@ public class DeathManager : MonoBehaviour
                 // And then check if all the enemies are dead, so that you can open all the exits in the room
                 if (_levelManager.isCurrentRoomCleared)
                 {
+
+                    // Only player the Room Clear sound if exits are actually opening
+                    if ((_levelManager.currentNode.children.Count > 0) || (_levelManager.currentNode.type == NodeType.BOSS))
+                    {
+                        FindObjectOfType<SoundManager>().PlaySoundEffect("Room Clear");
+                    }
+
                     _levelManager.currentNode.room.OpenAllExits();
+
                 }
 
             }
