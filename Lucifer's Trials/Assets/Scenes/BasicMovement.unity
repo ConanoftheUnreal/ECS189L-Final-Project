@@ -179,6 +179,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gold (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 9203972737454044537, guid: 9bc62b8b82cd0481798dc8e8aec2ea36, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -276,6 +280,10 @@ PrefabInstance:
     - target: {fileID: 8268971653956879568, guid: 6cf47e344a633aa469c98e214ab2bc0c, type: 3}
       propertyPath: m_Name
       value: HealthCapsule (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268971653956879568, guid: 6cf47e344a633aa469c98e214ab2bc0c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -411,6 +419,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthCapsule
       objectReference: {fileID: 0}
+    - target: {fileID: 8268971653956879568, guid: 6cf47e344a633aa469c98e214ab2bc0c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -471,6 +483,10 @@ PrefabInstance:
     - target: {fileID: 9203972737454044537, guid: 9bc62b8b82cd0481798dc8e8aec2ea36, type: 3}
       propertyPath: m_Name
       value: Gold (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203972737454044537, guid: 9bc62b8b82cd0481798dc8e8aec2ea36, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -609,6 +625,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coins (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8985157348558784289, guid: 2b958119077ef4b2f9b328deccaf8d28, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -641,6 +661,10 @@ PrefabInstance:
     - target: {fileID: 2854936767328680201, guid: 89f32bb2a94b74a728d7e37cc0dfe355, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3278281402842925810, guid: 89f32bb2a94b74a728d7e37cc0dfe355, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 4022523817442153749, guid: 89f32bb2a94b74a728d7e37cc0dfe355, type: 3}
       propertyPath: m_RootOrder
@@ -692,6 +716,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6949441089291722045, guid: 89f32bb2a94b74a728d7e37cc0dfe355, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7237144075086487430, guid: 89f32bb2a94b74a728d7e37cc0dfe355, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -762,11 +790,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3400069320351801247, guid: 26bbac183b4054714851e17026b84412, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3400069320351801247, guid: 26bbac183b4054714851e17026b84412, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3455608235691972618, guid: 26bbac183b4054714851e17026b84412, type: 3}
       propertyPath: m_Name
@@ -774,7 +802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3455608235691972618, guid: 26bbac183b4054714851e17026b84412, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5939987201251329295, guid: 26bbac183b4054714851e17026b84412, type: 3}
       propertyPath: SteeringPerceiver
@@ -908,6 +936,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthCapsule (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8268971653956879568, guid: 6cf47e344a633aa469c98e214ab2bc0c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -929,7 +961,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &704805665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1070,6 +1102,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SPCapsule (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8268971653956879568, guid: 46016c58e369d4e588cad0e54727d387, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1200,6 +1236,10 @@ PrefabInstance:
     - target: {fileID: 8268971653956879568, guid: 46016c58e369d4e588cad0e54727d387, type: 3}
       propertyPath: m_Name
       value: SPCapsule
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268971653956879568, guid: 46016c58e369d4e588cad0e54727d387, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1358,6 +1398,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5371018208254165812, guid: 0f8ff938da41b574a93f1f9486b25ea1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1427,6 +1471,10 @@ PrefabInstance:
     - target: {fileID: 5371018208254165812, guid: 0f8ff938da41b574a93f1f9486b25ea1, type: 3}
       propertyPath: m_Name
       value: Wall (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371018208254165812, guid: 0f8ff938da41b574a93f1f9486b25ea1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1513,6 +1561,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthCapsule (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8268971653956879568, guid: 6cf47e344a633aa469c98e214ab2bc0c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1573,6 +1625,10 @@ PrefabInstance:
     - target: {fileID: 3719532269851137185, guid: f58454e57a4454b43a80d3615744e6e1, type: 3}
       propertyPath: m_Name
       value: Gems (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3719532269851137185, guid: f58454e57a4454b43a80d3615744e6e1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1909,6 +1965,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coins
       objectReference: {fileID: 0}
+    - target: {fileID: 8985157348558784289, guid: 2b958119077ef4b2f9b328deccaf8d28, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2030,6 +2090,10 @@ PrefabInstance:
     - target: {fileID: 3719532269851137185, guid: f58454e57a4454b43a80d3615744e6e1, type: 3}
       propertyPath: m_Name
       value: Gems
+      objectReference: {fileID: 0}
+    - target: {fileID: 3719532269851137185, guid: f58454e57a4454b43a80d3615744e6e1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2285,6 +2349,10 @@ PrefabInstance:
     - target: {fileID: 9203972737454044537, guid: 9bc62b8b82cd0481798dc8e8aec2ea36, type: 3}
       propertyPath: m_Name
       value: Gold
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203972737454044537, guid: 9bc62b8b82cd0481798dc8e8aec2ea36, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

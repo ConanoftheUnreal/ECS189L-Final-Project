@@ -25,10 +25,10 @@ TagManager:
   - UI
   - Enemy
   - Player
-  - 
-  - 
-  - 
-  - 
+  - EnemyHitbox
+  - PlayerHitbox
+  - PlayerAttack
+  - EnemyAttack
   - 
   - 
   - 
