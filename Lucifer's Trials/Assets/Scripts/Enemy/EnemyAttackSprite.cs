@@ -19,8 +19,11 @@ public class EnemyAttackSprite : MonoBehaviour
     {
         if (col.tag == "PlayerHurtbox")
         {
-            FindObjectOfType<SoundManager>().PlaySoundEffect("Player Hurt");
-            col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, this.damage, DamageTypes.CQC);
+            var wasHurt = col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, this.damage, DamageTypes.CQC);
+            if (wasHurt)
+            {
+                FindObjectOfType<SoundManager>().PlaySoundEffect("Player Hurt");
+            }
         }
     }
 
