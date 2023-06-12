@@ -13,6 +13,8 @@ public class ManualRoomGeneration : MonoBehaviour
     
     private LevelManager _levelManager;
 
+    private bool firstFrame = true;
+
     public void Start()
     {
 
@@ -45,6 +47,15 @@ public class ManualRoomGeneration : MonoBehaviour
 
     public void Update()
     {   
+
+        // I have NO idea why, but the Root rooms enemies need to be spawned in the update loop or their AI does not work properly
+        if (firstFrame)
+        {
+
+            _levelManager.currentNode.room.SpawnEnemies();
+            firstFrame = false;
+
+        }
 
     }
 
