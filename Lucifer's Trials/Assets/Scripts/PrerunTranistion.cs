@@ -9,7 +9,7 @@ public class PrerunTranistion : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("BasicMovement");
+            SceneManager.LoadScene("Run");
         }
     }
 }

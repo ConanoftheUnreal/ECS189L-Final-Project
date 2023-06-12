@@ -8,7 +8,7 @@ public class MainMenu : MonoBehaviour
     public void PlayGame()
     {
         FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("PreRun");
     }
 
     public void QuitGame()
