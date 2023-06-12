@@ -32,6 +32,12 @@ public class ProjectileScript : MonoBehaviour
                 AfterEffect();
             }
         }
+
+        if (col.tag == "PlayerAttack")
+        {
+            Destroy(this.gameObject);
+            AfterEffect();
+        }
     }
 
     private void AfterEffect()
