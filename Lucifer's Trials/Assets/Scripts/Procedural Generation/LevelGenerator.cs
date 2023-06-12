@@ -33,7 +33,15 @@ public class LevelGenerator
     {
         
         // Generate a room for the current node
-        node.SetRoom(_roomGenerator.Generate(node.children.Count + 1));
+        if (node.type != NodeType.BOSS)
+        {
+            node.SetRoom(_roomGenerator.Generate(node.children.Count + 1));
+        }
+        else
+        {
+            // Generate an exit from the BOSS room that basically leaves the level
+            node.SetRoom(_roomGenerator.Generate(node.children.Count + 2));
+        }
 
         if (node.type == NodeType.ROOT)
         {

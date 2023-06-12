@@ -14,6 +14,20 @@ public class PlayerController : MonoBehaviour
     private int speed;
     private int wallet;
 
+    private PlayerController instance;
+
+    void Awake() {
+        if (instance == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,12 +36,12 @@ public class PlayerController : MonoBehaviour
         switch(playerType)
         {
             case PlayerType.WARRIOR:
-                this.maxHealth = 10;
-                this.health = 10;
+                this.maxHealth = 12;    // originally 10
+                this.health = 12;
                 //this.maxSP = 5;
                 this.wallet = 0;
-                this.attack = 3; // originally 3
-                this.speed = 6;
+                this.attack = 2; // originally 3
+                this.speed = 5; // originally 6
                 break;
             case PlayerType.SORCERESS:
                 this.maxHealth = 7;
@@ -129,15 +143,6 @@ public class PlayerController : MonoBehaviour
     {
         this.wallet -= amount;
     }
-
-    // Realizing this is not way to do this; we do not ensure that when the Player is destroyed
-    // the Bank is not. This causes a big red warning atm, since when we exit simulation, it destroys
-    // all gameobjects simultaneously.
-
-    // void OnDestroy()
-    // {
-    //     GameObject.Find("Bank").GetComponent<BankData>().Deposit(this.wallet);
-    // }
 
     public int GetWallet()
     {

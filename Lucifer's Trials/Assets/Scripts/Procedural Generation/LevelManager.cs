@@ -82,18 +82,6 @@ public class LevelManager : MonoBehaviour
 
         }
 
-        // Update the list of enemies in the room if any have died in the last frame
-        if (currentNode != null)
-        {
-            currentNode.room.UpdateEnemiesList();
-        }
-
-        // Open all the exits in the room if the player has killed all the enemies
-        if (currentNode.room.numAliveEnemies == 0)
-        {
-            currentNode.room.OpenAllExits();
-        }
-
     }
 
     public static float Distance(Vector2 v1, Vector2 v2)

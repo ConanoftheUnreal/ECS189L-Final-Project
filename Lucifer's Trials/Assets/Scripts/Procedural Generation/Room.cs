@@ -111,9 +111,9 @@ public class Room
     }
 
     // Remove dead enemies from the list of enemies in the room
-    public void UpdateEnemiesList()
+    public void RemoveEnemy(GameObject enemy)
     {
-        _enemyObjects.RemoveAll(enemy => enemy == null);
+        _enemyObjects.Remove(enemy);
     }
 
     public void SpawnEnemies()
@@ -147,6 +147,7 @@ public class Room
             }
 
             GameObject enemyObject = ((GoblinBeserker)(spawner.GetEnemy(spawnLocation))).gameObject;
+            enemyObject.AddComponent<DeathManager>();
             _enemyObjects.Add(enemyObject);
 
         }

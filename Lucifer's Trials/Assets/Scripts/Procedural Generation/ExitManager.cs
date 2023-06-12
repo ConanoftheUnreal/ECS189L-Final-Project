@@ -60,6 +60,11 @@ public class ExitManager : MonoBehaviour
                         else
                         {
 
+                            if (_levelManager.currentNode.type == NodeType.BOSS)
+                            {
+                                Debug.Log("You Win!");
+                            }
+
                             // If the player is entering a child room, just get the node for that child
                             newNode = _levelManager.currentNode.children[_id - 1];
 
