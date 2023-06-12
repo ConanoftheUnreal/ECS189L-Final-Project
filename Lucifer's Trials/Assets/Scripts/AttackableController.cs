@@ -24,6 +24,9 @@ public class AttackableController : MonoBehaviour
     private int damage;
     private int maxHitpoints;
 
+    // so that exiting play mode causes no errors with onDestroy
+    private bool isQuitting = false;
+
     public void Start()
     {
         this.healthBar = this.gameObject.transform.Find("Healthbar").gameObject.GetComponent<HealthBarController>();
@@ -137,6 +140,23 @@ public class AttackableController : MonoBehaviour
                 knockedback = false;
             }
             timePassed += Time.deltaTime;
+        }
+    }
+
+    void OnApplicationQuit()
+    {
+        this.isQuitting = true;
+    }
+
+    public void OnDestroy()
+    {
+        if (!this.isQuitting)
+        {
+            var drop = this.gameObject.GetComponent<DropRateLogic>().GetEnemyDrop();
+            if (drop != null)
+            {
+                Instantiate(drop, this.transform.position - (new Vector3(0, 0.3f, 0)), Quaternion.identity);
+            }
         }
     }
 }

@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 8585621319558794034}
   - component: {fileID: 3938590529501458716}
   - component: {fileID: 5578568550356647767}
+  - component: {fileID: 3796712610491015189}
   m_Layer: 6
   m_Name: GoblinSlinger
   m_TagString: Enemy
@@ -352,6 +353,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 1456512457078943229, guid: eabdff2d7497f69479bd839d4011a5cd, type: 3}
+--- !u!114 &3796712610491015189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3455608235691972618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b1095bce80d53d47b94674d36b62b05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coin: {fileID: 8985157348558784289, guid: 2b958119077ef4b2f9b328deccaf8d28, type: 3}
+  gold: {fileID: 9203972737454044537, guid: 9bc62b8b82cd0481798dc8e8aec2ea36, type: 3}
+  gems: {fileID: 3719532269851137185, guid: f58454e57a4454b43a80d3615744e6e1, type: 3}
+  healing: {fileID: 8268971653956879568, guid: 6cf47e344a633aa469c98e214ab2bc0c, type: 3}
 --- !u!1001 &270078557061477035
 PrefabInstance:
   m_ObjectHideFlags: 0
