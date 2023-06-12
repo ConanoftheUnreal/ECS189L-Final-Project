@@ -26,7 +26,6 @@ public class FactoryGoblinSlinger : Factory
 
         GameObject tmp = GameObject.FindWithTag("SteeringPerciever");
         perceiver = tmp.GetComponent<Polarith.AI.Move.AIMSteeringPerceiver>();
-        Debug.Log(perceiver.gameObject.name);
     }
 
     public override IEnemy GetEnemy()
