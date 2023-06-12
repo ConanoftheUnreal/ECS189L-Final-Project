@@ -26,6 +26,7 @@ public class Room
     private Dictionary<Vector2Int, GameObject> _wallObjects = new Dictionary<Vector2Int, GameObject>();
 
     private List<GameObject> _enemyObjects = new List<GameObject>();
+    private List<Vector2Int> _possibleSpawnLocations;
 
     private const int WALL_LAYER = 3;
 
@@ -100,10 +101,7 @@ public class Room
         OpenExit(LevelGenerator.ENTRANCE_EXIT_ID);
 
         // Find the possible locations for spawning enemies
-        List<Vector2Int> possibleEnemySpawns = FindPossibleEnemySpawns();
-
-        // Spawn enemies at random subset of possible locations
-        SpawnEnemies(possibleEnemySpawns);
+        _possibleSpawnLocations = FindPossibleEnemySpawns();
 
         // Find the center of the room
         Vector3 roomSize = new Vector3((float)(_collisionTilemap.size.x), (float)(_collisionTilemap.size.y), 0);
@@ -118,7 +116,7 @@ public class Room
         _enemyObjects.RemoveAll(enemy => enemy == null);
     }
 
-    private void SpawnEnemies(List<Vector2Int> possibleSpawnLocations)
+    public void SpawnEnemies()
     {
 
         GameObject parentObject = GameObject.Find("Enemies");
@@ -126,7 +124,7 @@ public class Room
         FactoryGoblinSlinger slingerSpawner = parentObject.GetComponent<FactoryGoblinSlinger>();
 
         int numEnemies = Random.Range(MIN_ENEMIES_SPAWN, MAX_ENEMIES_SPAWN + 1);
-        List<Vector2Int> possibleSpawns = new List<Vector2Int>(possibleSpawnLocations);
+        List<Vector2Int> possibleSpawns = new List<Vector2Int>(_possibleSpawnLocations);
 
         for (int i = 0; i < numEnemies; i++)
         {

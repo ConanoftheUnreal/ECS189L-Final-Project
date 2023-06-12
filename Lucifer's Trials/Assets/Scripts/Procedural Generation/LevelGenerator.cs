@@ -51,6 +51,8 @@ public class LevelGenerator
 
             // Otherwise, set the parent of the room the room of the parent node of this node, and then disable the room
             node.room.roomObject.transform.SetParent(node.parent.room.roomObject.transform);
+            // Only spawn enemies at generation time if this isn't the root room
+            node.room.SpawnEnemies();
             node.room.DisableRoom();
 
         }
