@@ -38,6 +38,7 @@ public class RunRoomGeneration : MonoBehaviour
         GameObject player = GameObject.Find("Player");
         player.transform.position = new Vector3(entranceLocation.x, entranceLocation.y, 0);
         player.transform.SetParent(_levelManager.currentNode.room.roomObject.transform);
+        player.GetComponent<SpriteRenderer>().enabled = true;
 
     }
 
