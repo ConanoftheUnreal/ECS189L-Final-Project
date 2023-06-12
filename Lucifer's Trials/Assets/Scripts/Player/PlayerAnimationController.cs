@@ -225,7 +225,7 @@ public class PlayerAnimationController : MonoBehaviour
                 switch (playerType)
                 {
                     case PlayerType.WARRIOR:
-                        this.animator.speed *= 1.25f;
+                        this.animator.speed *= 1.5f;
                         FindObjectOfType<SoundManager>().PlaySoundEffect("Slash");
                         break;
                     case PlayerType.SORCERESS:

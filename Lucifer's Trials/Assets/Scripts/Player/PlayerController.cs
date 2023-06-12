@@ -22,12 +22,12 @@ public class PlayerController : MonoBehaviour
         switch(playerType)
         {
             case PlayerType.WARRIOR:
-                this.maxHealth = 10;
-                this.health = 10;
+                this.maxHealth = 12;    // originally 10
+                this.health = 12;
                 //this.maxSP = 5;
                 this.wallet = 0;
-                this.attack = 3; // originally 3
-                this.speed = 6;
+                this.attack = 2; // originally 3
+                this.speed = 5; // originally 6
                 break;
             case PlayerType.SORCERESS:
                 this.maxHealth = 7;
