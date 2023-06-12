@@ -33,9 +33,6 @@ public class RunRoomGeneration : MonoBehaviour
         environmentUpdater.GameObjectCollections[0] = GameObject.Find("Enemies");
 
         _levelManager = _levelGenerator.Generate().roomObject.GetComponent<LevelManager>();
-        
-        CameraController cc = _camera.gameObject.GetComponent<CameraController>();
-        cc.SnapToRoom(_levelManager.currentNode.room);
 
         Vector2 entranceLocation = _levelManager.currentNode.room.exitPaths[LevelGenerator.ENTRANCE_EXIT_ID].entranceLocation;
         GameObject player = GameObject.Find("Player");
@@ -50,7 +47,11 @@ public class RunRoomGeneration : MonoBehaviour
         if (_firstFrame)
         {
 
+            CameraController cc = _camera.gameObject.GetComponent<CameraController>();
+            cc.SnapToRoom(_levelManager.currentNode.room);
+
             _levelManager.currentNode.room.SpawnEnemies();
+            
             _firstFrame = false;
 
         }        
