@@ -42,6 +42,9 @@ public class FactoryGoblinSlinger : Factory
             if (player == null) { Debug.LogWarning("Player Cannot be found in scene!!"); }
         }
 
+        GameObject steeringPerciever = GameObject.FindWithTag("SteeringPerciever");
+        perceiver = steeringPerciever.GetComponent<Polarith.AI.Move.AIMSteeringPerceiver>();
+
         GameObject instance = Instantiate(prefab.gameObject, position, Quaternion.identity);
         GoblinBeserker newGoblin = instance.GetComponent<GoblinBeserker>();
 
