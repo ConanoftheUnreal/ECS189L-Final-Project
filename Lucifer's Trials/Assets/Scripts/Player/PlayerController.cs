@@ -144,15 +144,6 @@ public class PlayerController : MonoBehaviour
         this.wallet -= amount;
     }
 
-    // Realizing this is not way to do this; we do not ensure that when the Player is destroyed
-    // the Bank is not. This causes a big red warning atm, since when we exit simulation, it destroys
-    // all gameobjects simultaneously.
-
-    // void OnDestroy()
-    // {
-    //     GameObject.Find("Bank").GetComponent<BankData>().Deposit(this.wallet);
-    // }
-
     public int GetWallet()
     {
         return this.wallet;
