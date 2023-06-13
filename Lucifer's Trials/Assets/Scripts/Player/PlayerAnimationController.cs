@@ -17,9 +17,11 @@ public class PlayerAnimationController : MonoBehaviour
 
     private bool statelock = false;
     private bool playerHurt = false;
+    private bool hurtable = true;
     private float speed = 4.0f;
-    private float deathTime = 3.0f;
+    private float deathTime = 1.5f;
     private float currentTime = 0.0f;
+    private float sinceHurt = 0.0f;
     private float horizontal;
     private float vertical;
     private Animator animator;
@@ -71,6 +73,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         this.statelock = false;
         this.playerHurt = false;
+        this.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
     }
 
     public void PlayerDefeated()
@@ -88,10 +91,36 @@ public class PlayerAnimationController : MonoBehaviour
         return this.playerType;
     }
 
+    public void StepSound()
+    {
+        //FindObjectOfType<SoundManager>().PlaySoundEffect("Step");
+    }
+
+    private void InvincibilityFrames()
+    {
+        var spriteRenderer = this.GetComponent<SpriteRenderer>();
+        if (this.sinceHurt >= 1.25f)
+        {
+            this.hurtable = true;
+
+            var color = spriteRenderer.color;
+            spriteRenderer.color = new Color(color.r, color.g, color.b, 1f);
+        }
+        else
+        {
+            spriteRenderer.color += new Color (0, 0, 0, 0.005f);
+            if (spriteRenderer.color.a >= 1f)
+            {
+                spriteRenderer.color = new Color (1f, 1f, 1f, 0f);
+            }
+            this.sinceHurt += Time.deltaTime;
+        }
+    }
+
     public bool PlayerDamaged(GameObject obj, int damage, DamageTypes damageType)
     {
         // invincibility frames
-        if (IsDashing()) return false;
+        if (IsDashing() || !this.hurtable) return false;
 
         // determine location of collision relative to player
         var collisionPt = obj.GetComponent<Collider2D>().ClosestPoint(this.gameObject.transform.position);
@@ -115,6 +144,8 @@ public class PlayerAnimationController : MonoBehaviour
         {
             // queue player hurt
             this.playerHurt = true;
+            this.hurtable = false;
+            this.sinceHurt = 0.0f;
             this.CurrentState = PlayerStates.HURT;
             this.animator.speed = 1;
         }
@@ -206,13 +237,18 @@ public class PlayerAnimationController : MonoBehaviour
             this.currentTime += Time.deltaTime;
         }
 
+        if (!this.hurtable)
+        {
+            InvincibilityFrames();
+        }
+
         if (!statelock && Time.timeScale == 1)
         {
             this.horizontal = Input.GetAxisRaw("Horizontal");
             this.vertical = Input.GetAxisRaw("Vertical");
 
             // attack; queue player attack
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && this.hurtable)
             {
                 this.CurrentState = PlayerStates.ATTACK;
                 this.animator.speed = this.speed / 4;
