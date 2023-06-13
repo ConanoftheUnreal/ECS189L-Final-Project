@@ -144,3 +144,21 @@ MonoBehaviour:
     volume: 0.3
     pitch: 1
     loop: 0
+  - clip: {fileID: 8300000, guid: db9ccd0e3f76d6445845b7cc5bcea950, type: 3}
+    audioSource: {fileID: 0}
+    title: Player Walk
+    volume: 0.1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 595379375dc285241815a61872c2a3cb, type: 3}
+    audioSource: {fileID: 0}
+    title: Enemy Walk
+    volume: 0.1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: c5ef8b8bc4a0e214884596cb838ace5c, type: 3}
+    audioSource: {fileID: 0}
+    title: Enemy Growl
+    volume: 0.3
+    pitch: 1
+    loop: 0
