@@ -175,9 +175,9 @@ MonoBehaviour:
     PresetVelocity: 0
     Prediction: 0
     PredictionMagnitude: 0
-    InnerRadius: 0.25
-    OuterRadius: 1
-    RadiusMapping: 4
+    InnerRadius: 0
+    OuterRadius: 1.5
+    RadiusMapping: 2
     ForEachReceptor: 0
 --- !u!114 &990745631800308812
 MonoBehaviour:
@@ -201,8 +201,7 @@ MonoBehaviour:
     tab3: 0
     tab4: 0
   advancedInspector: 0
-  FilteredEnvironments:
-  - Player
+  FilteredEnvironments: []
   GameObjects: []
   velocityGizmo:
     Enabled: 0

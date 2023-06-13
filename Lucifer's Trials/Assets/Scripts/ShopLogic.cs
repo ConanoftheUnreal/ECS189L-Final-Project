@@ -15,6 +15,9 @@ public class ShopLogic : MonoBehaviour
     [SerializeField] private TMP_Text attackStatText;
     [SerializeField] private TMP_Text healthStatText;
     [SerializeField] private TMP_Text speedStatText;
+    [SerializeField] private TMP_Text attackCost;
+    [SerializeField] private TMP_Text healthCost;
+    [SerializeField] private TMP_Text speedCost;
     [SerializeField] private Button shopButton1;
     [SerializeField] private Button shopButton2;
     [SerializeField] private Button shopButton3;
@@ -24,9 +27,8 @@ public class ShopLogic : MonoBehaviour
     private float currentTime;
     private bool madePurchase;
 
-    private int attackUpgradeCost = 100;
-    private int healthUpgradeCost = 100;
-    private int speedUpgradeCost = 100;
+    private ShopCostContainer shopCosts = ShopCostContainer.Instance;
+    private int priceIncrease = 50;
 
 
     void Start()
@@ -46,7 +48,7 @@ public class ShopLogic : MonoBehaviour
         switch (option)
         {
             case 1:
-                if (walletQuantity < attackUpgradeCost)
+                if (walletQuantity < this.shopCosts.attackCost)
                 {
                     this.invalidBuyText.gameObject.SetActive(true);
                     this.validBuyText.gameObject.SetActive(false);
@@ -57,13 +59,14 @@ public class ShopLogic : MonoBehaviour
                     //Debug.Log("Bought 1");
                     this.invalidBuyText.gameObject.SetActive(false);
                     this.validBuyText.gameObject.SetActive(true);
-                    GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(attackUpgradeCost);
+                    GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(this.shopCosts.attackCost);
                     GameObject.Find("Player").GetComponent<PlayerController>().IncreaseAttack(1);
+                    this.shopCosts.attackCost += priceIncrease;
                     FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
                 }
                 break;
             case 2:
-                if (walletQuantity < healthUpgradeCost)
+                if (walletQuantity < this.shopCosts.healthCost)
                 {
                     this.invalidBuyText.gameObject.SetActive(true);
                     this.validBuyText.gameObject.SetActive(false);
@@ -74,13 +77,14 @@ public class ShopLogic : MonoBehaviour
                     //Debug.Log("Bought 2");
                     this.invalidBuyText.gameObject.SetActive(false);
                     this.validBuyText.gameObject.SetActive(true);
-                    GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(healthUpgradeCost);
+                    GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(this.shopCosts.healthCost);
                     GameObject.Find("Player").GetComponent<PlayerController>().IncreaseMaxHealth(1);
+                    this.shopCosts.healthCost += priceIncrease;
                     FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
                 }
                 break;
             case 3:
-                if (walletQuantity < speedUpgradeCost)
+                if (walletQuantity < this.shopCosts.speedCost)
                 {
                     this.invalidBuyText.gameObject.SetActive(true);
                     this.validBuyText.gameObject.SetActive(false);
@@ -91,8 +95,9 @@ public class ShopLogic : MonoBehaviour
                     //Debug.Log("Bought 3");
                     this.invalidBuyText.gameObject.SetActive(false);
                     this.validBuyText.gameObject.SetActive(true);
-                    GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(speedUpgradeCost);
+                    GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(this.shopCosts.speedCost);
                     GameObject.Find("Player").GetComponent<PlayerController>().IncreaseSpeed(1);
+                    this.shopCosts.speedCost += priceIncrease;
                     FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
                 }
                 break;
@@ -120,6 +125,9 @@ public class ShopLogic : MonoBehaviour
         this.attackStatText.text = this.attackStat.ToString();
         this.healthStatText.text = this.healthStat.ToString();
         this.speedStatText.text = this.speedStat.ToString();
+        this.attackCost.text = this.shopCosts.attackCost.ToString();
+        this.healthCost.text = this.shopCosts.healthCost.ToString();
+        this.speedCost.text = this.shopCosts.speedCost.ToString();
 
         if (currentTime >= buyTextDuration && this.madePurchase)
         {
