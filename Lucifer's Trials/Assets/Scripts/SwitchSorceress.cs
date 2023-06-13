@@ -6,6 +6,7 @@ using Lucifer;
 public class SwitchSorceress : MonoBehaviour
 {
     private GameObject player;
+    [SerializeField] private PlayerStats playerStats;
 
     void OnTriggerEnter2D (Collider2D obj)
     {
@@ -24,6 +25,7 @@ public class SwitchSorceress : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && this.player != null)
         {
+            this.playerStats.playerType = PlayerType.SORCERESS;
             this.player.GetComponent<PlayerAnimationController>().SetClass(PlayerType.SORCERESS);
             this.player.GetComponent<PlayerController>().newClass();
             this.player.GetComponent<PlayerAnimationController>().StartNewAnimation();
