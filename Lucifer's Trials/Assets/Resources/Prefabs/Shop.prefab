@@ -514,6 +514,9 @@ MonoBehaviour:
   attackStatText: {fileID: 1821849980101067740}
   healthStatText: {fileID: 1197639439143846975}
   speedStatText: {fileID: 5512993772665072862}
+  attackCost: {fileID: 6097635734463943692}
+  healthCost: {fileID: 864767094838157818}
+  speedCost: {fileID: 8673339584679396579}
   shopButton1: {fileID: 4042906701844068628}
   shopButton2: {fileID: 8433817403657228212}
   shopButton3: {fileID: 6159753593207866426}
