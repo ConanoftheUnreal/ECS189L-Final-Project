@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 using Lucifer;
@@ -14,8 +12,9 @@ public class PlayerController : MonoBehaviour
     private int speed;
     private int wallet;
     private bool dead = false;
+    private PlayerType playerType;
 
-    [SerializeField] private PlayerStats playerStats;
+    private PlayerStatsContainer playerStats = PlayerStatsContainer.Instance;
 
     void Awake()
     {
@@ -34,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     public void newClass()
     {
-        var playerType = this.gameObject.GetComponent<PlayerAnimationController>().GetPlayerType();
+        playerType = this.gameObject.GetComponent<PlayerAnimationController>().GetPlayerType();
         switch(playerType)
         {
             case PlayerType.WARRIOR:
@@ -191,6 +190,8 @@ public class PlayerController : MonoBehaviour
         {
             this.playerStats.wallet = this.wallet;
         }
+
+        this.playerStats.playerType = this.playerType;
 
     }
 
