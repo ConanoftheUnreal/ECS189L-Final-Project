@@ -76,7 +76,10 @@ public class AttackableController : MonoBehaviour
                 wasProjectile = true;
             }
 
-            FindObjectOfType<SoundManager>().PlaySoundEffect("Enemy Hurt");
+            if (this.hitpoints > 0)
+            {
+                FindObjectOfType<SoundManager>().PlaySoundEffect("Enemy Hurt");
+            }
             this.TakeDamage(col, attackersDamage, wasProjectile);
         }
     }
