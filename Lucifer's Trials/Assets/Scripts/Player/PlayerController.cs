@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private int attack;
     private int speed;
     private int wallet;
+    private int dead = false;
 
     [SerializeField] private PlayerStats playerStats;
 
@@ -172,6 +173,11 @@ public class PlayerController : MonoBehaviour
         return this.speed;
     }
 
+    public void SetDead(bool state)
+    {
+        this.dead = state;
+    }
+
     void OnDestroy()
     {
         this.playerStats.playerType = this.gameObject.GetComponent<PlayerAnimationController>().GetPlayerType();
@@ -179,13 +185,31 @@ public class PlayerController : MonoBehaviour
         {
             case PlayerType.WARRIOR:
                 this.playerStats.maxHealthIncrease = this.maxHealth - 12;
-                this.playerStats.wallet = this.wallet;
+
+                if (this.dead)
+                {
+                    this.playerStats.wallet = this.wallet - (this.wallet - this.playerStats.wallet)/2;
+                }
+                else
+                {
+                    this.playerStats.wallet = this.wallet;
+                }
+
                 this.playerStats.attackIncrease = this.attack - 2;
                 this.playerStats.speedIncrease = this.speed - 5;
                 break;
             case PlayerType.SORCERESS:
                 this.playerStats.maxHealthIncrease = this.maxHealth - 7;
-                this.playerStats.wallet = this.wallet;
+
+                if (this.dead)
+                {
+                    this.playerStats.wallet = this.wallet - (this.wallet - this.playerStats.wallet)/2;
+                }
+                else
+                {
+                    this.playerStats.wallet = this.wallet;
+                }
+
                 this.playerStats.attackIncrease = this.attack - 1;
                 this.playerStats.speedIncrease = this.speed - 7;
 
