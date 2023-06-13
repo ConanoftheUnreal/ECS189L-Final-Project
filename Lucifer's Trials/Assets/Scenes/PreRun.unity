@@ -6238,7 +6238,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 0
-      m_TileSpriteIndex: 0
+      m_TileSpriteIndex: 12
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -6737,8 +6737,8 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 2cac4b570550d90caaa2c19664379d83, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 1
-    m_Data: {fileID: 697829716, guid: d32695cc173a2882290cff41ca93e006, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 2
     m_Data: {fileID: -987587478, guid: d32695cc173a2882290cff41ca93e006, type: 3}
   - m_RefCount: 0
@@ -6761,8 +6761,8 @@ Tilemap:
     m_Data: {fileID: 1054064394, guid: 32b0359bb92ec318e8ddfa9b91821156, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 697829716, guid: d32695cc173a2882290cff41ca93e006, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: -592153039, guid: 32b0359bb92ec318e8ddfa9b91821156, type: 3}
   - m_RefCount: 1
@@ -7121,7 +7121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cfbd8d06bc358cf293b6b2cd75369c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: f65a16c68b63ab1ada894b09fcf97e53, type: 2}
+  playerStats: {fileID: 11400000, guid: db16278eb9710e40480bd5921e68d869, type: 2}
 --- !u!1 &1624486922
 GameObject:
   m_ObjectHideFlags: 0
@@ -15395,6 +15395,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3357793830704910428, guid: 179e9cf92660943b397acda24b9b2440, type: 3}
+      propertyPath: playerStats
+      value: 
+      objectReference: {fileID: 11400000, guid: db16278eb9710e40480bd5921e68d869, type: 2}
     - target: {fileID: 5587755852906626886, guid: 179e9cf92660943b397acda24b9b2440, type: 3}
       propertyPath: m_Name
       value: Player
@@ -15547,7 +15551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d48df8e1032d62d6a8d0309e4148a3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: f65a16c68b63ab1ada894b09fcf97e53, type: 2}
+  playerStats: {fileID: 11400000, guid: db16278eb9710e40480bd5921e68d869, type: 2}
 --- !u!61 &2001312148
 BoxCollider2D:
   m_ObjectHideFlags: 0
