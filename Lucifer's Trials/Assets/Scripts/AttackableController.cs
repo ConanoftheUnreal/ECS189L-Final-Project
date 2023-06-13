@@ -106,7 +106,7 @@ public class AttackableController : MonoBehaviour
             {
                 killed = true;
             }
-            this.gameObject.GetComponent<EnemyAnimation>().EnemyDamaged(col.gameObject, killed, wasProjectile);
+            this.gameObject.GetComponent<EnemyAnimation>().EnemyDamaged(col.gameObject, killed, wasProjectile, attackersDamage);
         }
         // attacking breakable object
         else

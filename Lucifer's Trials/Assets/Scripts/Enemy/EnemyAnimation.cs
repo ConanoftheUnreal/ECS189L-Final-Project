@@ -8,7 +8,7 @@ public class EnemyAnimation : MonoBehaviour
 {
     [SerializeField] GameObject deathEffect;
     [SerializeField] GameObject poofEffect;
-    Action<Vector2> Knockback;
+    Action<Vector2, int> Knockback;
     Func<bool> PlayerDefeated;
 
     [SerializeField] EnemyTypes enemyType;
@@ -111,7 +111,7 @@ public class EnemyAnimation : MonoBehaviour
         return this.enemyType;
     }
 
-    public void EnemyDamaged(GameObject obj, bool killed, bool wasProjectile)
+    public void EnemyDamaged(GameObject obj, bool killed, bool wasProjectile, int damage)
     {
         // determine enemy death
         if (killed)
@@ -141,7 +141,7 @@ public class EnemyAnimation : MonoBehaviour
             var objVec = obj.GetComponent<Rigidbody2D>().velocity.normalized;
             this.animator.SetFloat("MoveX", -objVec.x);
             this.animator.SetFloat("MoveY", -objVec.y);
-            Knockback(objVec);
+            Knockback(objVec, damage);
         }
         else
         {
@@ -152,7 +152,7 @@ public class EnemyAnimation : MonoBehaviour
             var knockbackDirection = ((Vector2)this.gameObject.transform.position - collisionPt).normalized;
             this.animator.SetFloat("MoveX", -knockbackDirection.x);
             this.animator.SetFloat("MoveY", -knockbackDirection.y);
-            Knockback(knockbackDirection);
+            Knockback(knockbackDirection, damage);
         }
 
     }

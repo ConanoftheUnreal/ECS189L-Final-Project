@@ -93,7 +93,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void StepSound()
     {
-        //FindObjectOfType<SoundManager>().PlaySoundEffect("Step");
+        FindObjectOfType<SoundManager>().PlaySoundEffect("Step");
     }
 
     private void InvincibilityFrames()
