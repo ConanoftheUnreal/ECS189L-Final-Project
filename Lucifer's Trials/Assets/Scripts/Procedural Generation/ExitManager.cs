@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ExitManager : MonoBehaviour
 {
@@ -62,7 +63,7 @@ public class ExitManager : MonoBehaviour
 
                             if (_levelManager.currentNode.type == NodeType.BOSS)
                             {
-                                Debug.Log("You Win!");
+                                SceneManager.LoadScene("PreRun");
                             }
 
                             // If the player is entering a child room, just get the node for that child
