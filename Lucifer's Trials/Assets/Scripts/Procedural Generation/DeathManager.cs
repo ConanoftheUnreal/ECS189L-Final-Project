@@ -25,7 +25,13 @@ public class DeathManager : MonoBehaviour
                     // Only player the Room Clear sound if exits are actually opening
                     if ((_levelManager.currentNode.children.Count > 0) || (_levelManager.currentNode.type == NodeType.BOSS))
                     {
-                        FindObjectOfType<SoundManager>().PlaySoundEffect("Room Clear");
+
+                        SoundManager soundManager = FindObjectOfType<SoundManager>();
+                        if (soundManager != null)
+                        {
+                            soundManager.PlaySoundEffect("Room Clear");
+                        }
+
                     }
 
                     _levelManager.currentNode.room.OpenAllExits();
