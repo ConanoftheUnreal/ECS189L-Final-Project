@@ -64,7 +64,7 @@ public class ExitManager : MonoBehaviour
                             if (_levelManager.currentNode.type == NodeType.BOSS)
                             {
 
-                                SceneManager.LoadScene("PreRun");
+                                SceneManager.LoadScene("RunWin");
                                 return;
 
                             }
