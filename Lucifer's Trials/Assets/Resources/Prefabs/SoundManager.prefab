@@ -132,7 +132,7 @@ MonoBehaviour:
     volume: 0.6
     pitch: 1
     loop: 0
-  - clip: {fileID: 8300000, guid: de24ac77045f36143b42e1a1a4e74980, type: 3}
+  - clip: {fileID: 8300000, guid: a3a4becffac472d4ba6e33ef5c135fa3, type: 3}
     audioSource: {fileID: 0}
     title: Tink
     volume: 0.3
