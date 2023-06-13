@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using Lucifer;
 
@@ -17,6 +18,8 @@ public class PlayerAnimationController : MonoBehaviour
     private bool statelock = false;
     private bool playerHurt = false;
     private float speed = 4.0f;
+    private float deathTime = 3.0f;
+    private float currentTime = 0.0f;
     private float horizontal;
     private float vertical;
     private Animator animator;
@@ -193,6 +196,15 @@ public class PlayerAnimationController : MonoBehaviour
 
     void Update()
     {
+        if (this.animator.enabled == false)
+        {
+            if (this.currentTime >= this.deathTime)
+            {
+                SceneManager.LoadScene("DeathScreen");
+            }
+            this.currentTime += Time.deltaTime;
+        }
+
         if (!statelock && Time.timeScale == 1)
         {
             this.horizontal = Input.GetAxisRaw("Horizontal");
