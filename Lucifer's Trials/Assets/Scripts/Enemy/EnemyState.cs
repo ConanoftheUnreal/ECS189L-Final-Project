@@ -8,5 +8,6 @@ public enum EnemyState
     MOVE,
     ATTACK,
     ORBIT,
-    FLEE
+    FLEE,
+    SEARCH
 }

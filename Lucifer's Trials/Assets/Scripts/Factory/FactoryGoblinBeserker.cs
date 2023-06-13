@@ -35,6 +35,9 @@ public class FactoryGoblinBeserker : Factory
 
     public override IEnemy GetEnemy(Vector3 position)
     {
+        GameObject instance = Instantiate(prefab.gameObject, position, Quaternion.identity);
+        GoblinBeserker newGoblin = instance.GetComponent<GoblinBeserker>();
+
         if (player == null)
         {
             player = GameObject.FindWithTag("Player");
@@ -42,11 +45,10 @@ public class FactoryGoblinBeserker : Factory
             if (player == null) { Debug.LogWarning("Player Cannot be found in scene!!"); }
         }
 
+        newGoblin.Player = player;
+
         GameObject steeringPerciever = GameObject.FindWithTag("SteeringPerciever");
         perceiver = steeringPerciever.GetComponent<Polarith.AI.Move.AIMSteeringPerceiver>();
-
-        GameObject instance = Instantiate(prefab.gameObject, position, Quaternion.identity);
-        GoblinBeserker newGoblin = instance.GetComponent<GoblinBeserker>();
 
         Polarith.AI.Move.AIMSteeringFilter tmp = instance.GetComponentInChildren<Polarith.AI.Move.AIMSteeringFilter>();
         if (tmp == null) { Debug.LogWarning("AIMSteeringFilter not found!!"); }
