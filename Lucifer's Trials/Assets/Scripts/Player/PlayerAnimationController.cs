@@ -152,28 +152,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     void Start()
     {
-        // set player sprite/animations
-        this.animator = this.GetComponent<Animator>();
-        this.spriteRenderer = this.GetComponent<SpriteRenderer>();
-        switch(this.playerType)
-        {
-            case PlayerType.WARRIOR:
-                // set Animation Controller
-                this.animator.runtimeAnimatorController
-                = Resources.Load<RuntimeAnimatorController>("Sprites/PlayerSprites/Animations/Warrior_Animations/AC_Warrior");
-                break;
-            case PlayerType.SORCERESS:
-                // set Animation Controller
-                this.animator.runtimeAnimatorController
-                = Resources.Load<RuntimeAnimatorController>("Sprites/PlayerSprites/Animations/Sorceress_Animations/AC_Sorceress");
-                break;
-            default:
-                Debug.Log("Error: player type is undefined.");
-                break;
-        }
-        // start facing down
-        this.animator.SetFloat("MoveX", 0.0f);
-        this.animator.SetFloat("MoveY", -2.0f);
+        // Determine how to animate player
+        StartNewAnimation();
 
         // declare function pointer for knockback call in `PlayerDamaged`
         Knockback = this.gameObject.GetComponent<PlayerMovement>().Knockback;
