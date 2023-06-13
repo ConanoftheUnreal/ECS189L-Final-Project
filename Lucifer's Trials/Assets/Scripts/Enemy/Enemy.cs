@@ -39,6 +39,11 @@ public abstract class Enemy : MonoBehaviour, IEnemy
         get => stats;
     }
 
+    public GameObject Player
+    {
+        set => _player = value;
+    }
+
     public abstract void Attack();
     public abstract void UpdateMovementDirection();
     protected abstract bool GetRange(float range);
