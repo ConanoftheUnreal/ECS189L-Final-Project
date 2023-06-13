@@ -452,7 +452,7 @@ public class GoblinBeserker : Enemy
         bool wallHit = false;
         foreach (RaycastHit2D ray in hit)
         {
-            Debug.Log(ray.collider.gameObject.name + " was hit!!!!");
+            //Debug.Log(ray.collider.gameObject.name + " was hit!!!!");
 
             if (ray.collider.gameObject.name == "PlayerHurtbox")
             {
@@ -470,7 +470,7 @@ public class GoblinBeserker : Enemy
                 wallHit = true;
                 if (!playerHit)
                 {
-                    Debug.Log("Player out of sight");
+                    //Debug.Log("Player out of sight");
                     _lastPlayerRepresentation.transform.position = _lastPlayerPosition;
                     return true;
                 }

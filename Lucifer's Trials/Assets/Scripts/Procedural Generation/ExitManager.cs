@@ -65,6 +65,7 @@ public class ExitManager : MonoBehaviour
                             {
 
                                 SceneManager.LoadScene("RunWin");
+                                PlayerStatsContainer.Instance.levelsFinished++;
                                 return;
 
                             }

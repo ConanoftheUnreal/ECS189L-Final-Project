@@ -9,6 +9,7 @@ public sealed class PlayerStatsContainer
     public int wallet;
     public int attackIncrease;
     public int speedIncrease;
+    public int levelsFinished;
 
     private static readonly PlayerStatsContainer instance = new PlayerStatsContainer();
     static PlayerStatsContainer() {}
@@ -31,6 +32,7 @@ public sealed class PlayerStatsContainer
         instance.wallet = 0;
         instance.attackIncrease = 0;
         instance.speedIncrease = 0;
+        instance.levelsFinished = 0;
 
     }
 
