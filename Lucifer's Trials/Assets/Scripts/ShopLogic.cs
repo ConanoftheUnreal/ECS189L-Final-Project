@@ -28,6 +28,7 @@ public class ShopLogic : MonoBehaviour
     private bool madePurchase;
 
     private ShopCostContainer shopCosts = ShopCostContainer.Instance;
+    private int priceIncrease = 50;
 
 
     void Start()
@@ -60,7 +61,7 @@ public class ShopLogic : MonoBehaviour
                     this.validBuyText.gameObject.SetActive(true);
                     GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(this.shopCosts.attackCost);
                     GameObject.Find("Player").GetComponent<PlayerController>().IncreaseAttack(1);
-                    this.shopCosts.attackCost += 100;
+                    this.shopCosts.attackCost += priceIncrease;
                     FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
                 }
                 break;
@@ -78,7 +79,7 @@ public class ShopLogic : MonoBehaviour
                     this.validBuyText.gameObject.SetActive(true);
                     GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(this.shopCosts.healthCost);
                     GameObject.Find("Player").GetComponent<PlayerController>().IncreaseMaxHealth(1);
-                    this.shopCosts.healthCost += 100;
+                    this.shopCosts.healthCost += priceIncrease;
                     FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
                 }
                 break;
@@ -96,7 +97,7 @@ public class ShopLogic : MonoBehaviour
                     this.validBuyText.gameObject.SetActive(true);
                     GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(this.shopCosts.speedCost);
                     GameObject.Find("Player").GetComponent<PlayerController>().IncreaseSpeed(1);
-                    this.shopCosts.speedCost += 100;
+                    this.shopCosts.speedCost += priceIncrease;
                     FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
                 }
                 break;
