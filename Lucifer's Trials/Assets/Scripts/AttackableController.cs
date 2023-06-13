@@ -146,13 +146,12 @@ public class AttackableController : MonoBehaviour
             if (drop != null)
             {
 
-                // Make sure the item is a child of the current rooms collision object so that it disables when you leave the room
+                // Make sure the item is a child of the current rooms decorations object so that it disables when you leave the room
                 GameObject newdDrop = Instantiate(drop, this.transform.position - (new Vector3(0, 0.3f, 0)), Quaternion.identity);
                 LevelManager levelManager = GameObject.FindWithTag("Root").GetComponent<LevelManager>();
                 Room currentRoom = levelManager.currentNode.room;
-                GameObject currentCollisionObject = currentRoom.collisionObject;
-                newdDrop.transform.SetParent(currentCollisionObject.transform);
-
+                GameObject currentDecorationsObject = currentRoom.decorationsObject;
+                newdDrop.transform.SetParent(currentDecorationsObject.transform);
 
             }
             this.alreadyDropped = true;

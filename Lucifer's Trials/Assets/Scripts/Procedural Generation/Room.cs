@@ -59,6 +59,14 @@ public class Room
         }
     }
 
+    public GameObject decorationsObject
+    {
+        get
+        {
+            return _decorationsObject;
+        }
+    }
+
     public Vector2 centerPoint
     {
         get
