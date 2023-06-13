@@ -180,6 +180,11 @@ public class PlayerController : MonoBehaviour
         this.dead = state;
     }
 
+    public void SetClass(PlayerType classType)
+    {
+        this.playerStats.playerType = classType;
+    }
+
     void OnDestroy()
     {
         if (this.dead)
