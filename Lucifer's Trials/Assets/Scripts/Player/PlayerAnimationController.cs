@@ -270,7 +270,7 @@ public class PlayerAnimationController : MonoBehaviour
             else if ( ((this.horizontal != 0) || (this.vertical != 0)) && (!this.statelock) )
             {
                 this.CurrentState = PlayerStates.WALK;
-                this.animator.speed = this.GetComponent<PlayerController>().GetSpeed() / 2;
+                this.animator.speed = ((this.GetComponent<PlayerController>().GetSpeed() - 5) / 4) + 2.5f;
                 this.animator.SetFloat("MoveX", this.horizontal * 2);
                 this.animator.SetFloat("MoveY", this.vertical * 2);
                 if (IsDashing())
