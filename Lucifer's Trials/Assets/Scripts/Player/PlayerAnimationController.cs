@@ -134,7 +134,8 @@ public class PlayerAnimationController : MonoBehaviour
                 break;
             case DamageTypes.COLLIDE:
                 //var hitDirection = new Vector2(UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f)).normalized;
-                var hitDirection = new Vector2(-this.animator.GetFloat("MoveX"), -this.animator.GetFloat("MoveY")).normalized;
+                //var hitDirection = new Vector2(-this.animator.GetFloat("MoveX"), -this.animator.GetFloat("MoveY")).normalized;
+                var hitDirection = (this.transform.position - obj.transform.position).normalized;
                 Knockback(hitDirection);
                 break;
             default:
