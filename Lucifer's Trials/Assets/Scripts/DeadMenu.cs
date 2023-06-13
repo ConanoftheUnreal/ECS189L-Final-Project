@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class DeadMenu : MonoBehaviour
 {
+    void Start()
+    {
+        FindObjectOfType<SoundManager>().PlaySoundEffect("Game Over");
+    }
+
     public void GotoMain()
     {
         SceneManager.LoadScene("MainMenu");

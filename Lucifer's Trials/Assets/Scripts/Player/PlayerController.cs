@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
                 //this.maxSP = 5;
                 this.wallet = 0 + this.playerStats.wallet;
                 this.attack = 1 + this.playerStats.attackIncrease;
-                this.speed = 8 + this.playerStats.speedIncrease;
+                this.speed = 7 + this.playerStats.speedIncrease;
 
                 break;
             default:
@@ -178,21 +178,28 @@ public class PlayerController : MonoBehaviour
         switch(this.playerStats.playerType)
         {
             case PlayerType.WARRIOR:
-                this.playerStats.maxHealthIncrease = this.maxHealth - 12; // originally 10
+                this.playerStats.maxHealthIncrease = this.maxHealth - 12;
                 this.playerStats.wallet = this.wallet;
-                this.playerStats.attackIncrease = this.attack - 2; // originally 3
-                this.playerStats.speedIncrease = this.speed - 5; // originally 6
+                this.playerStats.attackIncrease = this.attack - 2;
+                this.playerStats.speedIncrease = this.speed - 5;
                 break;
             case PlayerType.SORCERESS:
                 this.playerStats.maxHealthIncrease = this.maxHealth - 7;
                 this.playerStats.wallet = this.wallet;
                 this.playerStats.attackIncrease = this.attack - 1;
-                this.playerStats.speedIncrease = this.speed - 8;
+                this.playerStats.speedIncrease = this.speed - 7;
 
                 break;
             default:
                 Debug.Log("Error: player type is undefined.");
                 break;
         }
+
+        // edge case for certain crashes
+        if (this.playerStats.maxHealthIncrease < 0) this.playerStats.maxHealthIncrease = 0;
+        if (this.playerStats.wallet < 0) this.playerStats.wallet = 0;
+        if (this.playerStats.attackIncrease < 0) this.playerStats.attackIncrease = 0;
+        if (this.playerStats.speedIncrease < 0) this.playerStats.speedIncrease = 0;
     }
+
 }

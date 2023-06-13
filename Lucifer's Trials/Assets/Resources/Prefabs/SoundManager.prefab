@@ -99,7 +99,7 @@ MonoBehaviour:
   - clip: {fileID: 8300000, guid: da36548314a7f7045b6d1e51304d40f6, type: 3}
     audioSource: {fileID: 0}
     title: Dash
-    volume: 0.15
+    volume: 0.12
     pitch: 1
     loop: 0
   - clip: {fileID: 8300000, guid: 8b461b3091f328c43877e328a233d264, type: 3}
@@ -123,13 +123,13 @@ MonoBehaviour:
   - clip: {fileID: 8300000, guid: c7daf953ae84b2b48951e508aa66e6ea, type: 3}
     audioSource: {fileID: 0}
     title: Game Over
-    volume: 0.3
+    volume: 0.12
     pitch: 1
     loop: 0
-  - clip: {fileID: 8300000, guid: b85c106055062ae44aae292b333d820a, type: 3}
+  - clip: {fileID: 8300000, guid: 2a7aadfb122632249a0835a277ff59c3, type: 3}
     audioSource: {fileID: 0}
     title: Room Clear
-    volume: 0.3
+    volume: 0.6
     pitch: 1
     loop: 0
   - clip: {fileID: 8300000, guid: de24ac77045f36143b42e1a1a4e74980, type: 3}

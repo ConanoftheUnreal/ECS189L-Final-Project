@@ -10,8 +10,10 @@ public class AttackableController : MonoBehaviour
     [SerializeField] GameObject deathEffect;
     [SerializeField] bool humanoid = false;
     private bool knockedback = false;
+    private bool canBeHit = true;
     private float knockbackDuration = 0.25f;
-    private float timePassed;
+    private float sinceKnockback;
+    private float sinceHit;
     private float knockbackForce = 4.5f;
     private Rigidbody2D rb;
 
@@ -52,6 +54,10 @@ public class AttackableController : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D col)
     {
+        if (!canBeHit) return;
+
+        canBeHit = false;
+
         // if collision with player, hurt the player
         if (col.tag == "PlayerHurtbox")
         {
@@ -126,7 +132,7 @@ public class AttackableController : MonoBehaviour
 
             this.rb.velocity = knockbackForce * knockbackDirection;
             knockedback = true;
-            timePassed = 0.0f;
+            sinceKnockback = 0.0f;
         }
     }
 
@@ -149,14 +155,25 @@ public class AttackableController : MonoBehaviour
     public void Update()
     {
         this.healthBar.SetHealth(this.hitpoints, this.maxHitpoints);
-        if (knockedback)
+        if (this.knockedback)
         {
-            if (timePassed >= knockbackDuration)
+            if (this.sinceKnockback >= knockbackDuration)
             {
                 this.rb.velocity = Vector2.zero;
-                knockedback = false;
+                this.knockedback = false;
             }
-            timePassed += Time.deltaTime;
+            this.sinceKnockback += Time.deltaTime;
+        }
+
+        // fix for double hitting enemies/objects
+        if (this.sinceHit >= 0.05f)
+        {
+            this.sinceHit = 0.0f;
+            this.canBeHit = true;
+        }
+        else
+        {
+            this.sinceHit += Time.deltaTime;
         }
     }
 }
