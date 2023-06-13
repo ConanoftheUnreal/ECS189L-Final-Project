@@ -105,15 +105,49 @@ public class GoblinBeserker : Enemy
                 break;
             case EnemyState.SEARCH:
                 _speed = stats.Speed;
+                TestProjection(_lastPlayerRepresentation.transform.position);
                 Search();
                 break;
             default:
                 Debug.LogWarning("Wrong State Given");
-                break;
+                break; 
         }
-
+        
         UpdateMovementDirection();
     }
+
+    private void TestProjection(Vector3 o)
+    {
+        Vector3 a = o - transform.position;
+        Vector3 p = _player.transform.position - transform.position;
+        Vector3 projection = Vector3.Project(p, a);
+        Vector3 error = p - projection;
+
+        Debug.DrawRay(transform.position, p, Color.magenta);
+        Debug.DrawRay(transform.position, projection, Color.white);
+        Debug.DrawRay(this.transform.position, a, Color.magenta);
+        Debug.DrawRay(projection + this.transform.position, error, Color.white);
+
+ 
+        _lastPlayerRepresentation.transform.Translate(-error);
+        
+
+        /*RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, a + newPos, (a + newPos).magnitude);
+
+        bool wallHit = false;
+        foreach (RaycastHit2D ray in hit)
+        {
+
+            if (ray.collider.gameObject.name == "Collision")
+            {
+                    // Then the gameObject is in a wall...try again?
+                    Debug.Log("Collided 2 times ya here");
+                    TestProjection(new Vector2(o.x * .75f, o.y * .75f));
+            }
+        }*/
+    }
+
+
 
     // Enable and Disables Polarith AI components for the given state.
     private void Move()
@@ -144,6 +178,14 @@ public class GoblinBeserker : Enemy
         foreach (Polarith.AI.Move.AIMWander wander in _contextSteering.GetComponents<Polarith.AI.Move.AIMWander>())
         {
             wander.enabled = false;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_lastPlayerRepresentation != null)
+        {
+            _lastPlayerRepresentation.SetActive(false);
         }
     }
 
@@ -281,57 +323,6 @@ public class GoblinBeserker : Enemy
             }
         }
 
-        /*if (GetRange(stats.Fov) && sighted && _wallBetweenPlayerEnemy)
-        {
-            _state = EnemyState.SEARCH;
-            return;
-        }
-
-        if (!_cooldown && GetRange(stats.Fov))
-        {
-            if (!_wallBetweenPlayerEnemy)
-            {
-                sighted = true;
-            }
-            // If attack is available to use and within attack range, then attack
-            // else move into attack range.
-            if (GetRange(stats.AttackRange))
-            {
-                _state = EnemyState.ATTACK;
-            }
-            else
-            {
-                _state = EnemyState.MOVE;
-            }
-        }
-        else if (GetRange(stats.Fov))
-        {
-            if (!_wallBetweenPlayerEnemy)
-            {
-                sighted = true;
-            }
-            // If attack is unavailbe and player in field of view, then move to orbit player.
-            // If in enemies attack range, quickly leave enemy attack range. If to far outside of
-            // Orbit value, than move closer to orbit.
-            if (GetRange(.5f))
-            {
-                // TODO: Need a flee range variable.
-                _state = EnemyState.FLEE;
-            }
-            else if (!GetRange(Stats.Orbit * 1.5f))
-            {
-                _state = EnemyState.MOVE;
-            }
-            else
-            {
-                _state = EnemyState.ORBIT;
-            }
-        }
-        else
-        {
-            _state = EnemyState.PATROL;
-        }*/
-
         if (GetRange(stats.Fov))
         {
             if (_wallBetweenPlayerEnemy)
@@ -442,6 +433,24 @@ public class GoblinBeserker : Enemy
         //Debug.Log(_contextSteering.DecidedDirection);
     }
 
+    private bool WallBetweenPlayerandObject(GameObject gameObject)
+    {
+        Vector3 direction = (gameObject.transform.position - transform.position).normalized;
+        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, direction, Vector2.Distance(this.transform.position, gameObject.transform.position));
+        Debug.DrawRay(transform.position, direction);
+
+        foreach (RaycastHit2D ray in hit)
+        {
+            if (ray.collider.gameObject.name == "Collision")
+            {
+                Debug.Log("Hella True");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private bool WallBetweenPlayerandEnemy(float distance)
     {
         Vector3 playerDirection = (_player.transform.position - transform.position).normalized;
@@ -452,8 +461,6 @@ public class GoblinBeserker : Enemy
         bool wallHit = false;
         foreach (RaycastHit2D ray in hit)
         {
-            Debug.Log(ray.collider.gameObject.name + " was hit!!!!");
-
             if (ray.collider.gameObject.name == "PlayerHurtbox")
             {
                 // Should only work if ray collides with player before a wall

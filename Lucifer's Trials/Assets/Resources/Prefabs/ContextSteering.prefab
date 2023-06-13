@@ -176,8 +176,8 @@ MonoBehaviour:
     Prediction: 0
     PredictionMagnitude: 0
     InnerRadius: 0
-    OuterRadius: 1.3
-    RadiusMapping: 4
+    OuterRadius: 1.5
+    RadiusMapping: 2
     ForEachReceptor: 0
 --- !u!114 &990745631800308812
 MonoBehaviour:
