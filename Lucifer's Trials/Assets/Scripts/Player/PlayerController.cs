@@ -14,18 +14,11 @@ public class PlayerController : MonoBehaviour
     private int speed;
     private int wallet;
 
-    private PlayerController instance;
+    [SerializeField] private PlayerStats playerStats;
 
-    void Awake() {
-        if (instance == null)
-        {
-            DontDestroyOnLoad(gameObject);
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
+    void Awake()
+    {
+        this.gameObject.GetComponent<PlayerAnimationController>().SetClass(this.playerStats.playerType);
     }
 
     // Start is called before the first frame update
@@ -36,20 +29,20 @@ public class PlayerController : MonoBehaviour
         switch(playerType)
         {
             case PlayerType.WARRIOR:
-                this.maxHealth = 12;    // originally 10
-                this.health = 12;
+                this.maxHealth = 12 + this.playerStats.maxHealthIncrease;    // originally 10
+                this.health = this.maxHealth;
                 //this.maxSP = 5;
-                this.wallet = 0;
-                this.attack = 2; // originally 3
-                this.speed = 5; // originally 6
+                this.wallet = 0 + this.playerStats.wallet;
+                this.attack = 2 + this.playerStats.attackIncrease; // originally 3
+                this.speed = 5 + this.playerStats.speedIncrease; // originally 6
                 break;
             case PlayerType.SORCERESS:
-                this.maxHealth = 7;
-                this.health = 7;
+                this.maxHealth = 7 + this.playerStats.maxHealthIncrease;
+                this.health = this.maxHealth;
                 //this.maxSP = 5;
-                this.wallet = 0;
-                this.attack = 1;
-                this.speed = 8;
+                this.wallet = 0 + this.playerStats.wallet;
+                this.attack = 1 + this.playerStats.attackIncrease;
+                this.speed = 8 + this.playerStats.speedIncrease;
 
                 break;
             default:
@@ -58,6 +51,35 @@ public class PlayerController : MonoBehaviour
         }
         // begin background music
         FindObjectOfType<SoundManager>().PlayMusicTrack("Game Theme");
+    }
+
+    public void newClass()
+    {
+        var playerType = this.gameObject.GetComponent<PlayerAnimationController>().GetPlayerType();
+
+        switch(playerType)
+        {
+            case PlayerType.WARRIOR:
+                this.maxHealth = 12 + this.playerStats.maxHealthIncrease;    // originally 10
+                this.health = this.maxHealth;
+                //this.maxSP = 5;
+                this.wallet = 0 + this.playerStats.wallet;
+                this.attack = 2 + this.playerStats.attackIncrease; // originally 3
+                this.speed = 5 + this.playerStats.speedIncrease; // originally 6
+                break;
+            case PlayerType.SORCERESS:
+                this.maxHealth = 7 + this.playerStats.maxHealthIncrease;
+                this.health = this.maxHealth;
+                //this.maxSP = 5;
+                this.wallet = 0 + this.playerStats.wallet;
+                this.attack = 1 + this.playerStats.attackIncrease;
+                this.speed = 8 + this.playerStats.speedIncrease;
+
+                break;
+            default:
+                Debug.Log("Error: player type is undefined.");
+                break;
+        }
     }
 
     public bool AtMaxHealth()
@@ -70,6 +92,7 @@ public class PlayerController : MonoBehaviour
         return (health == 0);
     }
 
+    // Needs to be removed.
     public bool AtMaxSP()
     {
         return (SP == maxSP);
@@ -110,6 +133,7 @@ public class PlayerController : MonoBehaviour
         return this.maxHealth;
     }
 
+    // Needs to be removed.
     public void IncreaseSP(int amount)
     {
         this.SP += amount;
@@ -119,6 +143,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Needs to be removed.
     public void DecreaseSP(int amount)
     {
         this.SP -= amount;
@@ -128,6 +153,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Needs to be removed.
     public int GetSP()
     {
         return this.SP;
@@ -167,5 +193,29 @@ public class PlayerController : MonoBehaviour
     public int GetSpeed()
     {
         return this.speed;
+    }
+
+    void OnDestroy()
+    {
+        this.playerStats.playerType = this.gameObject.GetComponent<PlayerAnimationController>().GetPlayerType();
+        switch(this.playerStats.playerType)
+        {
+            case PlayerType.WARRIOR:
+                this.playerStats.maxHealthIncrease = this.maxHealth - 12; // originally 10
+                this.playerStats.wallet = this.wallet;
+                this.playerStats.attackIncrease = this.attack - 2; // originally 3
+                this.playerStats.speedIncrease = this.speed - 5; // originally 6
+                break;
+            case PlayerType.SORCERESS:
+                this.playerStats.maxHealthIncrease = this.maxHealth - 7;
+                this.playerStats.wallet = this.wallet;
+                this.playerStats.attackIncrease = this.attack - 1;
+                this.playerStats.speedIncrease = this.speed - 8;
+
+                break;
+            default:
+                Debug.Log("Error: player type is undefined.");
+                break;
+        }
     }
 }
