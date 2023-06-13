@@ -180,6 +180,7 @@ public class PlayerController : MonoBehaviour
 
     void OnDestroy()
     {
+        this.playerStats.playerType = this.gameObject.GetComponent<PlayerAnimationController>().GetPlayerType();
         switch(this.playerStats.playerType)
         {
             case PlayerType.WARRIOR:
