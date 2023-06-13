@@ -16,6 +16,7 @@ TagManager:
   - Warrior
   - SteeringPerciever
   - Root
+  - EnemyHurtbox
   layers:
   - Default
   - TransparentFX
