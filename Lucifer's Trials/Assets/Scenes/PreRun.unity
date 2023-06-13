@@ -133,7 +133,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2464488096466580508, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2464488096466580508, guid: 2d3d984abca5b7848a27952744e0b542, type: 3}
       propertyPath: m_LocalPosition.x
@@ -874,7 +874,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &670574837
 MonoBehaviour:
@@ -5946,7 +5946,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &981725541
 PrefabInstance:
@@ -6943,67 +6943,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cfbd8d06bc358cf293b6b2cd75369c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &1640029242
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 919830641249998277, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
-      propertyPath: m_Name
-      value: Bank
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810674421917649941, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810674421917649941, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 242.50002
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810674421917649941, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 272
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810674421917649941, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810674421917649941, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810674421917649941, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810674421917649941, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810674421917649941, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810674421917649941, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810674421917649941, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810674421917649941, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 24864896cf94e1457b5f6108aa568c45, type: 3}
 --- !u!1001 &1643663982
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7083,7 +7022,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1693789634694545991, guid: b7e75f42900729b259616f17065dbb96, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1693789634694545991, guid: b7e75f42900729b259616f17065dbb96, type: 3}
       propertyPath: m_AnchorMax.x
