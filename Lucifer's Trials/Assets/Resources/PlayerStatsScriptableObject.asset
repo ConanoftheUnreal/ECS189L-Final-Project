@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 664c338ad7f30c8ce9627a1689df3c3e, type: 3}
   m_Name: PlayerStatsScriptableObject
   m_EditorClassIdentifier: 
-  playerType: 1
+  playerType: 0
   maxHealthIncrease: 0
   attackIncrease: 0
   speedIncrease: 0
