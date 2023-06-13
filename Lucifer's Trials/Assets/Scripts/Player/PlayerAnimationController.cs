@@ -110,7 +110,7 @@ public class PlayerAnimationController : MonoBehaviour
             spriteRenderer.color += new Color (0, 0, 0, 0.005f);
             if (spriteRenderer.color.a >= 1f)
             {
-                spriteRenderer.color = new Color (1f, 1f, 1f, 0f);
+                spriteRenderer.color = new Color (1f, 1f, 1f, 0.5f);
             }
             this.sinceHurt += Time.deltaTime;
         }
@@ -236,7 +236,7 @@ public class PlayerAnimationController : MonoBehaviour
             this.currentTime += Time.deltaTime;
         }
 
-        if (!this.hurtable)
+        if (!this.hurtable && !this.playerHurt)
         {
             InvincibilityFrames();
         }
