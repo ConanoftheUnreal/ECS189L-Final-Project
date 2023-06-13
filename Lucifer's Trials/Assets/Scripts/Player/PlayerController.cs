@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
                 this.maxHealth = 12 + this.playerStats.maxHealthIncrease;
                 this.health = this.maxHealth;
                 //this.maxSP = 5;
-                this.wallet = 0 + this.playerStats.wallet;
+                this.wallet = this.playerStats.wallet;
                 this.attack = 2 + this.playerStats.attackIncrease;
                 this.speed = 5 + this.playerStats.speedIncrease;
                 break;
@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
                 this.maxHealth = 7 + this.playerStats.maxHealthIncrease;
                 this.health = this.maxHealth;
                 //this.maxSP = 5;
-                this.wallet = 0 + this.playerStats.wallet;
+                this.wallet = this.playerStats.wallet;
                 this.attack = 1 + this.playerStats.attackIncrease;
                 this.speed = 7 + this.playerStats.speedIncrease;
 
@@ -80,6 +80,7 @@ public class PlayerController : MonoBehaviour
     {
         this.health += amount;
         this.maxHealth += amount;
+        this.playerStats.maxHealthIncrease += amount;
     }
 
     public void IncreaseHealth(int amount)
@@ -145,6 +146,7 @@ public class PlayerController : MonoBehaviour
     public void DecreaseWallet(int amount)
     {
         this.wallet -= amount;
+        this.playerStats.wallet -= amount;
     }
 
     public int GetWallet()
@@ -155,6 +157,7 @@ public class PlayerController : MonoBehaviour
     public void IncreaseAttack(int amount)
     {
         this.attack += amount;
+        this.playerStats.attackIncrease += amount;
     }
 
     public int GetAttack()
@@ -165,6 +168,7 @@ public class PlayerController : MonoBehaviour
     public void IncreaseSpeed(int amount)
     {
         this.speed += amount;
+        this.playerStats.speedIncrease += amount;
     }
 
     public int GetSpeed()
@@ -179,49 +183,15 @@ public class PlayerController : MonoBehaviour
 
     void OnDestroy()
     {
-        switch(this.playerStats.playerType)
+        if (this.dead)
         {
-            case PlayerType.WARRIOR:
-                this.playerStats.maxHealthIncrease = this.maxHealth - 12;
-
-                if (this.dead)
-                {
-                    this.playerStats.wallet = this.wallet - (this.wallet - this.playerStats.wallet)/2;
-                }
-                else
-                {
-                    this.playerStats.wallet = this.wallet;
-                }
-
-                this.playerStats.attackIncrease = this.attack - 2;
-                this.playerStats.speedIncrease = this.speed - 5;
-                break;
-            case PlayerType.SORCERESS:
-                this.playerStats.maxHealthIncrease = this.maxHealth - 7;
-
-                if (this.dead)
-                {
-                    this.playerStats.wallet = this.wallet - (this.wallet - this.playerStats.wallet)/2;
-                }
-                else
-                {
-                    this.playerStats.wallet = this.wallet;
-                }
-
-                this.playerStats.attackIncrease = this.attack - 1;
-                this.playerStats.speedIncrease = this.speed - 7;
-
-                break;
-            default:
-                Debug.Log("Error: player type is undefined.");
-                break;
+            this.playerStats.wallet = this.wallet - (this.wallet - this.playerStats.wallet)/2;
+        }
+        else
+        {
+            this.playerStats.wallet = this.wallet;
         }
 
-        // edge case for certain crashes
-        if (this.playerStats.maxHealthIncrease < 0) this.playerStats.maxHealthIncrease = 0;
-        if (this.playerStats.wallet < 0) this.playerStats.wallet = 0;
-        if (this.playerStats.attackIncrease < 0) this.playerStats.attackIncrease = 0;
-        if (this.playerStats.speedIncrease < 0) this.playerStats.speedIncrease = 0;
     }
 
 }
