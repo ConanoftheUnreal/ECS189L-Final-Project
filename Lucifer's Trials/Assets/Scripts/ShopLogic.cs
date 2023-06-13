@@ -28,7 +28,7 @@ public class ShopLogic : MonoBehaviour
     private bool madePurchase;
 
     private ShopCostContainer shopCosts = ShopCostContainer.Instance;
-    private int priceIncrease = 50;
+    private int priceIncrease = 100;
 
 
     void Start()
@@ -61,7 +61,8 @@ public class ShopLogic : MonoBehaviour
                     this.validBuyText.gameObject.SetActive(true);
                     GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(this.shopCosts.attackCost);
                     GameObject.Find("Player").GetComponent<PlayerController>().IncreaseAttack(1);
-                    this.shopCosts.attackCost += priceIncrease;
+                    this.shopCosts.attackCost += this.priceIncrease + this.priceIncrease * this.shopCosts.attackBought;
+                    this.shopCosts.attackBought += 1;
                     FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
                 }
                 break;
@@ -79,7 +80,8 @@ public class ShopLogic : MonoBehaviour
                     this.validBuyText.gameObject.SetActive(true);
                     GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(this.shopCosts.healthCost);
                     GameObject.Find("Player").GetComponent<PlayerController>().IncreaseMaxHealth(1);
-                    this.shopCosts.healthCost += priceIncrease;
+                    this.shopCosts.healthCost += this.priceIncrease + this.priceIncrease * this.shopCosts.healthBought;
+                    this.shopCosts.healthBought += 1;
                     FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
                 }
                 break;
@@ -97,7 +99,8 @@ public class ShopLogic : MonoBehaviour
                     this.validBuyText.gameObject.SetActive(true);
                     GameObject.Find("Player").GetComponent<PlayerController>().DecreaseWallet(this.shopCosts.speedCost);
                     GameObject.Find("Player").GetComponent<PlayerController>().IncreaseSpeed(1);
-                    this.shopCosts.speedCost += priceIncrease;
+                    this.shopCosts.speedCost += this.priceIncrease + this.priceIncrease * this.shopCosts.speedBought;
+                    this.shopCosts.speedBought += 1;
                     FindObjectOfType<SoundManager>().PlaySoundEffect("Good Select");
                 }
                 break;
