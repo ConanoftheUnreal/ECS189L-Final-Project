@@ -111,6 +111,11 @@ public class EnemyAnimation : MonoBehaviour
         return this.enemyType;
     }
 
+    public void StepSound()
+    {
+        FindObjectOfType<SoundManager>().PlaySoundEffect("Enemy Walk");
+    }
+
     public void EnemyDamaged(GameObject obj, bool killed, bool wasProjectile, int damage)
     {
         // determine enemy death
