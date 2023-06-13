@@ -13,11 +13,17 @@ public class RunRoomGeneration : MonoBehaviour
 
     private int _frameNumber = 0;
 
+    private const int MIN_MAX_DEPTH = 3;
+    private const int MAX_ROOMS_MULTIPLIER = 3;
+
     public void Start()
     {
-
+        
         _roomGenerator = new DungeonGenerator(5, 5, new Vector2Int(16, 9));
-        _layoutGenerator = new LevelLayoutGenerator(5, 15, 3);
+        //Increase the size of the levels as the player completes levels
+        int maxDepth = PlayerStatsContainer.Instance.levelsFinished + MIN_MAX_DEPTH;
+        int maxRooms = maxDepth * MAX_ROOMS_MULTIPLIER;
+        _layoutGenerator = new LevelLayoutGenerator(maxDepth, maxRooms, 3);
         _levelGenerator = new LevelGenerator(_layoutGenerator, _roomGenerator);
 
         GameObject perceiver = Object.Instantiate(_steeringPerceiver);
@@ -37,7 +43,7 @@ public class RunRoomGeneration : MonoBehaviour
 
         if (_frameNumber == 0)
         {
-
+            
             _levelManager = _levelGenerator.Generate().roomObject.GetComponent<LevelManager>();
             Vector2 entranceLocation = _levelManager.currentNode.room.exitPaths[LevelGenerator.ENTRANCE_EXIT_ID].entranceLocation;
             GameObject player = GameObject.FindWithTag("Player");

@@ -32,7 +32,7 @@ public class Room
 
     private const float MIN_SPAWN_DISTANCE_FROM_ENTRANCE = 5.0f;
     private const int MIN_ENEMIES_SPAWN = 3;
-    private const int MAX_ENEMIES_SPAWN = 7;
+    private const int INITIAL_MAX_ENEMIES = 7;
     private const float SLINGER_SPAWN_RATE = 0.3f;
 
     public List<ExitPathRectangle> exitPaths
@@ -123,7 +123,8 @@ public class Room
         FactoryGoblinBeserker beserkerSpawner = parentObject.GetComponent<FactoryGoblinBeserker>();
         FactoryGoblinSlinger slingerSpawner = parentObject.GetComponent<FactoryGoblinSlinger>();
 
-        int numEnemies = Random.Range(MIN_ENEMIES_SPAWN, MAX_ENEMIES_SPAWN + 1);
+        // Increase the maximum number of enemies in the romo as the player completes levels
+        int numEnemies = Random.Range(MIN_ENEMIES_SPAWN, (INITIAL_MAX_ENEMIES + PlayerStatsContainer.Instance.levelsFinished) + 1);
         List<Vector2Int> possibleSpawns = new List<Vector2Int>(_possibleSpawnLocations);
 
         for (int i = 0; i < numEnemies; i++)
