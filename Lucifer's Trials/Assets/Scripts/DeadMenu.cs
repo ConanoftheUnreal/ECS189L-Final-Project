@@ -7,6 +7,6 @@ public class DeadMenu : MonoBehaviour
 {
     public void GotoMain()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("MainMenu");
     }
 }
