@@ -11,9 +11,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: c40040f433af22b41a4d0a06829c5c8d
-  - enabled: 1
-    path: Assets/Scenes/TestingRoom.unity
+  - enabled: 0
+    path: Assets/Scenes/BasicMovement.unity
     guid: 5ed5e4ab1c5ab734e9eb7d5d938471e7
+  - enabled: 1
+    path: Assets/Scenes/PreRun.unity
+    guid: 82ba7ee8e5af6223e80225d37cac7081
+  - enabled: 1
+    path: Assets/Scenes/Run.unity
+    guid: 33b2fda06bb5c114f9fe96e6be49b79f
+  - enabled: 1
+    path: Assets/Scenes/RunWin.unity
+    guid: d1f66086d72e64fa594fe3acf1a536c9
   - enabled: 1
     path: Assets/Scenes/DeathScreen.unity
     guid: 5607cbfcd2199d746a5dcf558d3cded5
