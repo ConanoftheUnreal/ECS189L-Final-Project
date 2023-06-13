@@ -12,6 +12,6 @@ public class DeadMenu : MonoBehaviour
 
     public void GotoMain()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("PreRun");
     }
 }

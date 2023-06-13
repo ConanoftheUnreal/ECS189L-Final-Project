@@ -200,6 +200,7 @@ public class PlayerAnimationController : MonoBehaviour
         {
             if (this.currentTime >= this.deathTime)
             {
+                this.gameObject.GetComponent<PlayerController>().SetDead(true);
                 SceneManager.LoadScene("DeathScreen");
             }
             this.currentTime += Time.deltaTime;
