@@ -24,31 +24,9 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var playerType = this.gameObject.GetComponent<PlayerAnimationController>().GetPlayerType();
+        // Determine the class of the player along with their stats
+        newClass();
 
-        switch(playerType)
-        {
-            case PlayerType.WARRIOR:
-                this.maxHealth = 12 + this.playerStats.maxHealthIncrease;    // originally 10
-                this.health = this.maxHealth;
-                //this.maxSP = 5;
-                this.wallet = 0 + this.playerStats.wallet;
-                this.attack = 2 + this.playerStats.attackIncrease; // originally 3
-                this.speed = 5 + this.playerStats.speedIncrease; // originally 6
-                break;
-            case PlayerType.SORCERESS:
-                this.maxHealth = 7 + this.playerStats.maxHealthIncrease;
-                this.health = this.maxHealth;
-                //this.maxSP = 5;
-                this.wallet = 0 + this.playerStats.wallet;
-                this.attack = 1 + this.playerStats.attackIncrease;
-                this.speed = 8 + this.playerStats.speedIncrease;
-
-                break;
-            default:
-                Debug.Log("Error: player type is undefined.");
-                break;
-        }
         // begin background music
         FindObjectOfType<SoundManager>().PlayMusicTrack("Game Theme");
     }
@@ -56,16 +34,15 @@ public class PlayerController : MonoBehaviour
     public void newClass()
     {
         var playerType = this.gameObject.GetComponent<PlayerAnimationController>().GetPlayerType();
-
         switch(playerType)
         {
             case PlayerType.WARRIOR:
-                this.maxHealth = 12 + this.playerStats.maxHealthIncrease;    // originally 10
+                this.maxHealth = 12 + this.playerStats.maxHealthIncrease;
                 this.health = this.maxHealth;
                 //this.maxSP = 5;
                 this.wallet = 0 + this.playerStats.wallet;
-                this.attack = 2 + this.playerStats.attackIncrease; // originally 3
-                this.speed = 5 + this.playerStats.speedIncrease; // originally 6
+                this.attack = 2 + this.playerStats.attackIncrease;
+                this.speed = 5 + this.playerStats.speedIncrease;
                 break;
             case PlayerType.SORCERESS:
                 this.maxHealth = 7 + this.playerStats.maxHealthIncrease;
