@@ -52,12 +52,30 @@ public class GoblinBeserker : Enemy
 
         if (_contextSteering == null)
             Debug.LogWarning("Context Steering Not Found");
-
-        /*if (_centerOfRoom == Vector2.zero)
-        {
-            setRoomCenter();
-        } */
     }
+
+    public float MaxHealth
+    {
+        set {
+            float tmp = stats.Health;
+            stats.Health = value;
+            _currentHealth += stats.Health - tmp;
+        }
+
+        get { return stats.Health; }
+    }
+
+    public float Damage
+    {
+        set
+        {
+            stats.Damage = value;
+        }
+
+        get { return stats.Damage; }
+    }
+
+
 
     private void setRoomCenter()
     {
