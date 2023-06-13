@@ -6,6 +6,7 @@ using Lucifer;
 public class SwitchWarrior : MonoBehaviour
 {
     private GameObject player;
+    [SerializeField] private PlayerStats playerStats;
 
     void OnTriggerEnter2D (Collider2D obj)
     {
@@ -25,6 +26,7 @@ public class SwitchWarrior : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && this.player != null)
         {
             this.player.GetComponent<PlayerAnimationController>().SetClass(PlayerType.WARRIOR);
+            this.playerStats.playerType = PlayerType.WARRIOR;
             this.player.GetComponent<PlayerController>().newClass();
             this.player.GetComponent<PlayerAnimationController>().StartNewAnimation();
         }
