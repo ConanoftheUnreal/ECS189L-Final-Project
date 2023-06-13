@@ -63,7 +63,10 @@ public class ExitManager : MonoBehaviour
 
                             if (_levelManager.currentNode.type == NodeType.BOSS)
                             {
+
                                 SceneManager.LoadScene("PreRun");
+                                return;
+
                             }
 
                             // If the player is entering a child room, just get the node for that child
