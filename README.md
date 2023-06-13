@@ -8,7 +8,7 @@ Game project for UC Davis' ECS 189L for Spring Quarter 2023.
 A Roguelite with procedurally generated rooms. To start, the player will pick between a melee knight or a ranged sorceress, then walk into the castle. They’ll battle their way through several procedurally generated rooms, fighting enemies until they make their way to the end room. Once they've reached the end room or have died, the player can use the coins they've accumulated throughout the run to upgrade their health, speed, or attack damage. Although the player's progress in these rooms will be reset upon exit, the players will retain their stats throughout death, which provides incentive for longer play sessions, even after the player dies.
 ### Developers:
 - [Bradly Booth](https://github.com/gdsmssngr2723)
-- [Conar Davis](https://github.com/ConanoftheUnreal)
+- [Conar Abramson-Davis](https://github.com/ConanoftheUnreal)
 - [Gabriel Yap](https://github.com/gabrielyap)
 - [Russell Reich](https://github.com/RustyReich)
 - [Seth Sjoberg](https://github.com/Sethstofer)
