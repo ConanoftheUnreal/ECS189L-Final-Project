@@ -5,8 +5,11 @@ public sealed class ShopCostContainer
 {
 
     public int attackCost;
+    public int attackBought;
     public int speedCost;
+    public int speedBought;
     public int healthCost;
+    public int healthBought;
 
     private static readonly ShopCostContainer instance = new ShopCostContainer();
     static ShopCostContainer() {}
@@ -24,9 +27,12 @@ public sealed class ShopCostContainer
     private static void init()
     {
 
-        instance.attackCost = 200;
-        instance.speedCost = 50;
-        instance.healthCost = 100;
+        instance.attackCost = 250;
+        instance.attackBought = 0;
+        instance.speedCost = 500;
+        instance.healthBought = 0;
+        instance.healthCost = 150;
+        instance.speedBought = 0;
     }
 
 }

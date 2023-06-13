@@ -27,6 +27,9 @@ public class EnemyAttackController : MonoBehaviour
 
         canActivate = false;
         
+        // Enemy grows when attacking
+        FindObjectOfType<SoundManager>().PlaySoundEffect("Enemy Growl");
+
         var animator = this.gameObject.GetComponent<Animator>();
         float x = animator.GetFloat("MoveX");
         float y = animator.GetFloat("MoveY");

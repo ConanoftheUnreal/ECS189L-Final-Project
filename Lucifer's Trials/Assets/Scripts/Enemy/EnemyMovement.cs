@@ -9,7 +9,7 @@ public class EnemyMovement : MonoBehaviour
 {
     Func<bool> GetStateLock;
     private bool statelock = false;
-    private float knockbackForce = 4.5f;
+    private float knockbackForce = 2f;
     private Rigidbody2D rb;
     private GoblinBeserker enemy;
 
@@ -21,9 +21,9 @@ public class EnemyMovement : MonoBehaviour
         this.GetStateLock = this.gameObject.GetComponent<EnemyAnimation>().GetStateLock;
     }
 
-    public void Knockback(Vector2 direction)
+    public void Knockback(Vector2 direction, int damage)
     {
-        this.rb.velocity = direction * (new Vector2(knockbackForce, knockbackForce));
+        this.rb.velocity = direction * (new Vector2(knockbackForce * damage, knockbackForce * damage));
     }
 
     public void Update()

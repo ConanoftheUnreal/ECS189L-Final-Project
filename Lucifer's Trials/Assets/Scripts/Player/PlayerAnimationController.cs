@@ -18,8 +18,7 @@ public class PlayerAnimationController : MonoBehaviour
     private bool statelock = false;
     private bool playerHurt = false;
     private bool hurtable = true;
-    private float speed = 4.0f;
-    private float deathTime = 1.5f;
+    private float deathTime = 0.5f;
     private float currentTime = 0.0f;
     private float sinceHurt = 0.0f;
     private float horizontal;
@@ -93,7 +92,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void StepSound()
     {
-        //FindObjectOfType<SoundManager>().PlaySoundEffect("Step");
+        FindObjectOfType<SoundManager>().PlaySoundEffect("Player Walk");
     }
 
     private void InvincibilityFrames()
@@ -251,7 +250,7 @@ public class PlayerAnimationController : MonoBehaviour
             if (Input.GetButtonDown("Fire1") && this.hurtable)
             {
                 this.CurrentState = PlayerStates.ATTACK;
-                this.animator.speed = this.speed / 4;
+                this.animator.speed = this.GetComponent<PlayerController>().GetSpeed() / 4;
                 // player type specific changes
                 switch (playerType)
                 {
@@ -271,7 +270,7 @@ public class PlayerAnimationController : MonoBehaviour
             else if ( ((this.horizontal != 0) || (this.vertical != 0)) && (!this.statelock) )
             {
                 this.CurrentState = PlayerStates.WALK;
-                this.animator.speed = this.speed / 2;
+                this.animator.speed = ((this.GetComponent<PlayerController>().GetSpeed() - 5) / 4) + 2.5f;
                 this.animator.SetFloat("MoveX", this.horizontal * 2);
                 this.animator.SetFloat("MoveY", this.vertical * 2);
                 if (IsDashing())

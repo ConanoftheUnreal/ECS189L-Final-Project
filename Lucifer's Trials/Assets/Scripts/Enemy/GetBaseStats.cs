@@ -37,6 +37,7 @@ public class GetBaseStats
     public float Damage
     {
         get { return useConstant ? damage : baseStats.Damage; }
+        set { damage = value; }
     }
 
     // Use these functions to get base stats of creature. Can also be used later 
@@ -44,11 +45,13 @@ public class GetBaseStats
     public float Health
     {
         get { return useConstant ? maxHealth : baseStats.MaxHealth; }
+        set { maxHealth = value; }
     }
 
     public float Speed
     {
         get { return useConstant ? speed : baseStats.Speed; }
+        set{ speed = value; }
     }
 
     public float Cooldown

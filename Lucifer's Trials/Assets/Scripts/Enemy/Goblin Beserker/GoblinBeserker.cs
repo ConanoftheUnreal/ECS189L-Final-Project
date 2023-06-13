@@ -26,6 +26,7 @@ public class GoblinBeserker : Enemy
     private GameObject _lastPlayerRepresentation;
     private bool _wallBetweenPlayerEnemy = false;
     private bool sighted = false;
+    private float timeInSearch;
 
     // private bool _isAttacking;
     public void Start()
@@ -51,12 +52,30 @@ public class GoblinBeserker : Enemy
 
         if (_contextSteering == null)
             Debug.LogWarning("Context Steering Not Found");
-
-        /*if (_centerOfRoom == Vector2.zero)
-        {
-            setRoomCenter();
-        } */
     }
+
+    public float MaxHealth
+    {
+        set {
+            float tmp = stats.Health;
+            stats.Health = value;
+            _currentHealth += stats.Health - tmp;
+        }
+
+        get { return stats.Health; }
+    }
+
+    public float Damage
+    {
+        set
+        {
+            stats.Damage = value;
+        }
+
+        get { return stats.Damage; }
+    }
+
+
 
     private void setRoomCenter()
     {
@@ -81,6 +100,12 @@ public class GoblinBeserker : Enemy
         // If this returns true, then the player is in range but there is a wall between
        _wallBetweenPlayerEnemy = WallBetweenPlayerandEnemy(Stats.Fov);
         UpdateState();
+
+        if (_state != EnemyState.SEARCH)
+        {
+            timeInSearch = 0;
+        }
+
         switch (_state)
         {
             case EnemyState.MOVE:
@@ -337,6 +362,7 @@ public class GoblinBeserker : Enemy
                     else
                     {
                         _state = EnemyState.SEARCH;
+                        timeInSearch += Time.deltaTime;
                     }
                 }
                 else
@@ -376,6 +402,12 @@ public class GoblinBeserker : Enemy
         {
             sighted = false;
             _state = EnemyState.PATROL;
+        }
+
+        if (timeInSearch > 2)
+        {
+            _state = EnemyState.PATROL;
+            sighted = false;
         }
     }
 
