@@ -18,18 +18,20 @@ public class ProjectileScript : MonoBehaviour
         {
             Destroy(this.gameObject);
             AfterEffect();
+            FindObjectOfType<SoundManager>().PlaySoundEffect("Tink");
         }
 
         // Enemy projectiles that hit the player get destroyed
         if (this.tag == "EnemyProjectile" && col.tag == "PlayerHurtbox")
         {
             // get `Player` gameobject from collider of `PlayerHurtbox` and hurt player
-            FindObjectOfType<SoundManager>().PlaySoundEffect("Player Hurt");
             bool playerHit = col.transform.parent.gameObject.GetComponent<PlayerAnimationController>().PlayerDamaged(this.gameObject, damage, DamageTypes.RANGED);
             if (playerHit)
             {
                 Destroy(this.gameObject);
                 AfterEffect();
+                FindObjectOfType<SoundManager>().PlaySoundEffect("Player Hurt");
+                FindObjectOfType<SoundManager>().PlaySoundEffect("Tink");
             }
         }
     }
