@@ -107,7 +107,7 @@ public class PlayerAnimationController : MonoBehaviour
         }
         else
         {
-            spriteRenderer.color += new Color (0, 0, 0, 0.005f);
+            spriteRenderer.color += new Color (0, 0, 0, 1f) * 2 * Time.deltaTime;
             if (spriteRenderer.color.a >= 1f)
             {
                 spriteRenderer.color = new Color (1f, 1f, 1f, 0.5f);
