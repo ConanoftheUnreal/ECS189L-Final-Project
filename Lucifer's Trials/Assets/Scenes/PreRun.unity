@@ -7201,9 +7201,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cfbd8d06bc358cf293b6b2cd75369c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: f65a16c68b63ab1ada894b09fcf97e53, type: 2}
---- !u!1001 &1643663982
-PrefabInstance:
+--- !u!1 &1624486922
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -15479,7 +15478,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d48df8e1032d62d6a8d0309e4148a3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: f65a16c68b63ab1ada894b09fcf97e53, type: 2}
 --- !u!61 &2001312148
 BoxCollider2D:
   m_ObjectHideFlags: 0
