@@ -25,6 +25,7 @@ public class SwitchWarrior : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && this.player != null)
         {
             this.player.GetComponent<PlayerAnimationController>().SetClass(PlayerType.WARRIOR);
+            this.player.GetComponent<PlayerController>().newClass();
             this.player.GetComponent<PlayerAnimationController>().StartNewAnimation();
         }
     }
