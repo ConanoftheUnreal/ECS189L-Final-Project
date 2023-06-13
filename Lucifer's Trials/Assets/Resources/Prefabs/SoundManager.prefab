@@ -138,3 +138,9 @@ MonoBehaviour:
     volume: 0.3
     pitch: 1
     loop: 0
+  - clip: {fileID: 8300000, guid: 179a40bf7e111564c9bc81684ba89dbf, type: 3}
+    audioSource: {fileID: 0}
+    title: Explosion
+    volume: 0.3
+    pitch: 1
+    loop: 0
