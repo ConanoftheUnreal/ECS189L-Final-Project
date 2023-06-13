@@ -13,20 +13,19 @@ public class ProjectileScript : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D col)
     {
-        // All projectiles that hit a wall should be destroyed.
-        if ( (col.tag == "Wall") || (col.tag == "PlayerAttack") )
-        {
-            Destroy(this.gameObject);
-            AfterEffect();
-            FindObjectOfType<SoundManager>().PlaySoundEffect("Tink");
-        }
-
         // Sorceress' fireball breaks on impact with explosion sound
-        if (this.tag == "Projectile" && (col.tag == "EnemyHitbox" || col.tag == "Wall"))
+        if (this.tag == "Projectile" && (col.tag == "EnemyHurtbox" || col.tag == "Wall"))
         {
             Destroy(this.gameObject);
             AfterEffect();
             FindObjectOfType<SoundManager>().PlaySoundEffect("Explosion");
+        }
+        // All projectiles that hit a wall should be destroyed.
+        else if ( (col.tag == "Wall") || (col.tag == "PlayerAttack") )
+        {
+            Destroy(this.gameObject);
+            AfterEffect();
+            FindObjectOfType<SoundManager>().PlaySoundEffect("Tink");
         }
 
         // Enemy projectiles that hit the player get destroyed

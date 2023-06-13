@@ -10,8 +10,15 @@ public class PlayerAttackController : MonoBehaviour
     GameObject attackSprite;
     private enum Sprite { DOWN, LEFT, RIGHT, UP }
 
+    private bool canAttack = true;
+    private float timePassed = 0.0f;
+
     public void ActivateAttackSprite()
     {
+        if (!this.canAttack) return;
+        
+        this.canAttack = false;
+
         var playerClass = this.GetComponent<PlayerAnimationController>().GetPlayerType();
         var animator = this.gameObject.GetComponent<Animator>();
         float x = animator.GetFloat("MoveX");
@@ -94,6 +101,20 @@ public class PlayerAttackController : MonoBehaviour
     public void DeactivateAttackSprite()
     {
         attackSprite.SetActive(false);
+    }
+
+    public void Update()
+    {
+        // fix for double attack consequence due to blend tree for animations
+        if (this.timePassed >= 0.05f)
+        {
+            this.timePassed = 0.0f;
+            this.canAttack = true;
+        }
+        else
+        {
+            this.timePassed += Time.deltaTime;
+        }
     }
 
 }
