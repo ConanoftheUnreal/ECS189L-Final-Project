@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthGain: 1
-  despawnable: 1
+  despawnable: 0
 --- !u!95 &4136117776800632340
 Animator:
   serializedVersion: 5

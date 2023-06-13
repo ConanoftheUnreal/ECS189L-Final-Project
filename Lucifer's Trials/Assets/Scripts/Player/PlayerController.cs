@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     private int attack;
     private int speed;
     private int wallet;
-    private int dead = false;
+    private bool dead = false;
 
     [SerializeField] private PlayerStats playerStats;
 
