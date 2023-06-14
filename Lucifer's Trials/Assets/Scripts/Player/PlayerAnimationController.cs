@@ -72,7 +72,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         this.statelock = false;
         this.playerHurt = false;
-        this.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
+        this.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
     }
 
     public void PlayerDefeated()
@@ -98,7 +98,7 @@ public class PlayerAnimationController : MonoBehaviour
     private void InvincibilityFrames()
     {
         var spriteRenderer = this.GetComponent<SpriteRenderer>();
-        if (this.sinceHurt >= 1.25f)
+        if (this.sinceHurt >= 0.75f)
         {
             this.hurtable = true;
 
@@ -147,6 +147,12 @@ public class PlayerAnimationController : MonoBehaviour
             this.sinceHurt = 0.0f;
             this.CurrentState = PlayerStates.HURT;
             this.animator.speed = 1;
+            // ensure all attack sprites are disabled upon hit
+            for (int i = 0; i < 4; i++)
+            {
+                // all attack sprites are the first 4 gameobjects of the player
+                this.gameObject.transform.GetChild(i).gameObject.SetActive(false);
+            }
         }
 
         // determine knockback handling
@@ -255,7 +261,7 @@ public class PlayerAnimationController : MonoBehaviour
                 switch (playerType)
                 {
                     case PlayerType.WARRIOR:
-                        this.animator.speed *= 1.5f;
+                        this.animator.speed *= 1.8f;
                         FindObjectOfType<SoundManager>().PlaySoundEffect("Slash");
                         break;
                     case PlayerType.SORCERESS:
