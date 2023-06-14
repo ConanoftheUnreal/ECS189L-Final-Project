@@ -152,9 +152,10 @@ public class GoblinBeserker : Enemy
         Debug.DrawRay(transform.position, projection, Color.white);
         Debug.DrawRay(this.transform.position, a, Color.magenta);
         Debug.DrawRay(projection + this.transform.position, error, Color.white);
+        Debug.Log(error);
 
- 
-        _lastPlayerRepresentation.transform.Translate(-error);
+        //_lastPlayerRepresentation.transform.Translate(-error);
+        _lastPlayerRepresentation.transform.position += error;
         
 
         /*RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, a + newPos, (a + newPos).magnitude);
@@ -510,8 +511,11 @@ public class GoblinBeserker : Enemy
                 wallHit = true;
                 if (!playerHit)
                 {
-                    //Debug.Log("Player out of sight");
-                    _lastPlayerRepresentation.transform.position = _lastPlayerPosition;
+                    if (_state != EnemyState.SEARCH)
+                    {
+                        _lastPlayerRepresentation.transform.position = _lastPlayerPosition;
+                    }
+
                     return true;
                 }
             }
