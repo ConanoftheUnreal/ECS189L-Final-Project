@@ -2,14 +2,27 @@
 
 ## Summary ##
 
-**A paragraph-length pitch for your game.**
+Welcome to the Lucifer's Trials. Try to explore the waves of enemies as you try to survive and get to the end of the dungeon. Collect gems, coins, and gold to upgrade your gear as the dungeon changes with each new attempt. What will you do to survive?
 
 ## Gameplay Explanation ##
 
-**In this section, explain how the game should be played. Treat this as a manual within a game. It is encouraged to explain the button mappings and the most optimal gameplay strategy.**
+Move around the top down environment using WASD.
 
+Left click or left ctl to shoot/attack your enemies.
 
-**If you did work that should be factored in to your grade that does not fit easily into the proscribed roles, add it here! Please include links to resources and descriptions of game-related material that does not fit into roles here.**
+Press space to dash.
+
+Press ESC to pause.
+
+Information about best strategies to play:
+- There are two types of classes to use, the Warrior and the Sorceress.
+- Sorceress is ranged, so give your self distance from your enemies and attack them from a distance to deal damage to your enemies.
+- With the Warrior get up close, attack, then dash away from your enemies. 
+- Make sure to upgrade your gear a you progress at the shop to get more powerful so that the dungeons get easier. 
+- Try to avoid the Goblin Slingers seeing as they fire an arror that goes right for you. 
+- Dodge the Goblin Beserkers that approach you and swing to deal damage. 
+- Use invisibility frames to get away from your enemies seeing that you can't attack while they are active.
+- Deflect arrows with the Warrior just as they come into contact.
 
 # Main Roles #
 
