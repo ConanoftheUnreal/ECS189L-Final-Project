@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         switch(playerType)
         {
             case PlayerType.WARRIOR:
-                this.maxHealth = 12 + this.playerStats.maxHealthIncrease;
+                this.maxHealth = 15 + this.playerStats.maxHealthIncrease;
                 this.health = this.maxHealth;
                 //this.maxSP = 5;
                 this.wallet = this.playerStats.wallet;
@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
                 //this.maxSP = 5;
                 this.wallet = this.playerStats.wallet;
                 this.attack = 1 + this.playerStats.attackIncrease;
-                this.speed = 7 + this.playerStats.speedIncrease;
+                this.speed = 6 + this.playerStats.speedIncrease;
 
                 break;
             default:

@@ -98,7 +98,7 @@ public class PlayerAnimationController : MonoBehaviour
     private void InvincibilityFrames()
     {
         var spriteRenderer = this.GetComponent<SpriteRenderer>();
-        if (this.sinceHurt >= 0.75f)
+        if (this.sinceHurt >= 0.5f)
         {
             this.hurtable = true;
 

@@ -146,7 +146,8 @@ public class EnemyAnimation : MonoBehaviour
             var objVec = obj.GetComponent<Rigidbody2D>().velocity.normalized;
             this.animator.SetFloat("MoveX", -objVec.x);
             this.animator.SetFloat("MoveY", -objVec.y);
-            Knockback(objVec, damage);
+            // projectiles provide less push
+            Knockback(objVec, damage/2);
         }
         else
         {

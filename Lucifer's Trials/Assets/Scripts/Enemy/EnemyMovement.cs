@@ -26,7 +26,7 @@ public class EnemyMovement : MonoBehaviour
         this.rb.velocity = direction * (new Vector2(knockbackForce * damage, knockbackForce * damage));
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
         statelock = GetStateLock();
         if (!statelock)
