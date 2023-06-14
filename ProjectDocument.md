@@ -38,7 +38,7 @@ For the Runwin scene, I decided to create a scene that would reward the player w
 
 To help out Gabriel, I implemented the money counter within the PlayerCanvas prefab. I also created shop icons using the shoe, sword, and health potion within [Kyrise's 16x16 RPG Icon Pack](https://kyrise.itch.io/kyrises-free-16x16-rpg-icon-pack).
 
-**Images of icons**
+![](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/main/Lucifer's%20Trials/Assets/Resources/Sprites/IconSprites/SpeedUp.png) ![](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/main/Lucifer's%20Trials/Assets/Resources/Sprites/IconSprites/attackUp.png) ![](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/main/Lucifer's%20Trials/Assets/Resources/Sprites/IconSprites/HealthUp.png)
 
 #### **Putting the Game Scenes Together:**
 
