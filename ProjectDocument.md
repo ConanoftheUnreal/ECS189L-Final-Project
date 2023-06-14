@@ -44,7 +44,7 @@ To help out Gabriel, I implemented the money counter within the PlayerCanvas pre
 
 Towards the end of development, I was the one that joined all the scenes together to make the final game. I added scene loading and scripts like [SuccessTransition.cs](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/main/Lucifer's%20Trials/Assets/Scripts/SuccessTransition.cs) and [PrerunTransition.cs](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/main/Lucifer's%20Trials/Assets/Scripts/PrerunTranistion.cs) to control the movement of scenes. The scene transition tree looks like the following:
 
-**Graph of image transition**
+![](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/main/ConarImages/SceneTransitionDiagram.svg)
 
 I also tried to make an attempt to keep the player state between games. I first tried to make the player object a NoDestroy object, but found that this method interfered with Russell's and Brad's implmentation of the Run scene. I next tried to implement [scriptable objects](https://docs.unity3d.com/2022.3/Documentation/Manual/class-ScriptableObject.html) that would keep the game state between scenes. This seemed to work until Russell noticed a bug where transitioning from scenes without the player would reset the scriptable object back to its default values. Russell was the last to implement a C# object that was treated as a resource and didn't become destroyed until the game was closed.
 
@@ -84,13 +84,16 @@ When thinking about the design of our game during the initial document phase, ou
 
 Because of time constraints early in project development, I didn't have much chance to work on the player design within coding implementation, but did help our team by providing instructions on the feel and look of our playable characters. Using the [Lucifer sprite pack](https://itch.io/c/1557879/lucifer), I decided that our team would use both the Warrior and the Sorceress as our playable classes. The Warrior I decided to design as a melee type that players could get up close to enemies. The Warrior was imagined to have a higher amount of health, slow movement, but high attack. This is shown through the base stats that the warrior contains below:
 
-**image of warrior stats from shop**
+![](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/main/ConarImages/WarriorStats.png)
+
+![](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/main/ConarImages/Warrior%20Showreel.gif)
 
 We used the assets attack one sprites for the warrior's primary attack sprites.
 
 Our second playable class I decided on was the Sorceress class. This class was designed to be both faster and ranged, but had less base health and attack over the warrior. Players could use this class to evade enemies and position themselves in ideal areas to do attacks that could give them enough room to remaneuver if need be. Here is the base stats that we decided the sorceress should have:
 
-**image of sorceress stats from shop**
+![](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/main/ConarImages/SorceressStats.png)
+![](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/main/ConarImages/Sorceress%20Animation%20Showreel.gif)
 
 We used the assets attack one sprites for the sorceress' primary attack sprites.
 
