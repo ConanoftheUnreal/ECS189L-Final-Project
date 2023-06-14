@@ -13,13 +13,13 @@ From here the amount of time I spent in this role dwindled. Connor spend a good 
 
 Below are some early prototypes I drew and wrote up for my initial design of the game. I think we were pretty faithful to this initial design plan, though the initial plan was a bit ambitious. We had to forgo bosses and environmental hazards, as well many other enemy types that we wanted to implement.
 
-![Early Prototype of Lucifer's Trilas](EarlyPrototype.JPG)
+![Early Prototype of Lucifer's Trilas](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/f20537e0a4e5d5c501c1c84ba9aee0a4fb90bff5/Brad%20Contribution/EarlyPrototype.JPG)
 
-![Early Prototype of Lucifer's Trials](EarlyPrototypeItems-1.JPG)
+![Early Prototype of Lucifer's Trials](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/f20537e0a4e5d5c501c1c84ba9aee0a4fb90bff5/Brad%20Contribution/EarlyPrototypeItems-1.JPG)
 
-![Early Prototype of Enemies](EarlyPrototypeEnemies.JPG)
+![Early Prototype of Enemies](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/f20537e0a4e5d5c501c1c84ba9aee0a4fb90bff5/Brad%20Contribution/EarlyPrototypeEnemies.JPG)
 
-![Early Prototype of Player](EarlyPrototypeCharacter.JPG)
+![Early Prototype of Player](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/f20537e0a4e5d5c501c1c84ba9aee0a4fb90bff5/Brad%20Contribution/EarlyPrototypeCharacter.JPG)
 
 ## Enemy AI
 ### Role Brief
@@ -29,12 +29,12 @@ This role focuses on developing the enemies that are going to be present in our 
 Immediatly after taking on this role I started researching Enemy AI, or more accurately AI movement. We hadn't had the lecture on this topic in class yet, so I was on my own. Additionally, I have not taken ECS 170. Looking up different enemey movement algorithms, the first thing I stumbled upon was A*. After spending a little time learning about A*, I decided that I did not want to use A*. In my head, the combat area that enemies would be moving through would be open, with walls only around the edge of the battle area and A* seemed unecessary for an open area. 
 In the those early days, we planned for environmental obsticals in the combat area. Ideally, I wanted an enemy that didn't just efficiently move to the enemy, but responded to the threats of the envrinoment. I happened to stumble upon this video:
 
- [![The Trick I Used to Make Combat Fun](HowToMakeCombatFunVideoScreenCap.JPG)](https://www.youtube.com/watch?v=6BrZryMz-ac "How to Make Combat Fun")
+ [![The Trick I Used to Make Combat Fun](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/f20537e0a4e5d5c501c1c84ba9aee0a4fb90bff5/Brad%20Contribution/HowToMakeCombatFunVideoScreenCap.JPG)](https://www.youtube.com/watch?v=6BrZryMz-ac "How to Make Combat Fun")
 * * *
 ### Context Steering
 The video above, by Game Endeavor, introduced me to the idea of context steering as well as linked an article titled [Context Steering Behavior-Driven Steering at the Macro Scale](http://www.gameaipro.com/GameAIPro2/GameAIPro2_Chapter18_Context_Steering_Behavior-Driven_Steering_at_the_Macro_Scale.pdf) written by Andrew Fray. This article introduces the problem with some popular steering behaviors and introduces Context Steering. "The context steering framework deals in the currency of context maps...Internally, the context map is an array of scalar values, with each slot of the array representing a possible heading, and the contents of the slot representing how strongly the behavior feels about this heading."
 
-![Context Steering](ContextSteering.JPG)
+![Context Steering](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/f20537e0a4e5d5c501c1c84ba9aee0a4fb90bff5/Brad%20Contribution/ContextSteering.JPG)
 
 Multiple behaviors can be attritubed to a different context map which effect the values of each possible heading differently. Then different headings from the multiple behaviors can be averaged together. The heading with the highest value is the heading that the algorithm wants to go. The paper sets up different behaviors that could be implemented and argues that using this system, the AI can make an informed decision about where it wants to go with context from the environment without using and overbloated decision tree.
 
@@ -44,9 +44,9 @@ Needless to say, I was sold on this system. Early into this journey, I did attem
 ### Polarith AI
 On the unity page, Polarith AI advartises itself as, "Polarith AI offers all you need for achieving state-of-the-art movement AI with just a few clicks. Design complex movement behaviours and create immersive games or astonishing simulations by taking advantage of the sophisticated workflow." This is a context steering AI package that was a bit of a pain to work with. The core concept of their design is that they have many different pre-defined behaviors as components. You can attach these behaviors to gameObject, set different parameters of that behavior and system will give a direction that it wants to move based on the different behaviors attached. On these behaviours, you can assign individual gameObjects as objects of interest or a LayerMask, where everything on that layer is of interest. Each component has useful visual debugging gizmos to see how it responds to various inputs in the world.
 
-![Debugging Gizmos showing Polarith sensors around enemies.](image.png)
+![Debugging Gizmos showing Polarith sensors around enemies.](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/f20537e0a4e5d5c501c1c84ba9aee0a4fb90bff5/Brad%20Contribution/image.png)
 
-![Alt text](<Lucifer's Trials - Run - Windows, Mac, Linux - Unity 2022.2.13 _DX11_ 2023-06-13 23-43-16(1).gif>)
+![Alt text](<https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/f20537e0a4e5d5c501c1c84ba9aee0a4fb90bff5/Brad%20Contribution/Lucifer's%20Trials%20-%20Run%20-%20Windows%2C%20Mac%2C%20Linux%20-%20Unity%202022.2.13%20_DX11_%202023-06-13%2023-43-16(1).gif>)
 
 The gif above shows the enemies moving around with their sensors visible. The yellow line shooting out from the enemies is the direction that the system has chosen to move. Green lines are directions that the enemies wish to move towards while red lines are directions the enemies want to avoid.  Ignore, the purple lines for now. Each behavior has a radius you can set for the behavior as well as a weight to that behavior and different options for what is called Radius Mapping. Radius Mapping uses different functions that change the weight based on distant to the target. Constant for example does not change the weight regardless of distance, whereas Inverse Quadratic drasticly increases the weight the closer you are to the player. You can use these to make some cool and behaviors. For example, I used Inverse Quadratic and a high weight for walls, because I did not want the enemy to every leave the combat arena or get trapped in a corner. Whereas, I made seeking the player constant because as long as the enemy had a clear path to the player, it should try to move to them.
 
@@ -69,7 +69,7 @@ https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/efdbc6babd30c1977
 ### Decision Tree
 Once I got all the behavior components worked out I moved onto implementing the descision script. This was relatively simple, I drew up a decision tree and implemented the tree using nesting if statements. The nest goes pretty deep but it the logic is simple and easy to follow.
 
-![Enemy Decision Tree](20230614_002312.jpg)
+![Enemy Decision Tree](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/f20537e0a4e5d5c501c1c84ba9aee0a4fb90bff5/Brad%20Contribution/20230614_002312.jpg)
 
 https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/efdbc6babd30c1977519a158b6ddb377e5998599/Lucifer's%20Trials/Assets/Scripts/Enemy/Goblin%20Beserker/GoblinBeserker.cs#L341-L412
 
@@ -96,7 +96,7 @@ As I mentioned earlier, enemies have a tendency to get stuck on corners because 
 My solution uses the relationship between 2 vectors. One between the enemy and player (EP), and the other, between the enemy and empty game object (EO). Knowing these two vectors, I could project (EP) onto the line (EO). This projection vector allows me to find a vector that is orthoginal to line (EO) to the player. By negating this vector, I could get a direction to push the gameObject away from the corner. This usually worked, unless the player moved below the enemy, then I think the gameObject would move in the wrong direction.  To fix this I added a timeout for search. If the player was not in line of sight after so much time, the enemy would start to patrol. 
 
 In the image below, the two purple lines are vectors to the player and empty game object. The white line extending beyond the purple line is the projected vector and the white line orthogonal to the white vector is the vector I use to move the empty game object.
-![Alt text](image-1.png)
+![Alt text](https://github.com/ConanoftheUnreal/ECS189L-Final-Project/blob/f20537e0a4e5d5c501c1c84ba9aee0a4fb90bff5/Brad%20Contribution/image-1.png)
 
 This system wasn't perfect, and I am not 100% sure it works as inteaded, but it was a fun and challenging problem to work through. The challenge being that there were 4 different corners with 8 different ways the player could be around a corner in relation to the enemy. So the challenging part was finding a solution that did not rely on me determining what position corner we needed to round.
 
