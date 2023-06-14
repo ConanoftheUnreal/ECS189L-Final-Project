@@ -87,7 +87,7 @@ These were some of the major contributions that I made towards this role. I may 
 
 This role mainly consists of finding issues within our game and trying to fix those issues. Seth, Brad, Russell, and myself often found most of the existing bugs and fixed them, even if the bugs didn't occur within our own roles. In terms of the bugs that I fixed, I was able to do the following:
 
-- Tried fixing the player canvas sizing within the Run and Prerun scenes by having the elements be static sized objects.
+- Tried fixing the player canvas sizing within the Run and Prerun scenes by having the elements be static sized objects.Here is a link to the responses:
 - Fixed some collision issues when it came to double hitting the player using [multilayering collision detection](https://docs.unity3d.com/Manual/LayerBasedCollision.html).
 - Fixed issues surround the enemies colliding with money and health prefabs.
 
