@@ -112,6 +112,7 @@ public class ShopLogic : MonoBehaviour
     public void ExitShop()
     {
         Time.timeScale = 1;
+        Cursor.visible = false;
         this.gameObject.SetActive(false);
         this.invalidBuyText.gameObject.SetActive(false);
         this.validBuyText.gameObject.SetActive(false);

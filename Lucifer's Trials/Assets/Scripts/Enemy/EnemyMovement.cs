@@ -23,7 +23,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void Knockback(Vector2 direction, int damage)
     {
-        this.rb.velocity = direction * (new Vector2(knockbackForce * damage, knockbackForce * damage));
+        this.rb.velocity = direction * (new Vector2(knockbackForce * Math.Min(damage, 3.0f), knockbackForce * Math.Min(damage, 3.0f)));
     }
 
     public void FixedUpdate()

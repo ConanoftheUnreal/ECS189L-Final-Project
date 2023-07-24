@@ -26,6 +26,7 @@ public class OpenShopTestScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && this.player != null && Time.timeScale == 1)
         {
             Time.timeScale = 0;
+            Cursor.visible = true;
             shop.SetActive(true);
         }
     }

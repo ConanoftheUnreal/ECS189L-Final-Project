@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,16 @@ public class EnemyAttackController : MonoBehaviour
 
         this.canActivate = true;
         this.timeSince = 0.0f;
+    }
+
+    private Vector2 EnemyInaccuracy(float magnitude)
+    {
+        // Could return a different amount dependent upon levels cleared, times player leveled up, etc.
+        // 0 = right on target, 1 = inconsistent aim
+        var badAim = 1.0f;  // currently static
+        // Aiming is easier for enemy if player is close
+        var proximityEase = Math.Min(1.0f, magnitude / 3.0f);
+        return new Vector2(proximityEase * UnityEngine.Random.Range(-badAim, badAim), proximityEase * UnityEngine.Random.Range(-badAim, badAim));
     }
 
     public void ActivateAttackSprite()
@@ -95,8 +106,9 @@ public class EnemyAttackController : MonoBehaviour
             
             case EnemyTypes.SLINGER:
 
-                // shoot an arrow in the direction of the player
+                // shoot an arrow in the direction of the player with random adjustment
                 var directionVec = (Vector2)(GameObject.Find("Player").transform.position - this.gameObject.transform.position);
+                directionVec = directionVec + EnemyInaccuracy(directionVec.magnitude);
                 // readjust orientation of enemy if player has moved around it
                 if (Vector2.Angle(directionVec, enemyVec) >= 90)
                 {

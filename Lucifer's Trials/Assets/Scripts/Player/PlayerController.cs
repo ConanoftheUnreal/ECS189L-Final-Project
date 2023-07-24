@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 using Lucifer;
 
@@ -85,6 +86,7 @@ public class PlayerController : MonoBehaviour
     public void IncreaseHealth(int amount)
     {
         this.health += amount;
+        this.health = Math.Min(this.health, this.GetMaxHealth());
         if (this.health > maxHealth)
         {
             this.health = maxHealth;

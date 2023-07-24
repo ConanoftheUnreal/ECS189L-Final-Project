@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] int healthGain = 1;
     [SerializeField] bool despawnable = true;
     private float duration = 10.0f;
     private float curDuration;
@@ -29,6 +28,7 @@ public class Health : MonoBehaviour
                 Destroy(this.gameObject);
                 // Increase player's health
                 FindObjectOfType<SoundManager>().PlaySoundEffect("Item Pickup");
+                var healthGain = (int)(col.GetComponent<PlayerController>().GetMaxHealth() * 0.20f);   // give 20% health
                 col.GetComponent<PlayerController>().IncreaseHealth(healthGain);
             }
         }

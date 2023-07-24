@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private float horizontal;
     private float vertical;
     private bool isDashing = false;
+    private bool dashlocked = false;
     private float dashDuration = 0.1f;
     private float dashCooldown = 0.6f;
     private float sinceDash = 1.5f;
@@ -52,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown("space") && (this.rb.velocity != Vector2.zero) && (this.sinceDash >= this.dashCooldown))
         {
             FindObjectOfType<SoundManager>().PlaySoundEffect("Dash");
+            this.GetComponent<PlayerAnimationController>().PlayDashEffect();
             this.isDashing = true;
             this.curDuration = 0.0f;
             this.sinceDash = 0.0f;
@@ -63,18 +65,24 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         
+        if (this.dashlocked && (this.curDuration >= this.dashDuration))
+        {
+            this.dashlocked = false;
+            this.isDashing = false;
+        }
     }
 
     void FixedUpdate()
     {
         bool statelock = this.GetComponent<PlayerAnimationController>().GetStateLock();
-        if (!statelock)
+        if (!statelock && !dashlocked)
         {
-            if (this.isDashing && (this.curDuration < this.dashDuration))
+            if (this.isDashing)
             {
+                // When dashing, up speed in movement direction
+                this.dashlocked = true;
                 this.speed = GameObject.Find("Player").GetComponent<PlayerController>().GetSpeed();
                 this.rb.velocity = new Vector2(this.horizontal, this.vertical).normalized * (this.speed * 3f);
-                this.curDuration += Time.deltaTime;
             }
             else
             {
@@ -82,6 +90,11 @@ public class PlayerMovement : MonoBehaviour
                 this.isDashing = false;
                 this.rb.velocity = new Vector2(this.horizontal, this.vertical).normalized * this.speed;
             }
+        }
+        else
+        {
+            // Dash duration handling
+            this.curDuration += Time.deltaTime;
         }
     }
 }

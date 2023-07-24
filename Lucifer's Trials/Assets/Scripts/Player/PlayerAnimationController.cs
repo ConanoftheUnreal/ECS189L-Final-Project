@@ -95,6 +95,30 @@ public class PlayerAnimationController : MonoBehaviour
         FindObjectOfType<SoundManager>().PlaySoundEffect("Player Walk");
     }
 
+    public void PlayDashEffect()
+    {
+        GameObject effect;
+        if ((this.vertical != 0) && (this.vertical == this.horizontal))
+        {
+            effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 45));
+        }
+        else if ((this.vertical != 0) && (this.vertical != this.horizontal))
+        {
+            if (this.horizontal == 0)
+            {
+                effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 90));
+            }
+            else
+            {
+                effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, -45));
+            }
+        }
+        else
+        {
+            effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.identity);
+        }
+    }
+
     private void InvincibilityFrames()
     {
         var spriteRenderer = this.GetComponent<SpriteRenderer>();
@@ -279,29 +303,29 @@ public class PlayerAnimationController : MonoBehaviour
                 this.animator.speed = ((this.GetComponent<PlayerController>().GetSpeed() - 5) / 4) + 2.5f;
                 this.animator.SetFloat("MoveX", this.horizontal * 2);
                 this.animator.SetFloat("MoveY", this.vertical * 2);
-                if (IsDashing())
-                {
-                    GameObject effect;
-                    if ((this.vertical != 0) && (this.vertical == this.horizontal))
-                    {
-                        effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 45));
-                    }
-                    else if ((this.vertical != 0) && (this.vertical != this.horizontal))
-                    {
-                        if (this.horizontal == 0)
-                        {
-                            effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 90));
-                        }
-                        else
-                        {
-                            effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, -45));
-                        }
-                    }
-                    else
-                    {
-                        effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.identity);
-                    }
-                }
+                // if (IsDashing())
+                // {
+                //     GameObject effect;
+                //     if ((this.vertical != 0) && (this.vertical == this.horizontal))
+                //     {
+                //         effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 45));
+                //     }
+                //     else if ((this.vertical != 0) && (this.vertical != this.horizontal))
+                //     {
+                //         if (this.horizontal == 0)
+                //         {
+                //             effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 90));
+                //         }
+                //         else
+                //         {
+                //             effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, -45));
+                //         }
+                //     }
+                //     else
+                //     {
+                //         effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.identity);
+                //     }
+                // }
             }
             // no input; queue idle
             else

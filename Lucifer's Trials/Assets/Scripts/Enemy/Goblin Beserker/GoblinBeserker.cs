@@ -130,7 +130,7 @@ public class GoblinBeserker : Enemy
                 break;
             case EnemyState.SEARCH:
                 _speed = stats.Speed;
-                TestProjection(_lastPlayerRepresentation.transform.position);
+                //TestProjection(_lastPlayerRepresentation.transform.position);
                 Search();
                 break;
             default:
@@ -470,13 +470,13 @@ public class GoblinBeserker : Enemy
     {
         Vector3 direction = (gameObject.transform.position - transform.position).normalized;
         RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, direction, Vector2.Distance(this.transform.position, gameObject.transform.position));
-        Debug.DrawRay(transform.position, direction);
+        // Debug.DrawRay(transform.position, direction);
 
         foreach (RaycastHit2D ray in hit)
         {
             if (ray.collider.gameObject.name == "Collision")
             {
-                Debug.Log("Hella True");
+                // Debug.Log("Hella True");
                 return true;
             }
         }
@@ -488,7 +488,7 @@ public class GoblinBeserker : Enemy
     {
         Vector3 playerDirection = (_player.transform.position - transform.position).normalized;
         RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, playerDirection, distance);
-        Debug.DrawRay(transform.position, playerDirection);
+        // Debug.DrawRay(transform.position, playerDirection);
 
         bool playerHit = false;
         bool wallHit = false;
