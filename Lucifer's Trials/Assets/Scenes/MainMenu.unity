@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 10909375}
   - component: {fileID: 10909374}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Knight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -692,7 +692,7 @@ GameObject:
   - component: {fileID: 357093694}
   - component: {fileID: 357093693}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Goblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -715,7 +715,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 439, y: -1.2393}
+  m_AnchoredPosition: {x: 452, y: 16.628}
   m_SizeDelta: {x: 278.7745, y: 278.77}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &357093693
@@ -806,7 +806,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -974,7 +974,7 @@ GameObject:
   - component: {fileID: 748581827}
   - component: {fileID: 748581826}
   m_Layer: 5
-  m_Name: DashImage
+  m_Name: DashKnight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -997,7 +997,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 85, y: -8}
+  m_AnchoredPosition: {x: 146.27, y: -8}
   m_SizeDelta: {x: 97.4821, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &748581826
@@ -1401,7 +1401,7 @@ RectTransform:
   m_GameObject: {fileID: 1147259948}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.25, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1894075388}
@@ -1409,7 +1409,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 202.90152, y: 95.87695}
+  m_AnchoredPosition: {x: 255, y: 177}
   m_SizeDelta: {x: 639.93, y: 91.85}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1147259950
@@ -1567,7 +1567,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LMB/CTRL TO ATTACK
+  m_text: LMB/J KEY TO ATTACK
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
@@ -1656,7 +1656,7 @@ GameObject:
   - component: {fileID: 1384283979}
   - component: {fileID: 1384283978}
   m_Layer: 5
-  m_Name: DashImage (1)
+  m_Name: DashEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1671,7 +1671,7 @@ RectTransform:
   m_GameObject: {fileID: 1384283976}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 836801155}
@@ -1679,7 +1679,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 50.23298, y: -24.145287}
+  m_AnchoredPosition: {x: 92, y: -14.335}
   m_SizeDelta: {x: 27.9476, y: 28.6692}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1384283978
@@ -1702,7 +1702,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a0ca9acf72add4530a297da58c613b10, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b84e0f21f83044494aacac5604bdefbe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2678,7 +2678,7 @@ RectTransform:
   m_GameObject: {fileID: 1894075387}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1147259949}
@@ -2692,7 +2692,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.3715, y: -35.3133}
+  m_AnchoredPosition: {x: -1.3714905, y: -35.3133}
   m_SizeDelta: {x: 692.1176, y: 349.8727}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1894075389
@@ -2930,7 +2930,7 @@ RectTransform:
   m_GameObject: {fileID: 2087496840}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1428207357}
@@ -2941,7 +2941,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.3715, y: -35.3133}
+  m_AnchoredPosition: {x: -1.3714905, y: -15}
   m_SizeDelta: {x: 692.1176, y: 349.8727}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2087496842

@@ -10,7 +10,7 @@ public class PauseMenu : MonoBehaviour
 
     void Update() 
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if ((Time.timeScale == 1 || GameIsPaused) && Input.GetKeyDown(KeyCode.Escape))
         {
             if (GameIsPaused)
             {

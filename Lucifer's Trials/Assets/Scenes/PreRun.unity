@@ -7117,7 +7117,7 @@ Transform:
   m_GameObject: {fileID: 1467992295}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.51, y: -4.369, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 669534530}
@@ -7469,9 +7469,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2908082617455044829, guid: b7e75f42900729b259616f17065dbb96, type: 3}
+      propertyPath: m_Name
+      value: Knight
+      objectReference: {fileID: 0}
     - target: {fileID: 3410241900374750913, guid: b7e75f42900729b259616f17065dbb96, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699531655514201165, guid: b7e75f42900729b259616f17065dbb96, type: 3}
+      propertyPath: m_Name
+      value: Sorceress
       objectReference: {fileID: 0}
     - target: {fileID: 4099365773625532206, guid: b7e75f42900729b259616f17065dbb96, type: 3}
       propertyPath: player
@@ -7481,14 +7489,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 6160812556283174238, guid: b7e75f42900729b259616f17065dbb96, type: 3}
+      propertyPath: m_Name
+      value: Goblin
+      objectReference: {fileID: 0}
+    - target: {fileID: 6237060720979102553, guid: b7e75f42900729b259616f17065dbb96, type: 3}
+      propertyPath: m_Name
+      value: DashEffect
+      objectReference: {fileID: 0}
     - target: {fileID: 6392277037048975545, guid: b7e75f42900729b259616f17065dbb96, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 620052960}
+    - target: {fileID: 7992016172617953001, guid: b7e75f42900729b259616f17065dbb96, type: 3}
+      propertyPath: m_Name
+      value: Backdrop
+      objectReference: {fileID: 0}
     - target: {fileID: 8418064630462048699, guid: b7e75f42900729b259616f17065dbb96, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 620052960}
+    - target: {fileID: 8462372581424288587, guid: b7e75f42900729b259616f17065dbb96, type: 3}
+      propertyPath: m_Name
+      value: Fireball
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029107076297734559, guid: b7e75f42900729b259616f17065dbb96, type: 3}
+      propertyPath: m_Name
+      value: Column
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

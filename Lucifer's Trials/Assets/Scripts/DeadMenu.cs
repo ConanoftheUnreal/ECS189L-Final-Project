@@ -14,4 +14,12 @@ public class DeadMenu : MonoBehaviour
     {
         SceneManager.LoadScene("PreRun");
     }
+
+    public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1"))
+        {
+            GotoMain();
+        }
+    }
 }

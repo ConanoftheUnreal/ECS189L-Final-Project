@@ -104,7 +104,7 @@ public class PlayerAttackController : MonoBehaviour
         if (projectile != null)
         {
             this.currentProjectile = projectile;
-            Destroy(this.currentProjectile, 0.70f);
+            Destroy(this.currentProjectile, 0.5f);
         }
     }
 
@@ -130,7 +130,7 @@ public class PlayerAttackController : MonoBehaviour
         if (this.currentProjectile != null)
         {
             var scaleVec = this.currentProjectile.transform.localScale;
-            this.currentProjectile.transform.localScale = scaleVec - (new Vector3(0.001f, 0.001f, 0f));
+            this.currentProjectile.transform.localScale = scaleVec - (new Vector3(Time.deltaTime * 1.75f, Time.deltaTime * 1.75f, 0f));
         }
     }
 

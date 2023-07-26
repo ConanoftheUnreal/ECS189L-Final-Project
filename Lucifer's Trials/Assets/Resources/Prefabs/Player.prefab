@@ -193,7 +193,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e45efe007e8113439f0c84991e8e06c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: f65a16c68b63ab1ada894b09fcf97e53, type: 2}
 --- !u!114 &8230940089976714484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,6 +208,7 @@ MonoBehaviour:
   playerType: 0
   dashEffect: {fileID: 4130583670508625789, guid: 322d5a9f38f26404181ad30b11547a61, type: 3}
   deathEffect: {fileID: 7059902651180207713, guid: 6204aa885e6574bab930192328cbcca1, type: 3}
+  noAttackIndicatorPrefab: {fileID: 2979826075646462673, guid: f8a37cedb9c974db28d2a66bef765266, type: 3}
 --- !u!114 &1437724484299744691
 MonoBehaviour:
   m_ObjectHideFlags: 0

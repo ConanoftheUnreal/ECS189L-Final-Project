@@ -8,6 +8,7 @@ public class EnemyAnimation : MonoBehaviour
 {
     [SerializeField] GameObject deathEffect;
     [SerializeField] GameObject poofEffect;
+    GameObject player;
     Action<Vector2, int> Knockback;
     Func<bool> PlayerDefeated;
 
@@ -29,7 +30,7 @@ public class EnemyAnimation : MonoBehaviour
             {
                 this.currentState = value;
 
-                // set which animation the sprite uses
+                // Set which animation the sprite uses
                 switch (this.currentState)
                 {
                     case EnemyAnimStates.IDLE:
@@ -62,17 +63,17 @@ public class EnemyAnimation : MonoBehaviour
     {
         this.enemy = this.GetComponent<GoblinBeserker>();
 
-        // set enemy animator based on type
+        // Set enemy animator based on type
         this.animator = this.GetComponent<Animator>();
         switch(this.enemyType)
         {
             case EnemyTypes.BESERKER:
-                // set Animation Controller
+                // Set Animation Controller
                 this.animator.runtimeAnimatorController
                 = Resources.Load<RuntimeAnimatorController>("Sprites/Enemies/Goblin Beserker/Animations/AC_GoblinBerserker");
                 break;
             case EnemyTypes.SLINGER:
-                // set Animation Controller
+                // Set Animation Controller
                 this.animator.runtimeAnimatorController
                 = Resources.Load<RuntimeAnimatorController>("Sprites/Enemies/Goblin Slinger/Animations/AC_GoblinSlinger");
                 break;
@@ -80,14 +81,16 @@ public class EnemyAnimation : MonoBehaviour
                 Debug.Log("Error: Enemy type is undefined.");
                 break;
         }
-        // start facing down
+        // Start facing down
         this.animator.SetFloat("MoveX", 0.0f);
         this.animator.SetFloat("MoveY", -2.0f);
 
-        // function pointer for knockback
+        // Reference to player
+        player = GameObject.Find("Player");
+        // Function pointer for knockback
         Knockback = this.gameObject.GetComponent<EnemyMovement>().Knockback;
-        // function pointer to determine if player has been defeated
-        PlayerDefeated = GameObject.Find("Player").GetComponent<PlayerController>().PlayerDefeated;
+        // Function pointer to determine if player has been defeated
+        PlayerDefeated = player.GetComponent<PlayerController>().PlayerDefeated;
     }
 
     public void AttackFinished()
@@ -177,22 +180,32 @@ public class EnemyAnimation : MonoBehaviour
             var horizontal = this.enemy.MovementDirection.x;
             var vertical = this.enemy.MovementDirection.y;
 
+            var targetDistance = (player.transform.position - this.transform.position);
+
             // Attacking
             if (this.enemy.State == EnemyState.ATTACK)
             {
                 this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 this.CurrentState = EnemyAnimStates.ATTACK;
                 this.animator.speed = 1;
-                this.animator.SetFloat("MoveX", horizontal * 2);
-                this.animator.SetFloat("MoveY", vertical * 2);
+                this.animator.SetFloat("MoveX", targetDistance.normalized.x * 2);
+                this.animator.SetFloat("MoveY", targetDistance.normalized.y * 2);
             }
-            // Patrolling, Moving, Orbiting, Fleeing
+            // Patrolling
             else if ( ((horizontal != 0) || (vertical != 0)) && (!this.statelock) )
             {
                 this.CurrentState = EnemyAnimStates.WALK;
                 this.animator.speed = this.enemy.Speed / 2;
                 this.animator.SetFloat("MoveX", horizontal * 2);
                 this.animator.SetFloat("MoveY", vertical * 2);
+            }
+            // Moving, Orbiting, Fleeing
+            else if (this.enemy.State == EnemyState.ORBIT || this.enemy.State == EnemyState.FLEE)
+            {
+                this.CurrentState = EnemyAnimStates.WALK;
+                this.animator.speed = this.enemy.Speed / 2;
+                this.animator.SetFloat("MoveX", targetDistance.normalized.x * 2);
+                this.animator.SetFloat("MoveY", targetDistance.normalized.y * 2);
             }
             // Idling
             else

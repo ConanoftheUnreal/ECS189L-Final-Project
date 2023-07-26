@@ -11,6 +11,8 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private PlayerType playerType = PlayerType.WARRIOR;
     [SerializeField] GameObject dashEffect;
     [SerializeField] GameObject deathEffect;
+    [SerializeField] GameObject noAttackIndicatorPrefab;
+    GameObject noAttackIndicator;
     Action<Vector2> Knockback;
     Func<int, int> DecreaseHealth;
     Func<bool> IsDashing;
@@ -23,6 +25,7 @@ public class PlayerAnimationController : MonoBehaviour
     private float sinceHurt = 0.0f;
     private float horizontal;
     private float vertical;
+    private Vector3 noAttackIndicatorPos = new Vector3(0f, 0.8f, 0f);
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private PlayerStates currentState;
@@ -34,7 +37,7 @@ public class PlayerAnimationController : MonoBehaviour
             {
                 this.currentState = value;
 
-                // set which animation the sprite uses
+                // Set which animation the sprite uses
                 switch (this.currentState)
                 {
                     case PlayerStates.IDLE:
@@ -125,12 +128,21 @@ public class PlayerAnimationController : MonoBehaviour
         if (this.sinceHurt >= 0.5f)
         {
             this.hurtable = true;
+            Destroy(this.noAttackIndicator);
 
             var color = spriteRenderer.color;
             spriteRenderer.color = new Color(color.r, color.g, color.b, 1f);
         }
         else
         {
+            // Attack indicator handling
+            if (this.noAttackIndicator == null)
+            {
+                noAttackIndicator = (GameObject)Instantiate(this.noAttackIndicatorPrefab, this.transform.position + this.noAttackIndicatorPos, Quaternion.identity);
+            }
+            this.noAttackIndicator.transform.position = this.transform.position + this.noAttackIndicatorPos;
+
+            // Alpha value blinking
             spriteRenderer.color += new Color (0, 0, 0, 1f) * 2 * Time.deltaTime;
             if (spriteRenderer.color.a >= 1f)
             {
@@ -142,62 +154,60 @@ public class PlayerAnimationController : MonoBehaviour
 
     public bool PlayerDamaged(GameObject obj, int damage, DamageTypes damageType)
     {
-        // invincibility frames
+        // Invincibility frames
         if (IsDashing() || !this.hurtable) return false;
 
-        // determine location of collision relative to player
+        // Determine location of collision relative to player
         var collisionPt = obj.GetComponent<Collider2D>().ClosestPoint(this.gameObject.transform.position);
         var knockbackDirection = ((Vector2)this.gameObject.transform.position - collisionPt).normalized;
         
-        // determine player death
+        // Determine player death
         var health = DecreaseHealth(damage);
         if (health == 0)
         {
-            // queue player death
+            // Queue player death
             FindObjectOfType<SoundManager>().StopCurrentTrack();
             this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             this.statelock = false;
             this.CurrentState = PlayerStates.DEATH;
             this.animator.speed = 1;
-            // play death effect
+            // Play death effect
             var effect = (GameObject)Instantiate(this.deathEffect, this.transform.position - (new Vector3(0.5f, 0, 0)), Quaternion.identity);
             return true;
         }
         else
         {
-            // queue player hurt
+            // Queue player hurt
             this.playerHurt = true;
             this.hurtable = false;
             this.sinceHurt = 0.0f;
             this.CurrentState = PlayerStates.HURT;
             this.animator.speed = 1;
-            // ensure all attack sprites are disabled upon hit
+            // Ensure all attack sprites are disabled upon hit
             for (int i = 0; i < 4; i++)
             {
-                // all attack sprites are the first 4 gameobjects of the player
+                // All attack sprites are the first 4 gameobjects of the player
                 this.gameObject.transform.GetChild(i).gameObject.SetActive(false);
             }
         }
 
-        // determine knockback handling
+        // Determine knockback handling
         switch (damageType)
         {
             case DamageTypes.CQC:
-                // determine knockback by vector btw both objects
+                // Determine knockback by vector btw both objects
                 this.animator.SetFloat("MoveX", -knockbackDirection.x);
                 this.animator.SetFloat("MoveY", -knockbackDirection.y);
                 Knockback(knockbackDirection);
                 break;
             case DamageTypes.RANGED:
-                // determine knockback by direction of missile
+                // Determine knockback by direction of missile
                 var objVec = obj.GetComponent<Rigidbody2D>().velocity.normalized;
                 this.animator.SetFloat("MoveX", -objVec.x);
                 this.animator.SetFloat("MoveY", -objVec.y);
                 Knockback(objVec);
                 break;
             case DamageTypes.COLLIDE:
-                //var hitDirection = new Vector2(UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f)).normalized;
-                //var hitDirection = new Vector2(-this.animator.GetFloat("MoveX"), -this.animator.GetFloat("MoveY")).normalized;
                 var hitDirection = (this.transform.position - obj.transform.position).normalized;
                 Knockback(hitDirection);
                 break;
@@ -219,18 +229,18 @@ public class PlayerAnimationController : MonoBehaviour
         // Determine how to animate player
         StartNewAnimation();
 
-        // declare function pointer for knockback call in `PlayerDamaged`
+        // Declare function pointer for knockback call in `PlayerDamaged`
         Knockback = this.gameObject.GetComponent<PlayerMovement>().Knockback;
-        // declare function pointer to determine player dashing
+        // Declare function pointer to determine player dashing
         IsDashing = this.gameObject.GetComponent<PlayerMovement>().IsDashing;
-        // declare function pointer to hurt player
+        // Declare function pointer to hurt player
         DecreaseHealth = this.gameObject.GetComponent<PlayerController>().DecreaseHealth;
     }
 
     // Function redefines all the private fields that are required to be changed based on the PlayerType
     public void StartNewAnimation()
     {
-        // set player sprite/animations
+        // Set player sprite/animations
         this.animator = this.GetComponent<Animator>();
         this.spriteRenderer = this.GetComponent<SpriteRenderer>();
         switch(this.playerType)
@@ -249,7 +259,7 @@ public class PlayerAnimationController : MonoBehaviour
                 Debug.Log("Error: player type is undefined.");
                 break;
         }
-        // start facing down
+        // Start facing down
         this.animator.SetFloat("MoveX", 0.0f);
         this.animator.SetFloat("MoveY", -2.0f);
     }
@@ -276,12 +286,12 @@ public class PlayerAnimationController : MonoBehaviour
             this.horizontal = Input.GetAxisRaw("Horizontal");
             this.vertical = Input.GetAxisRaw("Vertical");
 
-            // attack; queue player attack
+            // Attack; queue player attack
             if (Input.GetButtonDown("Fire1") && this.hurtable)
             {
                 this.CurrentState = PlayerStates.ATTACK;
                 this.animator.speed = this.GetComponent<PlayerController>().GetSpeed() / 4;
-                // player type specific changes
+                // Player type specific changes
                 switch (playerType)
                 {
                     case PlayerType.WARRIOR:
@@ -296,38 +306,15 @@ public class PlayerAnimationController : MonoBehaviour
                         break;
                 }
             }
-            // movement input; queue player movement
+            // Movement input; queue player movement
             else if ( ((this.horizontal != 0) || (this.vertical != 0)) && (!this.statelock) )
             {
                 this.CurrentState = PlayerStates.WALK;
                 this.animator.speed = ((this.GetComponent<PlayerController>().GetSpeed() - 5) / 4) + 2.5f;
                 this.animator.SetFloat("MoveX", this.horizontal * 2);
                 this.animator.SetFloat("MoveY", this.vertical * 2);
-                // if (IsDashing())
-                // {
-                //     GameObject effect;
-                //     if ((this.vertical != 0) && (this.vertical == this.horizontal))
-                //     {
-                //         effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 45));
-                //     }
-                //     else if ((this.vertical != 0) && (this.vertical != this.horizontal))
-                //     {
-                //         if (this.horizontal == 0)
-                //         {
-                //             effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 90));
-                //         }
-                //         else
-                //         {
-                //             effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, -45));
-                //         }
-                //     }
-                //     else
-                //     {
-                //         effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.identity);
-                //     }
-                // }
             }
-            // no input; queue idle
+            // No input; queue idle
             else
             {
                 this.CurrentState = PlayerStates.IDLE;
