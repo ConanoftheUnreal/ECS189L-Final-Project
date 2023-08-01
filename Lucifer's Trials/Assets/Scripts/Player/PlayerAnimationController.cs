@@ -14,8 +14,10 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] GameObject noAttackIndicatorPrefab;
     GameObject noAttackIndicator;
     Action<Vector2> Knockback;
+    Action DeactivateAttackSprite;
     Func<int, int> DecreaseHealth;
     Func<bool> IsDashing;
+    Func<bool> GetMoveLocked;
 
     private bool statelock = false;
     private bool playerHurt = false;
@@ -25,6 +27,7 @@ public class PlayerAnimationController : MonoBehaviour
     private float sinceHurt = 0.0f;
     private float horizontal;
     private float vertical;
+    private Rigidbody2D rb;
     private Vector3 noAttackIndicatorPos = new Vector3(0f, 0.8f, 0f);
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -100,26 +103,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlayDashEffect()
     {
-        GameObject effect;
-        if ((this.vertical != 0) && (this.vertical == this.horizontal))
-        {
-            effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 45));
-        }
-        else if ((this.vertical != 0) && (this.vertical != this.horizontal))
-        {
-            if (this.horizontal == 0)
-            {
-                effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, 90));
-            }
-            else
-            {
-                effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, -45));
-            }
-        }
-        else
-        {
-            effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.identity);
-        }
+        float angle = Vector2.SignedAngle(Vector2.right, this.rb.velocity);
+        GameObject effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, angle));
     }
 
     private void InvincibilityFrames()
@@ -154,6 +139,9 @@ public class PlayerAnimationController : MonoBehaviour
 
     public bool PlayerDamaged(GameObject obj, int damage, DamageTypes damageType)
     {
+        // Ensure attack sprite is never active during attack interruption
+        DeactivateAttackSprite();
+
         // Invincibility frames
         if (IsDashing() || !this.hurtable) return false;
 
@@ -172,7 +160,16 @@ public class PlayerAnimationController : MonoBehaviour
             this.CurrentState = PlayerStates.DEATH;
             this.animator.speed = 1;
             // Play death effect
-            var effect = (GameObject)Instantiate(this.deathEffect, this.transform.position - (new Vector3(0.5f, 0, 0)), Quaternion.identity);
+            GameObject effect;
+            if (UnityEngine.Random.Range(0.0f, 100.0f) < 50.0f)
+            {
+                effect = (GameObject)Instantiate(this.deathEffect, this.transform.position - (new Vector3(0.5f, 0, 0)), Quaternion.identity);
+            }
+            else
+            {
+                effect = (GameObject)Instantiate(this.deathEffect, this.transform.position + (new Vector3(0.5f, 0, 0)), Quaternion.identity);
+                effect.GetComponent<SpriteRenderer>().flipX = true;
+            }
             return true;
         }
         else
@@ -183,12 +180,6 @@ public class PlayerAnimationController : MonoBehaviour
             this.sinceHurt = 0.0f;
             this.CurrentState = PlayerStates.HURT;
             this.animator.speed = 1;
-            // Ensure all attack sprites are disabled upon hit
-            for (int i = 0; i < 4; i++)
-            {
-                // All attack sprites are the first 4 gameobjects of the player
-                this.gameObject.transform.GetChild(i).gameObject.SetActive(false);
-            }
         }
 
         // Determine knockback handling
@@ -229,12 +220,18 @@ public class PlayerAnimationController : MonoBehaviour
         // Determine how to animate player
         StartNewAnimation();
 
+        this.rb = this.gameObject.GetComponent<Rigidbody2D>();
+
         // Declare function pointer for knockback call in `PlayerDamaged`
         Knockback = this.gameObject.GetComponent<PlayerMovement>().Knockback;
         // Declare function pointer to determine player dashing
         IsDashing = this.gameObject.GetComponent<PlayerMovement>().IsDashing;
         // Declare function pointer to hurt player
         DecreaseHealth = this.gameObject.GetComponent<PlayerController>().DecreaseHealth;
+        // Declare function pointer to deactivate attack sprite
+        DeactivateAttackSprite = this.gameObject.GetComponent<PlayerAttackController>().DeactivateAttackSprite;
+        // Declare function pointer to determine if movement of player is locked
+        GetMoveLocked = this.gameObject.GetComponent<PlayerMovement>().GetMoveLocked;
     }
 
     // Function redefines all the private fields that are required to be changed based on the PlayerType
@@ -281,13 +278,13 @@ public class PlayerAnimationController : MonoBehaviour
             InvincibilityFrames();
         }
 
-        if (!statelock && Time.timeScale == 1)
+        if (!statelock && !GetMoveLocked() && Time.timeScale == 1)
         {
             this.horizontal = Input.GetAxisRaw("Horizontal");
             this.vertical = Input.GetAxisRaw("Vertical");
 
             // Attack; queue player attack
-            if (Input.GetButtonDown("Fire1") && this.hurtable)
+            if (Input.GetButtonDown("Fire1") && this.hurtable && !this.IsDashing())
             {
                 this.CurrentState = PlayerStates.ATTACK;
                 this.animator.speed = this.GetComponent<PlayerController>().GetSpeed() / 4;

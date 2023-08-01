@@ -28,7 +28,7 @@ public class ShopLogic : MonoBehaviour
     private bool madePurchase;
 
     private ShopCostContainer shopCosts = ShopCostContainer.Instance;
-    private int priceIncrease = 100;
+    private int priceIncrease = 150;
 
 
     void Start()

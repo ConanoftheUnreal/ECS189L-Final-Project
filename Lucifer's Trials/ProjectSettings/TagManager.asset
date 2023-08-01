@@ -51,7 +51,7 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Not Player
+  - name: Background
     uniqueID: 3070181637
     locked: 0
   - name: Default
@@ -59,7 +59,4 @@ TagManager:
     locked: 0
   - name: Past Player
     uniqueID: 3631368593
-    locked: 0
-  - name: New Layer 3
-    uniqueID: 1638481581
     locked: 0

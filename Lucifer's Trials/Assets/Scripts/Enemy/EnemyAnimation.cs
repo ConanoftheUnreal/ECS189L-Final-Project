@@ -121,6 +121,9 @@ public class EnemyAnimation : MonoBehaviour
 
     public void EnemyDamaged(GameObject obj, bool killed, bool wasProjectile, int damage)
     {
+        // Ensure attack sprite is never active during attack interruption
+        this.gameObject.GetComponent<EnemyAttackController>().DeactivateAttackSprite();
+
         // determine enemy death
         if (killed)
         {
@@ -130,7 +133,16 @@ public class EnemyAnimation : MonoBehaviour
             this.CurrentState = EnemyAnimStates.DEATH;
             this.animator.speed = 1;
             // play death effect
-            var effect = (GameObject)Instantiate(this.deathEffect, this.transform.position - (new Vector3(0.5f, 0, 0)), Quaternion.identity);
+            GameObject effect;
+            if (UnityEngine.Random.Range(0.0f, 100.0f) < 50.0f)
+            {
+                effect = (GameObject)Instantiate(this.deathEffect, this.transform.position - (new Vector3(0.5f, 0, 0)), Quaternion.identity);
+            }
+            else
+            {
+                effect = (GameObject)Instantiate(this.deathEffect, this.transform.position + (new Vector3(0.5f, 0, 0)), Quaternion.identity);
+                effect.GetComponent<SpriteRenderer>().flipX = true;
+            }
             FindObjectOfType<SoundManager>().PlaySoundEffect("Enemy Defeated");
             return;
         }

@@ -31,9 +31,9 @@ public class AttackableController : MonoBehaviour
 
     public void Start()
     {
-        this.healthBar = this.gameObject.transform.Find("Healthbar").gameObject.GetComponent<HealthBarController>();
+        this.healthBar = this.gameObject.transform.parent.Find("Healthbar").gameObject.GetComponent<HealthBarController>();
 
-        this.self = this.gameObject.GetComponent<GoblinBeserker>();
+        this.self = this.gameObject.transform.parent.gameObject.GetComponent<GoblinBeserker>();
         if (this.self)
         {
             // determined by stats of the enemy
@@ -46,7 +46,7 @@ public class AttackableController : MonoBehaviour
         }
         this.hitpoints = this.maxHitpoints;
 
-        this.rb = this.gameObject.GetComponent<Rigidbody2D>();
+        this.rb = this.gameObject.transform.parent.gameObject.GetComponent<Rigidbody2D>();
 
         // bump damage
         this.damage = 1;
@@ -106,7 +106,7 @@ public class AttackableController : MonoBehaviour
             {
                 killed = true;
             }
-            this.gameObject.GetComponent<EnemyAnimation>().EnemyDamaged(col.gameObject, killed, wasProjectile, attackersDamage);
+            this.gameObject.transform.parent.gameObject.GetComponent<EnemyAnimation>().EnemyDamaged(col.gameObject, killed, wasProjectile, attackersDamage);
         }
         // attacking breakable object
         else
@@ -142,7 +142,7 @@ public class AttackableController : MonoBehaviour
         var effect = Instantiate(this.deathEffect, this.transform.position, Quaternion.identity) as GameObject;
         if (!this.alreadyDropped)
         {
-            var drop = this.gameObject.GetComponent<DropRateLogic>().GetEnemyDrop();
+            var drop = this.gameObject.transform.parent.gameObject.GetComponent<DropRateLogic>().GetEnemyDrop();
             if (drop != null)
             {
 
@@ -173,7 +173,7 @@ public class AttackableController : MonoBehaviour
         }
 
         // fix for double hitting enemies/objects
-        if (this.sinceHit >= 0.05f)
+        if (this.sinceHit >= 0.1f)
         {
             this.sinceHit = 0.0f;
             this.canBeHit = true;

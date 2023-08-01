@@ -110,13 +110,16 @@ public class PlayerAttackController : MonoBehaviour
 
     public void DeactivateAttackSprite()
     {
-        attackSprite.SetActive(false);
+        if (attackSprite != null)
+        {
+            attackSprite.SetActive(false);
+        }
     }
 
     public void Update()
     {
         // fix for double attack consequence due to blend tree for animations
-        if (this.timePassed >= 0.05f)
+        if (this.timePassed >= 0.1f)
         {
             this.timePassed = 0.0f;
             this.canAttack = true;

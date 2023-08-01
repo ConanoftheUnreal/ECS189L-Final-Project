@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,13 +13,28 @@ public class PlayerMovement : MonoBehaviour
     private float horizontal;
     private float vertical;
     private bool isDashing = false;
-    private bool dashlocked = false;
+    private bool movelocked = false;
     private float dashDuration = 0.1f;
     private float dashCooldown = 0.6f;
     private float sinceDash = 1.5f;
     private float curDuration;
     private string facedDirection = "Down";
+    Action DeactivateAttackSprite;
+    Func<bool> GetStateLock;
+    Func<int> GetSpeed;
     [SerializeField] private Rigidbody2D rb;
+
+    void Start()
+    {
+        DeactivateAttackSprite = this.gameObject.GetComponent<PlayerAttackController>().DeactivateAttackSprite;
+        GetStateLock = this.GetComponent<PlayerAnimationController>().GetStateLock;
+        GetSpeed = GameObject.Find("Player").GetComponent<PlayerController>().GetSpeed;
+    }
+
+    public bool GetMoveLocked()
+    {
+        return this.movelocked;
+    }
 
     public string GetFacedDirection()
     {
@@ -39,56 +55,52 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.horizontal = Input.GetAxisRaw("Horizontal");
-        this.vertical = Input.GetAxisRaw("Vertical");
-
         this.sinceDash += Time.deltaTime;
 
         // attack input
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && !GetMoveLocked())
         {
             this.rb.velocity = Vector2.zero;
         }
 
-        if (Input.GetKeyDown("space") && (this.rb.velocity != Vector2.zero) && (this.sinceDash >= this.dashCooldown))
+        if (Input.GetKeyDown("space") && (this.horizontal != 0 || this.vertical != 0) && (this.sinceDash >= this.dashCooldown))
         {
-            FindObjectOfType<SoundManager>().PlaySoundEffect("Dash");
-            this.GetComponent<PlayerAnimationController>().PlayDashEffect();
+            // Ensure attack sprite is never active during attack interruption
+            DeactivateAttackSprite();
             this.isDashing = true;
             this.curDuration = 0.0f;
             this.sinceDash = 0.0f;
-            // ensure all attack sprites are disabled (no damaging enemies while dashing)
-            for (int i = 0; i < 4; i++)
-            {
-                // all attack sprites are the first 4 gameobjects of the player
-                this.gameObject.transform.GetChild(i).gameObject.SetActive(false);
-            }
         }
         
-        if (this.dashlocked && (this.curDuration >= this.dashDuration))
+        if (this.movelocked && (this.curDuration >= this.dashDuration))
         {
-            this.dashlocked = false;
+            this.movelocked = false;
             this.isDashing = false;
         }
     }
 
     void FixedUpdate()
     {
-        bool statelock = this.GetComponent<PlayerAnimationController>().GetStateLock();
-        if (!statelock && !dashlocked)
+        this.horizontal = Input.GetAxisRaw("Horizontal");
+        this.vertical = Input.GetAxisRaw("Vertical");
+
+        if (!GetStateLock() && !movelocked)
         {
             if (this.isDashing)
             {
+                if (!this.movelocked)
+                {
+                    FindObjectOfType<SoundManager>().PlaySoundEffect("Dash");
+                    this.GetComponent<PlayerAnimationController>().PlayDashEffect();
+                }
                 // When dashing, up speed in movement direction
-                this.dashlocked = true;
-                this.speed = GameObject.Find("Player").GetComponent<PlayerController>().GetSpeed();
-                this.rb.velocity = new Vector2(this.horizontal, this.vertical).normalized * (this.speed * 3f);
+                this.movelocked = true;
+                this.rb.velocity = this.rb.velocity.normalized * (GetSpeed() * 3f);
             }
             else
             {
-                this.speed = GameObject.Find("Player").GetComponent<PlayerController>().GetSpeed();
                 this.isDashing = false;
-                this.rb.velocity = new Vector2(this.horizontal, this.vertical).normalized * this.speed;
+                this.rb.velocity = new Vector2(this.horizontal, this.vertical).normalized * GetSpeed();
             }
         }
         else

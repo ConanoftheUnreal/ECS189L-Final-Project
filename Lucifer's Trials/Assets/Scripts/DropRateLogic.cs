@@ -12,9 +12,9 @@ public class DropRateLogic : MonoBehaviour
 
     public GameObject GetEnemyDrop()
     {
-        // 50% chance of a drop
+        // 60% chance of a drop
         float dropRate = Random.Range(0.0f, 100.0f);
-        if (dropRate > 40.0f) 
+        if (dropRate < 60.0f)
         {
             // 50% coin, 30% gold, 10% gems, 10% health pot 
             float itemDropRate = Random.Range(0.0f, 100.0f);

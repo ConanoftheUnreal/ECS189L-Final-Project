@@ -27,11 +27,11 @@ public sealed class ShopCostContainer
     private static void init()
     {
 
-        instance.attackCost = 250;
+        instance.attackCost = 950;
         instance.attackBought = 0;
-        instance.speedCost = 500;
+        instance.speedCost = 1250;
         instance.healthBought = 0;
-        instance.healthCost = 150;
+        instance.healthCost = 450;
         instance.speedBought = 0;
     }
 

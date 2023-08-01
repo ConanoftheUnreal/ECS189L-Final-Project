@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1261753835966030249}
   - component: {fileID: 8976750777474806866}
+  - component: {fileID: 7383174268517798445}
   m_Layer: 8
   m_Name: Hitbox
   m_TagString: EnemyHurtbox
@@ -77,6 +78,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.35}
   m_EdgeRadius: 0
+--- !u!114 &7383174268517798445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207724936803697760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f5602e8cd8dc4274a214f2cfc03ec46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathEffect: {fileID: 4975326531328575795, guid: 3e3007a9752904beebc4042befc7b453, type: 3}
+  humanoid: 1
 --- !u!1 &3455608235691972618
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,11 +106,11 @@ GameObject:
   - component: {fileID: 772322302820928117}
   - component: {fileID: 8268450887792748164}
   - component: {fileID: 3268912372248286795}
-  - component: {fileID: 4261624607544182832}
   - component: {fileID: 8585621319558794034}
   - component: {fileID: 3938590529501458716}
   - component: {fileID: 5578568550356647767}
   - component: {fileID: 3796712610491015189}
+  - component: {fileID: 5359541038243538279}
   m_Layer: 6
   m_Name: GoblinSlinger
   m_TagString: Enemy
@@ -299,20 +314,6 @@ MonoBehaviour:
   _state: 0
   _player: {fileID: 0}
   _contextSteering: {fileID: 3507479819120824863}
---- !u!114 &4261624607544182832
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3455608235691972618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f5602e8cd8dc4274a214f2cfc03ec46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deathEffect: {fileID: 4975326531328575795, guid: 3e3007a9752904beebc4042befc7b453, type: 3}
-  humanoid: 1
 --- !u!114 &8585621319558794034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,6 +370,18 @@ MonoBehaviour:
   gold: {fileID: 9203972737454044537, guid: 9bc62b8b82cd0481798dc8e8aec2ea36, type: 3}
   gems: {fileID: 3719532269851137185, guid: f58454e57a4454b43a80d3615744e6e1, type: 3}
   healing: {fileID: 8268971653956879568, guid: 6cf47e344a633aa469c98e214ab2bc0c, type: 3}
+--- !u!114 &5359541038243538279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3455608235691972618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc54f21b0afd4b93bcec3c6b1e4e10d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &270078557061477035
 PrefabInstance:
   m_ObjectHideFlags: 0

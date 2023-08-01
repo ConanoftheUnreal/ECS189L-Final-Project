@@ -54,24 +54,24 @@ public class EnemyAttackController : MonoBehaviour
                 int option;
 
                 /// Determine closest cardinal direction
-                // default to down
+                // Default to down
                 minDist = Vector2.Distance(Vector2.down, enemyVec);
                 option = 1;
-                // relative to left
+                // Relative to left
                 var distanceEval = Vector2.Distance(Vector2.left, enemyVec);
                 if (distanceEval < minDist)
                 {
                     minDist = distanceEval;
                     option = 2;
                 }
-                // relative to right
+                // Relative to right
                 distanceEval = Vector2.Distance(Vector2.right, enemyVec);
                 if (distanceEval < minDist)
                 {
                     minDist = distanceEval;
                     option = 3;
                 }
-                // relative to up
+                // Relative to up
                 distanceEval = Vector2.Distance(Vector2.up, enemyVec);
                 if (distanceEval < minDist)
                 {
@@ -79,7 +79,7 @@ public class EnemyAttackController : MonoBehaviour
                     option = 4;
                 }
 
-                // activate properly oriented sprite
+                // Activate properly oriented sprite
                 switch (option)
                 {
                     case 1:
@@ -106,28 +106,22 @@ public class EnemyAttackController : MonoBehaviour
             
             case EnemyTypes.SLINGER:
 
-                // shoot an arrow in the direction of the player with random adjustment
+                // Shoot an arrow in the direction of the player with random adjustment
                 var directionVec = (Vector2)(GameObject.Find("Player").transform.position - this.gameObject.transform.position);
                 directionVec = directionVec + EnemyInaccuracy(directionVec.magnitude);
-                // readjust orientation of enemy if player has moved around it
+                // Readjust orientation of enemy if player has moved around it
                 if (Vector2.Angle(directionVec, enemyVec) >= 90)
                 {
                     animator.SetFloat("MoveX", directionVec.x * 2);
                     animator.SetFloat("MoveY", directionVec.y * 2);
                 }
 
-                // determine proper sprite orientation
-                float theta;
-                if (directionVec.x >= 0)
-                {
-                    theta = -(45 + Vector2.Angle(Vector2.up, directionVec));
-                }
-                else
-                {
-                    theta = -(45 + Vector2.Angle(Vector2.up, -directionVec)) + 180;
-                }
+                // Start sprite pointing right
+                float theta = -135;
+                // Determine proper sprite orientation along velocity vector
+                theta = theta + Vector2.SignedAngle(Vector2.right, directionVec);
 
-                // instantiate arrow and its attributes based on previous determinants
+                // Instantiate arrow and its attributes based on previous determinants
                 var projectile = (GameObject)Instantiate(this.projectilePrefab, transform.position, Quaternion.Euler(0, 0, theta));
                 projectile.GetComponent<Rigidbody2D>().velocity = directionVec.normalized * projectile.GetComponent<ProjectileScript>().GetProjectileSpeed();
                 break;
@@ -141,7 +135,10 @@ public class EnemyAttackController : MonoBehaviour
 
     public void DeactivateAttackSprite()
     {
-        attackSprite.SetActive(false);
+        if (attackSprite != null)
+        {
+            attackSprite.SetActive(false);
+        }
     }
 
     public void Update()
