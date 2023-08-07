@@ -48,8 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Knockback(Vector2 direction)
     {
-        var rbPlayer = this.GetComponent<Rigidbody2D>();
-        rbPlayer.velocity = direction * (new Vector2(knockbackForce, knockbackForce));
+        this.rb.velocity = direction * (new Vector2(knockbackForce, knockbackForce));
     }
 
     // Update is called once per frame
@@ -58,12 +57,14 @@ public class PlayerMovement : MonoBehaviour
         this.sinceDash += Time.deltaTime;
 
         // attack input
-        if (Input.GetButtonDown("Fire1") && !GetMoveLocked())
+        if (Input.GetButtonDown("Fire1") && !this.isDashing)
         {
             this.rb.velocity = Vector2.zero;
         }
 
-        if (Input.GetKeyDown("space") && (this.horizontal != 0 || this.vertical != 0) && (this.sinceDash >= this.dashCooldown))
+        // NOTE: Deadzone for dash is defined here statically
+        // Pressed space, player is idling/walking, outside of deadzone, and dash not in cooldown
+        if (Input.GetKeyDown("space") && !GetStateLock() && (this.rb.velocity.magnitude >= 0.1f) && (this.sinceDash >= this.dashCooldown))
         {
             // Ensure attack sprite is never active during attack interruption
             DeactivateAttackSprite();
@@ -72,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
             this.sinceDash = 0.0f;
         }
         
+        // Amidst dash and dash cooldown has finished
         if (this.movelocked && (this.curDuration >= this.dashDuration))
         {
             this.movelocked = false;
@@ -84,16 +86,17 @@ public class PlayerMovement : MonoBehaviour
         this.horizontal = Input.GetAxisRaw("Horizontal");
         this.vertical = Input.GetAxisRaw("Vertical");
 
+        // Player is idling/walking and is not amidst a dash
         if (!GetStateLock() && !movelocked)
         {
             if (this.isDashing)
             {
+                // If a dash has just begun
                 if (!this.movelocked)
                 {
-                    FindObjectOfType<SoundManager>().PlaySoundEffect("Dash");
                     this.GetComponent<PlayerAnimationController>().PlayDashEffect();
                 }
-                // When dashing, up speed in movement direction
+                // Dashing := speed up in movement direction
                 this.movelocked = true;
                 this.rb.velocity = this.rb.velocity.normalized * (GetSpeed() * 3f);
             }

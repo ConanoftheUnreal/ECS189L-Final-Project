@@ -105,6 +105,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         float angle = Vector2.SignedAngle(Vector2.right, this.rb.velocity);
         GameObject effect = (GameObject)Instantiate(this.dashEffect, this.transform.position, Quaternion.Euler(0, 0, angle));
+        FindObjectOfType<SoundManager>().PlaySoundEffect("Dash");
     }
 
     private void InvincibilityFrames()
